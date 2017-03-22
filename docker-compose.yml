@@ -1,0 +1,269 @@
+#################################
+#
+# To handle this STACK please use
+# $ ./do
+#
+#################################
+
+# Upgrading to latest docker-compose reference version
+# (V3 at the moment) - Feb 2017
+version: '3'
+
+#################################
+services:
+
+  #############
+  # Postgres database server
+  sql:
+    image: postgres:9.6
+    # command: /bin/bash -c "echo $$POSTGRES_DBS | tr -d \"'\""
+    volumes:
+      - sqldata:/var/lib/postgresql/data
+      - ./builds/postgresql/pgs_init.sh:/docker-entrypoint-initdb.d/setup-my-schema.sh:ro
+    environment:
+      POSTGRES_USER: "${ALCHEMY_USER}"
+      POSTGRES_PASSWORD: "${ALCHEMY_PASSWORD}"
+      POSTGRES_DBS: ${ALCHEMY_DBS}
+    # healthcheck:
+    #   test: ["CMD", "psql", "-U", "${ALCHEMY_USER}", "-c", "\\d"]
+    #   interval: 5s
+    #   timeout: 3s
+    #   retries: 3
+    # deploy:
+    #   replicas: 1
+    networks:
+      dbnet:
+        aliases:
+          - ${ALCHEMY_HOST}
+
+  #############
+  # iRODS iCAT server for EUDAT B2safe
+  icat:
+    # B2safe instance on irods
+    build: ./builds/b2safe
+    image: b2safe:rapydo
+    hostname: ${IRODS_HOST}
+    # command: sleep infinity
+
+    environment:
+      POSTGRES_HOST: "${ALCHEMY_HOST}"
+      # port??
+      POSTGRES_USER: "${ALCHEMY_USER}"
+      POSTGRES_PASSWORD: "${ALCHEMY_PASSWORD}"
+
+      IRODS_HOST: "${IRODS_HOST}"
+      IRODS_PORT: ${IRODS_PORT}
+      IRODS_ZONE: ${IRODS_ZONE}
+      IRODS_DB: "${IRODS_DB}"
+      IRODS_USER: ${IRODS_USER}
+      IRODS_PASSWORD: ${ALCHEMY_PASSWORD}
+
+    # # Open irods port to Outside world
+    # ## CAREFULL: don't uncomment the two lines below if you don't know why
+    # ports:
+    #     - 1247:1247
+
+    volumes:
+      - etcconf:/etc
+      - irodshome:/home/irods
+      - irodsvar:/var/lib/irods
+      - sharedcerts:/opt/certificates
+      # - eudatopt:/opt
+      - ./builds/b2safe/extra_b2safe.sh:/docker-entrypoint.d/b2safe.sh
+
+    networks:
+      inet:
+        aliases:
+          - ${IRODS_HOST}
+      dbnet:
+    depends_on:
+      - sql
+
+  #############
+  # GRAPHdb neo4j
+  graphdb:
+    image: neo4j:3.1
+    hostname: ${GRAPHDB_HOST}
+    environment:
+      NEO4J_AUTH: neo4j/${GRAPHDB_PASSWORD}
+      # Other parameters?
+      #NEO4J_HEAP_MEMORY
+      #NEO4J_CACHE_MEMORY
+    networks:
+      dbnet:
+        aliases:
+          - ${GRAPHDB_HOST}
+    volumes:
+        - graphdata:/data
+
+  #############
+  # iRODS iCAT server for EUDAT B2safe
+  rest:
+    hostname: api
+    # image: eudatb2stage/apiserver:neo4j3
+    build: ./builds/apiserver
+    image: apiserver:rapydo
+    # user: ${IRODS_USER}
+    # user: ${APIUSER}
+    # command: ./boot
+    # working_dir: /code
+
+    networks:
+      flasknet:
+        aliases:
+          - ${FLASK_HOST}
+      dbnet:
+      inet:
+
+    depends_on:
+      - sql
+      - graphdb
+      - icat
+
+    environment:
+      # set this variable with docker-compose debug/production extensions
+      APP_MODE: debug
+      # DEBUG_LEVEL: DEBUG
+
+      # project/package/prefix name
+      VANILLA_PACKAGE: ${COMPOSE_PROJECT_NAME}
+      # app credentials to work inside the b2access environment
+      B2ACCESS_APPNAME: ${B2ACCESS_ACCOUNT}
+      B2ACCESS_APPKEY: ${B2ACCESS_SECRET}
+
+      # base the user/role mechanism on some database
+      AUTH_ENABLE: 1
+      # putting this here because it should not be configurable in .env
+      AUTH_SERVICE: sqlalchemy
+
+      # db access
+      ALCHEMY_ENABLE: 1
+      ALCHEMY_EXTERNAL: ${ALCHEMY_EXTERNAL}
+      ALCHEMY_HOST: ${ALCHEMY_HOST}
+      ALCHEMY_PORT: ${ALCHEMY_PORT}
+      ALCHEMY_USER: ${ALCHEMY_USER}
+      ALCHEMY_PASSWORD: ${ALCHEMY_PASSWORD}
+      ALCHEMY_DB: ${ALCHEMY_API_DB}
+      # neo connection
+      GRAPHDB_ENABLE: 1
+      GRAPHDB_EXTERNAL: ${GRAPHDB_EXTERNAL}
+      GRAPHDB_HOST: ${GRAPHDB_HOST}
+      GRAPHDB_PORT: ${GRAPHDB_BOLT_PORT}
+      GRAPHDB_PASSWORD: ${GRAPHDB_PASSWORD}
+      # irods configuration
+      IRODS_ENABLE: 1
+      IRODS_EXTERNAL: ${IRODS_EXTERNAL}
+      IRODS_HOST: ${IRODS_HOST}
+      IRODS_PORT: ${IRODS_PORT}
+      IRODS_USER: ${IRODS_USER}
+      IRODS_ZONE: ${IRODS_ZONE}
+      IRODS_HOME: ${IRODS_HOME}
+      IRODS_PASSWORD: ${ALCHEMY_PASSWORD}
+      IRODS_AUTHSCHEME: ${IRODS_AUTHSCHEME}
+      IRODS_DEFAULT_ADMIN_USER: ${IRODS_DEFAULT_ADMIN_USER}
+
+    volumes:
+      # SHARED
+      - sharedcerts:/opt/certificates
+      # Uploads dir
+      - tmpuploads:/uploads
+      # JWT tokens secret
+      - jwt_tokens:/jwt_tokens
+      # B2ACCESS dev certificates
+      - ./certs:/usr/local/share/ca-certificates
+      # Base code
+      - ./backend:/code
+      # Vanilla code
+      - ./vanilla:/code/eudat
+      # Tests
+      - ./vanilla/tests:/code/test/custom
+
+  #############
+  # REST API client
+  # (wget, curl, httpie, http-prompt)
+
+  client:
+    build: ./builds/apiclient
+    image: apiclient:rapydo
+    # image: eudatb2stage/apiclient
+    # volumes:
+    #   - ./backend:/code/core
+    #   - ./vanilla:/code/custom
+    environment:
+      APP_HOST: ${FLASK_HOST}
+      APP_PORT: 5000
+    networks:
+      flasknet:
+    depends_on:
+      - rest
+
+  # #############
+  # # Database administration
+  # sqladmin:
+  # # This docker image let you access sqllite/postgres/mysql
+  # # with a phpmyadmin-like web page
+  #   image: eudatb2stage/sqladminer:latest
+  #   # links:
+  #   #   - sql:db
+
+  # #############
+  # # Nginx proxy
+  # proxy:
+  #   build: ./builds/sslproxy
+  #   image: nginx:rapydo
+  #   # OLD: using the official image directly with no letsencrypt
+  #   # image: nginx:1.11-alpine
+  #   hostname: iamaproxy
+  #   environment:
+  #     DOMAIN: justatest.io
+  #     MODE: "--staging"
+  #   volumes:
+  #     - sslcerts:/etc/letsencrypt
+  #   # THIS FILE WAS MOVED INSIDE THE DOCKEFILE
+  #   #   - ./confs/nginx.conf:/etc/nginx/nginx.conf
+
+  # #############
+  # # Client interface if using swagger
+  # swagclient:
+  #   image: eudatb2stage/swagger-ui:latest
+  #   # environment:
+  #   #   API_URL: "http://localhost/swagger-ui/"
+  #   # ports:
+  #   #   - 80:80
+
+#################################
+volumes:
+  sharedcerts:
+    driver: local
+  restlitedb:
+    driver: local
+  graphdata:
+    driver: local
+  sqldata:
+    driver: local
+  etcconf:
+    driver: local
+  irodshome:
+    driver: local
+  irodsvar:
+    driver: local
+  eudatopt:
+    driver: local
+  tmpuploads:
+    driver: local
+  jwt_tokens:
+    driver: local
+  sslcerts:
+    driver: local
+
+networks:
+  dbnet:
+    # driver: bridge
+    ipam:
+      driver: default
+      config:
+        # Note: use this configuration to match inside internal rules
+        # TO FIX: make this an env variable
+        - subnet: 172.1.0.0/16
+  inet:
+  flasknet:
