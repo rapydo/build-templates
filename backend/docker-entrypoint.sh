@@ -82,7 +82,9 @@ elif [ "$APP_MODE" == 'development' ]; then
     rapydo
 else
     echo "Debug mode"
-    sleep infinity
+    # sleep infinity
+    # exec su $APIUSER -c "./sleep.py"
+    exec ./sleep.py
 fi
 
 exit 0
