@@ -76,6 +76,8 @@ echo "REST API backend server is ready"
 
 if [ "$APP_MODE" == 'production' ]; then
     echo "launching uwsgi"
+    # Fix to avoid: unable to load app 0 (mountpoint='') (callable not found or import error)
+    sleep 20
     myuwsgi
 elif [ "$APP_MODE" == 'development' ]; then
     echo "launching flask"
