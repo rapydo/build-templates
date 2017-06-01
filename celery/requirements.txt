@@ -1,10 +1,13 @@
 pip
 
+#required by py27compat di setuptools
+six
+
+#brutally copyed from backend build
 attrs
 beeprint
 better_exceptions
 bravado-core
-celery
 Flask
 Flask-Cors
 Flask-OAuthlib
@@ -29,6 +32,8 @@ swagger-spec-validator
 uWSGI
 uwsgitop
 urllib3
+
+celery
 flower
 
 gssapi
