@@ -1,5 +1,8 @@
 pip
 
+#required by py27compat di setuptools
+six
+
 attrs
 beeprint
 better_exceptions
