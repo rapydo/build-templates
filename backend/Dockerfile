@@ -57,6 +57,7 @@ COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
+COPY sleep.py /usr/local/bin/pysleeper
 
 ###################
 # variables
@@ -86,6 +87,10 @@ RUN echo "Entrylevel" && \
     echo "echo\necho 'Run tests also with:\n$ testapi [test.FOLDER]\n'\n" \
         >> /root/.bashrc \
     && echo "echo\necho '$ python run.py'" > /tmp/.bashrc
+
+# ###################
+# TESTING IRODS DEVELOPMENT?
+# RUN pip install --upgrade -i https://testpypi.python.org/pypi python-irodsclient
 
 ###################
 # closing entrypoint
