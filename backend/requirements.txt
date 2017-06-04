@@ -1,6 +1,6 @@
 pip
 
-#required by py27compat di setuptools
+#required by py27compat - setuptools
 six
 
 attrs
@@ -35,3 +35,7 @@ urllib3
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
 #git+https://github.com/pdonorio/python-irodsclient.git@b2stage
+
+rapydo-utils
+#rapydo-http
+https://testpypi.python.org/packages/a0/e7/10dbccb2b88e060c4e1fefc38955575cfa64ce12fce3b17da58820b9cc6e/rapydo_http-0.1.dev1.tar.gz#md5=37b9f380e7fa174448c958803ec5e96e
