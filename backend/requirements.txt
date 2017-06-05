@@ -1,41 +1,49 @@
+#upgrade packaging
 pip
 
 #required by py27compat - setuptools
 six
 
-attrs
-beeprint
-better_exceptions
-bravado-core
+#Develpoment: required by interactive shell
+httpie
+ipython
+nose2
+cov-core
+
+#Production mode: adding workers multi-process
+uWSGI
+uwsgitop
+
+#To be moved?
 celery
-Flask
+#Flask
 Flask-Cors
 Flask-OAuthlib
 Flask-RESTful
 Flask-SQLAlchemy
-flask_injector==v0.9.0
-gssapi
-injector==0.12.0
 flask-shell-ipython
-httpie
-ipython
 neomodel
-nose2
-cov-core
 pyOpenSSL
 plumbum
 psycopg2
 PyJWT
 requests
-swagger-spec-validator
-uWSGI
-uwsgitop
 urllib3
+swagger-spec-validator
 
+#EUDAT specific
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
+gssapi
 #git+https://github.com/pdonorio/python-irodsclient.git@b2stage
 
-rapydo-utils
-#rapydo-http
-https://testpypi.python.org/packages/a0/e7/10dbccb2b88e060c4e1fefc38955575cfa64ce12fce3b17da58820b9cc6e/rapydo_http-0.1.dev1.tar.gz#md5=37b9f380e7fa174448c958803ec5e96e
+#RAPyDo framework
+rapydo-http
+#this brings automatically:
+#better_exceptions
+#attrs
+#flask_injector==v0.9.0
+#injector==0.12.0
+#bravado-core
+#rapydo-utils
+#beeprint
