@@ -82,8 +82,8 @@ RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; FLASK_DE
 
 
 # Run Celery as developer
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; celery worker -c 1 -A flask_ext.flask_celery.worker.celery_app -n \${HOSTNAME}@\${VANILLA_PACKAGE}'" > /usr/local/bin/mycelery && chmod +x /usr/local/bin/mycelery
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; flower --port=5555 -A flask_ext.flask_celery.worker.celery_app -n flower_monitor'" > /usr/local/bin/start_flower && chmod +x /usr/local/bin/start_flower
+RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; celery worker -c 1 -A rapydo.flask_ext.flask_celery.worker.celery_app -n \${HOSTNAME}@\${VANILLA_PACKAGE}'" > /usr/local/bin/mycelery && chmod +x /usr/local/bin/mycelery
+RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; flower --port=5555 -A rapydo.flask_ext.flask_celery.worker.celery_app -n flower_monitor'" > /usr/local/bin/start_flower && chmod +x /usr/local/bin/start_flower
 
 ######################
 # instructions
@@ -102,7 +102,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
-# RUN flower -A flask_ext.flask_celery.worker.celery_app \
+# RUN flower -A rapydo.flask_ext.flask_celery.worker.celery_app \
 #         --broker=amqp://guest:guest@queue:5672//
 CMD ["mycelery"]
-# CMD ["celery worker -c 1 -A flask_ext.flask_celery.worker.celery_app"]
+# CMD ["celery worker -c 1 -A rapydo.flask_ext.flask_celery.worker.celery_app"]

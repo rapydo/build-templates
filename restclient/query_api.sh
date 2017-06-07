@@ -50,9 +50,10 @@ ALL_COMMAND=""
 if [ "$AUTH" == '' ]; then
 
     # Read credentials from current files
-    dfile="/code/core/rapydo/confs/defaults.yaml"
+    dfile="/code/custom/specs/defaults.yaml"
+    # dfile="/code/core/rapydo/confs/defaults.yaml"
     cfile="/code/custom/specs/project_configuration.yaml"
-    jpath="variables.python.backend.credentials"
+    jpath="variables.backend.credentials"
 
     # Custom
     credentials=`yq --json -c ".$jpath" $cfile`
@@ -62,7 +63,7 @@ if [ "$AUTH" == '' ]; then
         if [ "$credentials" == "null" ]; then
             echo "FATAL!"
             echo "No credentials found"
-            exit 1
+            return
         else
             echo "credentials set"
         fi
