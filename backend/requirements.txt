@@ -31,14 +31,15 @@ requests
 urllib3
 swagger-spec-validator
 
-#EUDAT specific
+#b2handle from b2stage instead of b2safe, to support python3.6.1
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-git+https://github.com/irods/python-irodsclient.git@master
+#git+https://github.com/irods/python-irodsclient.git@master
+python-irodsclient==0.6.0
 gssapi
 #git+https://github.com/pdonorio/python-irodsclient.git@b2stage
 
 #RAPyDo framework
-rapydo-http
+rapydo-http==0.1.1
 #this brings automatically:
 #better_exceptions
 #attrs
