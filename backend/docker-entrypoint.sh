@@ -41,17 +41,18 @@ if [ ! -f "$secret_file" ]; then
     # certificates for b2access
     update-ca-certificates
 
-    # question: should we fix sqllite permissions?
-    # answer: we are using postgresql also in development
+    # FIXME: do not init app
+    # until we know how to wait for all services to be up...
+    echo "SKIPPING INIT. WE SHOULD FIX THIS ISSUE."
 
-    echo "Init flask app"
-    initialize
-    if [ "$?" == "0" ]; then
-        echo
-    else
-        echo "Failed to startup flask!"
-        exit 1
-    fi
+    # echo "Init flask app"
+    # initialize
+    # if [ "$?" == "0" ]; then
+    #     echo
+    # else
+    #     echo "Failed to startup flask!"
+    #     exit 1
+    # fi
 
 fi
 
