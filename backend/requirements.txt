@@ -26,6 +26,7 @@ neomodel
 pyOpenSSL
 plumbum
 psycopg2
+pymodm
 PyJWT
 requests
 urllib3
