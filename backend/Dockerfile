@@ -68,25 +68,29 @@ ENV LANG C.UTF-8
 ENV PYTHONIOENCODING="utf-8"
 ENV FLASK_PORT 5000
 ENV JWT_APP_SECRETS /jwts
+ENV CODE_DIR /code
 EXPOSE $FLASK_PORT
 
 ######################
 # alias
-RUN echo "alias dev=\"HOME=/tmp su -p \$APIUSER\"" >> /root/.bash_aliases
-RUN echo "alias testapi=\"su -p \$APIUSER -c 'export HOME=/tmp; cd /code; nose2 -F '\"" >> /root/.bash_aliases
+ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
+ENV FLASK_CMD "flask run --host 0.0.0.0 --port \$FLASK_PORT --reload --no-debugger --eager-loading --with-threads"
 
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; ./tests.sh'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; flask run --with-threads -h 0.0.0.0 -p $FLASK_PORT '" > /usr/local/bin/rapydo && chmod +x /usr/local/bin/rapydo
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; FLASK_DEBUG=0 ./manage.py init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
-RUN echo "#!/bin/bash\\nsu -p \$APIUSER -c 'export HOME=/tmp; cd /code; FLASK_DEBUG=0 ./manage.py destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
+RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
+RUN echo "alias testapi=\"DEV_SU -c 'nose2 -F '\"" >> /root/.bash_aliases
+RUN echo "#!/bin/bash\\n$DEV_SU -c './tests.sh'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
+RUN echo "#!/bin/bash\\n$DEV_SU -c '$FLASK_CMD'" > /usr/local/bin/rapydo && chmod +x /usr/local/bin/rapydo
+RUN echo "#!/bin/bash\\n$DEV_SU -c 'FLASK_DEBUG=0 ./manage.py init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
+RUN echo "#!/bin/bash\\n$DEV_SU -c 'FLASK_DEBUG=0 ./manage.py destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
 
 ######################
 # instructions
+ENV MYRC /root/.bashrc
 RUN echo "Entrylevel" && \
-    echo "echo\necho 'Run Flask server as ($APIUSER) with the command:'\necho '$ rapydo'" >> /root/.bashrc && \
-    echo "echo\necho 'Run tests also with:\n$ testapi [test.FOLDER]\n'\n" \
-        >> /root/.bashrc \
-    && echo "echo\necho '$ python run.py'" > /tmp/.bashrc
+    echo "echo\necho 'Run Flask server (as \$APIUSER) with the command:'\necho '# rapydo'" >> $MYRC && \
+    echo "echo\necho 'Run tests in a similar way with:\n# testapi [test.FOLDER]'\n" \
+        >> $MYRC \
+    && echo "echo\necho 'You can also directly become the '\$APIUSER' user:\n# dev\n\$ $FLASK_CMD\n'\n" >> $MYRC
 
 # ###################
 # TESTING IRODS DEVELOPMENT?
@@ -95,8 +99,8 @@ RUN echo "Entrylevel" && \
 ###################
 # closing entrypoint
 
-RUN mkdir /code
-WORKDIR /code
+RUN mkdir $CODE_DIR
+WORKDIR $CODE_DIR
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
