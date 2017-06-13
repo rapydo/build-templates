@@ -31,7 +31,6 @@ done
 # Completed
 echo "Client for HTTP API is ready"
 
-# FIXME: problem in opening a shell here...
 if [ "$1" != 'client' ]; then
     # echo "Requested custom command:"
     # echo "\$ $@"
@@ -39,7 +38,9 @@ if [ "$1" != 'client' ]; then
     exit 0
 else
     # bash -c "su $GUEST_USER"
-    pysleeper
+    exec pysleeper
+    # ln -s /etc/bash.bashrc /home/$GUEST_USER/.bashrc
+    # exec su -p -c "HOME=/home/$GUEST_USER bash" $GUEST_USER
     echo "Client closed"
     exit 0
 fi
