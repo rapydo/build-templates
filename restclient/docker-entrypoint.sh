@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ "$1" != 'client' ]; then
-    # echo "Requested custom command:"
-    # echo "\$ $@"
-    $@
-    exit 0
-fi
-
 ######################################
 #
 # Entrypoint!
@@ -37,7 +30,16 @@ done
 
 # Completed
 echo "Client for HTTP API is ready"
-# bash -c "su - $GUEST_USER"
-bash -c "su $GUEST_USER"
-echo "Client closed"
-exit 0
+
+# FIXME: problem in opening a shell here...
+if [ "$1" != 'client' ]; then
+    # echo "Requested custom command:"
+    # echo "\$ $@"
+    $@
+    exit 0
+else
+    # bash -c "su $GUEST_USER"
+    pysleeper
+    echo "Client closed"
+    exit 0
+fi

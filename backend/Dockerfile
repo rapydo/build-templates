@@ -58,6 +58,8 @@ RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
 COPY sleep.py /usr/local/bin/pysleeper
+COPY manage.py /usr/local/bin/manage
+COPY tests.sh /usr/local/bin/pyunittests
 
 ###################
 # variables
@@ -78,10 +80,10 @@ ENV FLASK_CMD "flask run --host 0.0.0.0 --port \$FLASK_PORT --reload --no-debugg
 
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 RUN echo "alias testapi=\"DEV_SU -c 'nose2 -F '\"" >> /root/.bash_aliases
-RUN echo "#!/bin/bash\\n$DEV_SU -c './tests.sh'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
+RUN echo "#!/bin/bash\\n$DEV_SU -c 'pyunittests'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
 RUN echo "#!/bin/bash\\n$DEV_SU -c '$FLASK_CMD'" > /usr/local/bin/rapydo && chmod +x /usr/local/bin/rapydo
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'FLASK_DEBUG=0 ./manage.py init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'FLASK_DEBUG=0 ./manage.py destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
+RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
+RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
 
 ######################
 # instructions
