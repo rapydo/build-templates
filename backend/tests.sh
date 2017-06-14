@@ -14,7 +14,7 @@ export TESTING_FLASK="True"
 
 # Coverage + stop on first failure
 com="nose2 -F"
-option="-s test"
+option="-s tests"
 cov_reports=" --coverage-report term --coverage-report html"
 
 # cov_options="--output-buffer -C --coverage rapydo --coverage flask_ext"
@@ -35,7 +35,7 @@ if [ "$?" == "0" ]; then
     if [ "$?" == "0" ]; then
 
         echo "Done"
-        # FIXME: coverage report on travis
+        # FIXME: coverage report on travis does not work
         # # Print coverage if everything went well so far
         # $com $cov_options $cov_reports 2> /tmp/logfile.txt
         # grep "platform linux" -A 1000 /tmp/logfile.txt
