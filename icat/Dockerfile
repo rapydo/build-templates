@@ -50,7 +50,6 @@ RUN apt-get update && apt-get install -y \
 
 ###################
 # OTHER OPERATIONS
-
 ENV TERM xterm-256color
 
 # certificates
