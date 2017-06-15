@@ -16,13 +16,6 @@ export TESTING_FLASK="True"
 com="nose2 -F"
 option="-s tests"
 cov_reports=" --coverage-report term --coverage-report html"
-
-# cov_options="--output-buffer -C --coverage rapydo --coverage flask_ext"
-# if [ ! -z "$VANILLA_PACKAGE" ]; then
-#     echo "Extra coverage for project '$VANILLA_PACKAGE'"
-#     cov_options="$cov_options --coverage $VANILLA_PACKAGE"
-# fi
-
 cov_options="--output-buffer -C --coverage ${VANILLA_PACKAGE}.apis"
 
 echo $com $cov_options $cov_reports
@@ -34,11 +27,14 @@ if [ "$?" == "0" ]; then
     $com $option/custom --log-capture
     if [ "$?" == "0" ]; then
 
-        echo "Done"
         # FIXME: coverage report on travis does not work
+        # decomment below to inspect
+
         # # Print coverage if everything went well so far
         # $com $cov_options $cov_reports 2> /tmp/logfile.txt
         # grep "platform linux" -A 1000 /tmp/logfile.txt
+
+        echo "Done"
 
     else
         exit $?
