@@ -1,3 +1,4 @@
+
 ###################
 # LTS
 FROM ubuntu:16.04
@@ -8,8 +9,9 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 RUN apt-get update -qq && apt-get install -y \
         ## normal base
         wget git vim expect lsof sudo \
-        ## fix adding irods to source list
+        ## fix adding irods to source list ?
         # lsb-release \
+        # apt-transport-https \
         ## fix the ssl error for apt-key
         gnupg-curl \
         ## fix "The method driver /usr/lib/apt/methods/https could not be found"
@@ -32,11 +34,14 @@ RUN apt-key adv --fetch-keys $URL/irods-signing-key.asc \
         > /etc/apt/sources.list.d/renci-irods.list
 
 ENV IRODS_VERSION 4.2.0
+ENV GSI_VERSION 2.0.0
 RUN apt-get update && apt-get install -y \
         # iCAT
+        irods-runtime=$IRODS_VERSION irods-icommands=$IRODS_VERSION \
         irods-server=$IRODS_VERSION \
         # iRODS Plugins (also GSI)
-        irods-database-plugin-postgres irods-auth-plugin-gsi \
+        irods-database-plugin-postgres=$IRODS_VERSION \
+        irods-auth-plugin-gsi=$GSI_VERSION \
     # clean
     && apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log /tmp/*
@@ -45,7 +50,6 @@ RUN apt-get update && apt-get install -y \
 
 ###################
 # OTHER OPERATIONS
-
 ENV TERM xterm-256color
 
 # certificates

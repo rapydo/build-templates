@@ -50,9 +50,9 @@ ALL_COMMAND=""
 if [ "$AUTH" == '' ]; then
 
     # Read credentials from current files
-    dfile="/code/custom/specs/defaults.yaml"
-    # dfile="/code/core/rapydo/confs/defaults.yaml"
-    cfile="/code/custom/specs/project_configuration.yaml"
+    dfile="/code/base.yml"
+    cfile="/code/custom.yml"
+
     jpath="variables.backend.credentials"
 
     # Custom
@@ -74,11 +74,12 @@ if [ "$AUTH" == '' ]; then
     export CREDENTIALS="username=$username password=$password"
 
     echo "Generating authentication token"
-    . /code/gettoken 2>&1 1> /dev/null
+    TOKEN_SCRIPT="/code/client/gettoken"
+    . $TOKEN_SCRIPT 2>&1 1> /dev/null
     if [ "$TOKEN" == "" ]; then
         echo "Authentication failed!"
         echo "Debug with:"
-        echo ". /code/gettoken"
+        echo ". $TOKEN_SCRIPT"
         return
     fi
 
@@ -173,7 +174,7 @@ if [ "$1" == 'upload' -o "$1" == "$ALL_COMMAND" ]; then
         path="$2"
     fi
 
-    file="/code/gettoken"
+    file=$TOKEN_SCRIPT
     if [ ! -z "$3" ]; then
         file="$3"
     fi

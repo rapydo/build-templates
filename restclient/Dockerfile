@@ -28,27 +28,32 @@ ENV GUEST_UID 1000
 ENV GUEST_SHELL /bin/bash
 RUN adduser -s $GUEST_SHELL -u $GUEST_UID -D -h /home/$GUEST_USER $GUEST_USER
 
-# Use the new user
-USER $GUEST_USER
-ENV BASHRC /home/$GUEST_USER/.bashrc
 ENV PAGER less
 ENV TERM=xterm-256color
 ENV HISTCONTROL ignoreboth:erasedups
-RUN echo "echo -e '\\nCall the client with the command:'" >> $BASHRC \
-    && echo "echo -e '$ http \$APP_HOST\$APP_PORT/api/status\\n'" >> $BASHRC \
-    # && echo "echo -e '$ queryapi\\n'" >> $BASHRC \
-    && echo "echo -e '$ . /code/queryapi [help]\\n'" >> $BASHRC
 
-###################################
+# Use the new user
+USER $GUEST_USER
+ENV BASHRC /home/$GUEST_USER/.bashrc
+RUN echo "Adding welcome message" \
+    && echo "reset" > $BASHRC \
+    && echo "echo -e 'Hello\\n\\nYou may call the client with:'" >> $BASHRC \
+    && echo "echo -e '$ http \$APP_HOST\$APP_PORT/api/status\\n'" >> $BASHRC \
+    && echo "echo -e 'There is also available a utility:'" >> $BASHRC \
+    && echo "echo -e '$ . /code/client/queryapi [help]\\n'" >> $BASHRC
 USER root
 
+###################################
 RUN mkdir -p /code/client
-WORKDIR /code/client
-# Script for automatic creation of a token
-COPY client_init.sh /code/gettoken
-COPY query_api.sh /code/queryapi
+COPY client_init.sh /code/client/gettoken
+COPY query_api.sh /code/client/queryapi
+COPY sleep.py /usr/local/bin/pysleeper
 
+###################################
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["client"]
+
+# WORKDIR /home/$GUEST_USER
+WORKDIR /code
