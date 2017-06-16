@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ "$1" != 'rest' ]; then
-    echo "Requested custom command:"
-    echo "\$ $@"
-    $@
-    exit 0
-fi
-
 ######################################
 #
 # Entrypoint!
@@ -73,22 +66,33 @@ done
 
 #####################
 # Completed
-echo "REST API backend server is ready"
 
-if [ "$APP_MODE" == 'production' ]; then
-    echo "launching uwsgi"
-    # Fix to avoid: unable to load app 0 (mountpoint='') (callable not found or import error)
-    sleep 20
-    myuwsgi
-elif [ "$APP_MODE" == 'development' ]; then
-    echo "launching flask"
-    rapydo
+if [ "$1" != 'rest' ]; then
+    ## CUSTOM COMMAND
+    echo "Requested custom command:"
+    echo "\$ $@"
+    $@
+    exit 0
 else
-    echo "Debug mode"
-    # sleep infinity
-    # exec su $APIUSER -c "./sleep.py"
-    exec pysleeper
-    # exec ./sleep.py
-fi
+    ## NORMAL MODES
+    echo "REST API backend server is ready"
 
-exit 0
+    if [ "$APP_MODE" == 'production' ]; then
+        echo "launching uwsgi"
+        # Fix to avoid: unable to load app 0 (mountpoint='')
+        # (callable not found or import error)
+        sleep 25
+        myuwsgi
+    elif [ "$APP_MODE" == 'development' ]; then
+        echo "launching flask"
+        rapydo
+    else
+        echo "Debug mode"
+        # sleep infinity
+        # exec su $APIUSER -c "./sleep.py"
+        exec pysleeper
+        # exec ./sleep.py
+    fi
+
+    exit 0
+fi
