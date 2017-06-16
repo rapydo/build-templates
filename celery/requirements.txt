@@ -1,38 +1,29 @@
+#upgrade packaging
 pip
-
-#required by py27compat di setuptools
+#required by py27compat - setuptools
 six
-
-#RAPyDo framework
-rapydo-http==0.1.1
-
-#brutally copyed from backend build
-Flask
-Flask-Cors
-Flask-OAuthlib
-Flask-RESTful
-Flask-SQLAlchemy
-flask-shell-ipython
+#Develpoment: required by interactive shell
 httpie
 ipython
-neomodel
 nose2
 cov-core
-pyOpenSSL
-plumbum
-psycopg2
-PyJWT
-pyotp
-pyqrcode
-requests
-swagger-spec-validator
+#Production mode: adding workers multi-process
 uWSGI
 uwsgitop
-urllib3
-
+#To be moved into a custom image?
 celery
-flower
+#Flask
+plumbum
 
-gssapi
-git+https://github.com/irods/python-irodsclient.git@master
+#b2handle from b2stage instead of b2safe, to support python3.6.1
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
+#git+https://github.com/irods/python-irodsclient.git@master
+python-irodsclient==0.6.0
+gssapi==1.2.0
+#git+https://github.com/pdonorio/python-irodsclient.git@b2stage
+#RAPyDo framework
+rapydo-http==0.2.4
+
+#CHECK IF THIS MAY BE LEFTED OUT
+#requests
+#urllib3
