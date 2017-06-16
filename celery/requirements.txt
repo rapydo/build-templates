@@ -22,7 +22,7 @@ python-irodsclient==0.6.0
 gssapi==1.2.0
 #git+https://github.com/pdonorio/python-irodsclient.git@b2stage
 #RAPyDo framework
-rapydo-http==0.2.4
+rapydo-http==0.2.5
 
 #CHECK IF THIS MAY BE LEFTED OUT
 #requests
