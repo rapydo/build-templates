@@ -20,6 +20,7 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 APIUSERID=$(id -u $APIUSER)
+chown $APIUSERID $CODE_DIR
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
@@ -78,10 +79,16 @@ else
     echo "REST API backend server is ready"
 
     if [ "$APP_MODE" == 'production' ]; then
+
+        # FIXME: in production the eudat directory seems to evanish
+        export PYTHONPATH=$CODE_DIR
         echo "launching uwsgi"
+
+        # TODO: check after init phase was implemented
         # Fix to avoid: unable to load app 0 (mountpoint='')
         # (callable not found or import error)
         sleep 25
+
         myuwsgi
     elif [ "$APP_MODE" == 'development' ]; then
         echo "launching flask"
@@ -89,10 +96,8 @@ else
     else
         echo "Debug mode"
         # sleep infinity
-        # exec su $APIUSER -c "./sleep.py"
-        exec pysleeper
-        # exec ./sleep.py
     fi
 
+    exec pysleeper
     exit 0
 fi

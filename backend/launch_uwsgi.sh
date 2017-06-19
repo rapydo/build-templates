@@ -40,4 +40,4 @@ if [ "$LOGS" != "" ]; then
 fi
 
 ####################################
-sleep infinity
+# sleep infinity
