@@ -24,6 +24,11 @@ if [ "$DOMAIN" != "" ]; then
     fi
 fi
 
+if [ ! -f "$DHPARAM" ]; then
+    echo "DHParam is missing, creating a new $DHPARAM"
+    openssl dhparam -out $DHPARAM 2048 -dsaparam
+fi
+
 #####################
 # Extra scripts
 dedir="/docker-entrypoint.d"

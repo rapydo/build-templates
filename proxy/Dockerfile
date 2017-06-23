@@ -39,6 +39,8 @@ ENV WWWDIR /usr/share/nginx/html
 ENV CERTDIR /etc/letsencrypt/real
 ENV CERTKEY ${CERTDIR}/privkey1.pem
 ENV CERTCHAIN ${CERTDIR}/fullchain1.pem
+ENV DHPARAM /etc/nginx/ssl/dhparam.pem
+
 RUN mkdir -p $CERTDIR
 VOLUME /etc/letsencrypt
 
