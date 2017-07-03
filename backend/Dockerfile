@@ -1,9 +1,14 @@
 
 ###################
 FROM ubuntu:17.04
+
 # TODO: if switching to alpine, make better use of UWSGI:
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
+
+# TODO: think about using tini for entrypoint
+# https://github.com/krallin/tini-images
+
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################

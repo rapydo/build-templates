@@ -76,12 +76,14 @@ if [ "$1" != 'rest' ]; then
     exit 0
 else
     ## NORMAL MODES
-    echo "REST API backend server is ready"
+
+    # FIXME: when the vanilla directory seems to evanish
+    export PYTHONPATH=$CODE_DIR
+
+    echo "REST API backend server is ready to be launched"
 
     if [ "$APP_MODE" == 'production' ]; then
 
-        # FIXME: in production the eudat directory seems to evanish
-        export PYTHONPATH=$CODE_DIR
         echo "launching uwsgi"
 
         # TODO: check after init phase was implemented
