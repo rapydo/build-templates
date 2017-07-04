@@ -4,7 +4,9 @@ six
 # Develpoment: required by interactive shell
 httpie
 ipython
+
 plumbum
+celery
 
 celery
 flower
