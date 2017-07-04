@@ -1,14 +1,21 @@
 #!/bin/bash
 set -e
 
-if [ "$1" != 'rest' ]; then
-    echo "Requested custom command:"
-    echo "\$ $@"
-    echo "Sleeping a bit..."
-    sleep 30
-    $@
-    exit 0
-fi
+SLEEP=30
+
+echo "Requested command: $@"
+echo "This request will be satisfied in ${SLEEP} seconds..."
+sleep $SLEEP
+$@
+exit 0
+
+
+# if [ "$1" != 'rest' ]; then
+#     echo "Requested custom command:"
+#     echo "\$ $@"
+#     $@
+#     exit 0
+# fi
 
 ######################################
 #
