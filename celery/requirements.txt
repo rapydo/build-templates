@@ -6,7 +6,6 @@ httpie
 ipython
 
 plumbum
-celery
 
 celery
 flower
