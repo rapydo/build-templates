@@ -49,6 +49,11 @@ COPY client_init.sh /code/client/gettoken
 COPY query_api.sh /code/client/queryapi
 COPY sleep.py /usr/local/bin/pysleeper
 
+# TODO: use tini?
+# RUN apk add --no-cache tini
+# # Tini is now available at /sbin/tini
+# ENTRYPOINT ["/sbin/tini", "--"]
+
 ###################################
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
