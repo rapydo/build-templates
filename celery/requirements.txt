@@ -1,25 +1,13 @@
-#upgrade packaging
 pip
-#required by py27compat - setuptools
 six
-#Develpoment: required by interactive shell
-#httpie
-#ipython
-#nose2
-#cov-core
-#Production mode: adding workers multi-process
-uWSGI
-uwsgitop
-plumbum
-celery
 
+# Develpoment: required by interactive shell
+httpie
+ipython
+
+plumbum
+
+celery
 flower
 
-#b2handle from b2stage instead of b2safe, to support python3.6.1
-#git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-#git+https://github.com/irods/python-irodsclient.git@master
-#python-irodsclient==0.6.0
-#gssapi==1.2.0
-#git+https://github.com/pdonorio/python-irodsclient.git@b2stage
-#RAPyDo framework
 rapydo-http==0.3.0

@@ -77,7 +77,7 @@ if [ "$1" != 'rest' ]; then
 else
     ## NORMAL MODES
 
-    # FIXME: when the vanilla directory seems to evanish
+    # FIXME: check again, when the vanilla directory seems to evanish
     export PYTHONPATH=$CODE_DIR
 
     echo "REST API backend server is ready to be launched"
