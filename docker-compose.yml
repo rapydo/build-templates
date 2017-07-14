@@ -1,0 +1,31 @@
+
+# #########################################
+# THIS COMPOSE FILE IS USED FOR UNIT TEST #
+# #########################################
+
+backend:
+  build: backend
+
+celery:
+  build: celery
+
+ftp:
+  build: ftp
+
+icat:
+  build: icat
+
+postgres:
+  build: postgres
+
+proxy:
+  build: proxy
+
+restclient:
+  build: restclient
+
+sqlalchemyui:
+  build: sqlalchemyui
+
+swaggerui:
+  build: swaggerui
