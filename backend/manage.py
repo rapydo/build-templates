@@ -9,8 +9,8 @@ import sys
 import click
 import better_exceptions as be
 from flask.cli import FlaskGroup
-from rapydo.server import create_app
-from rapydo.utils.logs import get_logger
+from restapi.server import create_app
+from utilities.logs import get_logger
 
 log = get_logger(__name__)
 

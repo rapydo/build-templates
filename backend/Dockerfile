@@ -36,6 +36,8 @@ WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
+# FIXME: change this
+RUN pip install --upgrade rapydo-utils==0.5.0
 RUN pip install --upgrade \
     --force-reinstall --no-cache-dir -r requirements.txt
 
