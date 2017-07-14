@@ -15,8 +15,8 @@ ftp:
 icat:
   build: icat
 
-postgres:
-  build: postgres
+# postgres:
+#   build: postgres
 
 proxy:
   build: proxy
