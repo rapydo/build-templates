@@ -1,0 +1,19 @@
+#############################
+language: python
+sudo: required
+dist: trusty
+group: deprecated-2017Q2
+python:
+- 3.6.1
+services:
+- docker
+before_install:
+- sudo apt-get update
+- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
+install:
+- pip3 install docker-compose
+script:
+- docker --version
+- docker-compose --version
+- docker-compose build
+

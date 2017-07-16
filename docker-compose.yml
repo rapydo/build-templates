@@ -1,7 +1,7 @@
 
-# #########################################
-# THIS COMPOSE FILE IS USED FOR UNIT TEST #
-# #########################################
+# ####################################
+# USED ONLY FOR AUTOMATIC UNIT TESTS #
+# ####################################
 
 backend:
   build: backend
@@ -15,9 +15,6 @@ ftp:
 icat:
   build: icat
 
-postgres:
-  build: postgres
-
 proxy:
   build: proxy
 
@@ -29,3 +26,4 @@ sqlalchemyui:
 
 swaggerui:
   build: swaggerui
+
