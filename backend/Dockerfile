@@ -63,7 +63,6 @@ RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
 COPY sleep.py /usr/local/bin/pysleeper
-COPY manage.py /usr/local/bin/manage
 COPY tests.sh /usr/local/bin/pyunittests
 
 ###################
