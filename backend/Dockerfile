@@ -82,7 +82,7 @@ EXPOSE $FLASK_PORT
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 RUN echo "Entrylevel" && \
-    && echo "echo\necho 'You are the admin. Become the '\$APIUSER' user:\n# dev\n\n" >> /root/.bashrc
+    echo "echo\necho 'You are the admin. Become the '\$APIUSER' user:\n# dev\n\n" >> /root/.bashrc
 
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
