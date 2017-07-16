@@ -6,9 +6,6 @@ FROM ubuntu:17.04
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
 
-# TODO: think about using tini for entrypoint
-# https://github.com/krallin/tini-images
-
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
@@ -79,32 +76,22 @@ ENV PYTHONIOENCODING="utf-8"
 ENV FLASK_PORT 5000
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
+ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
 
 ######################
-# alias
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
-ENV FLASK_CMD "flask run --host 0.0.0.0 --port \$FLASK_PORT --reload --no-debugger --eager-loading --with-threads"
-
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "alias testapi=\"DEV_SU -c 'nose2 -F '\"" >> /root/.bash_aliases
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'pyunittests'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
-RUN echo "#!/bin/bash\\n$DEV_SU -c '$FLASK_CMD'" > /usr/local/bin/rapydo && chmod +x /usr/local/bin/rapydo
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
-
-######################
-# instructions
-ENV MYRC /root/.bashrc
 RUN echo "Entrylevel" && \
-    echo "echo\necho 'Run Flask server (as \$APIUSER) with the command:'\necho '# rapydo'" >> $MYRC && \
-    echo "echo\necho 'Run tests in a similar way with:\n# testapi [test.FOLDER]'\n" \
-        >> $MYRC \
-    && echo "echo\necho 'You can also directly become the '\$APIUSER' user:\n# dev\n\$ $FLASK_CMD\n'\n" >> $MYRC
+    && echo "echo\necho 'You are the admin. Become the '\$APIUSER' user:\n# dev\n\n" >> /root/.bashrc
 
-# ###################
-# TESTING IRODS DEVELOPMENT?
-# RUN pip install --upgrade -i https://testpypi.python.org/pypi python-irodsclient
+ENV APIRC /home/$APIUSER/.bashrc
+ENV FLASK_CMD "restapi launch"
+RUN echo "Developer" && \
+    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $ROOTRC && \
+    echo "echo\necho 'Run unittests with:\n# nose2 -F [test.FOLDER]'\n" \
+        >> $ROOTRC && \
+    chown $APIUSER $APIRC
 
 ###################
 # closing entrypoint
@@ -115,3 +102,6 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["rest"]
+
+# TODO: verify if better using tini for entrypoint
+# https://github.com/krallin/tini-images

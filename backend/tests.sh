@@ -23,18 +23,15 @@ echo $com $cov_options $cov_reports
 # Basic tests, written for the http-api-base sake
 $com $option/base --log-capture
 if [ "$?" == "0" ]; then
+
     # Custom tests from the developer, if available
     $com $option/custom --log-capture
     if [ "$?" == "0" ]; then
-
-        # FIXME: coverage report on travis does not work
-        # decomment below to inspect
-
-        # # Print coverage if everything went well so far
-        # $com $cov_options $cov_reports 2> /tmp/logfile.txt
-        # grep "platform linux" -A 1000 /tmp/logfile.txt
-
-        echo "Done"
+        # Print coverage if everything went well so far
+        $com $cov_options $cov_reports 2> /tmp/logfile.txt
+        grep "platform linux" -A 1000 /tmp/logfile.txt
+        # move the coverage from this wrong position
+        cp .coverage $VANILLA_PACKAGE/
 
     else
         exit $?

@@ -32,15 +32,13 @@ if [ ! -f "$secret_file" ]; then
     head -c 24 /dev/urandom > $secret_file
     chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
 
-    # certificates for b2access
+    # certificates for external oauth services (e.g. B2ACCESS)
     update-ca-certificates
 
-    # FIXME: do not init app
-    # until we know how to wait for all services to be up...
-    echo "SKIPPING INIT. WE SHOULD FIX THIS ISSUE."
-
+    # FIXME: use our python code to wait for all services to be up?
+    echo "WARNING: currently skipping automatic initialization"
     # echo "Init flask app"
-    # initialize
+    # restapi init --sleep
     # if [ "$?" == "0" ]; then
     #     echo
     # else
