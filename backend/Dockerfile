@@ -43,9 +43,9 @@ RUN xargs -L 1 pip install --upgrade < requirements.txt
 COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
-ENV CERTDIR /opt/certificates
 # Emulating irods user creation. See http://j.mp/2lGPqlq
-RUN useradd -r -M -d $CERTDIR/home -s /bin/bash -p ! $APIUSER
+RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
+RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
 
 ###################
 # UWSGI
@@ -75,6 +75,7 @@ ENV PYTHONIOENCODING="utf-8"
 ENV FLASK_PORT 5000
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
+ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
 
@@ -82,12 +83,12 @@ EXPOSE $FLASK_PORT
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 RUN echo "Entrylevel" && \
-    echo "echo\necho 'You are the admin. Become the '\$APIUSER' user:\n# dev\n\n" >> /root/.bashrc
+    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
 RUN echo "Developer" && \
-    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $$APIRC && \
+    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
     echo "echo\necho 'Run unittests with:\n# nose2 -F [test.FOLDER]'\n" \
         >> $APIRC && \
     chown $APIUSER $APIRC

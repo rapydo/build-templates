@@ -8,5 +8,4 @@ uWSGI
 uwsgitop
 plumbum
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-rapydo-utils==0.5.0
-git+https://github.com/rapydo/http-api.git@c473b9af12224213a2f2637519351c0449111db0
+git+https://github.com/rapydo/http-api.git@0.5.1
