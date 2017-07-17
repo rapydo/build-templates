@@ -37,7 +37,8 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
 # Install following the order found in the file
-RUN xargs -L 1 pip install --upgrade < requirements.txt
+RUN cat requirements.txt && \
+    xargs -L 1 pip install --upgrade < requirements.txt
 # RUN pip install --upgrade \
 #     --force-reinstall --no-cache-dir -r requirements.txt
 
