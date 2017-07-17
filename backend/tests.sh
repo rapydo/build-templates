@@ -1,6 +1,14 @@
 #!/bin/bash
+set -e
 
-echo "Launching tests with coverage"
+if [ -z "$1" ]; then
+    CURRENT_PACKAGE="$VANILLA_PACKAGE.apis"
+else
+    CURRENT_PACKAGE=$1
+fi
+
+echo "Launching unittests with coverage"
+echo "Package: $CURRENT_PACKAGE"
 sleep 1
 
 # Avoid colors when saving tests output into files
@@ -16,7 +24,7 @@ export TESTING_FLASK="True"
 com="nose2 -F"
 option="-s tests"
 cov_reports=" --coverage-report term --coverage-report html"
-cov_options="--output-buffer -C --coverage ${VANILLA_PACKAGE}.apis"
+cov_options="--output-buffer -C --coverage ${CURRENT_PACKAGE}"
 
 echo $com $cov_options $cov_reports
 
