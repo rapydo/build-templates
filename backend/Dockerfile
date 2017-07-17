@@ -89,7 +89,7 @@ ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
 RUN echo "Developer" && \
     echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
-    echo "echo\necho 'Run unittests with:\n# nose2 -F [test.FOLDER]'\n" \
+    echo "echo\necho 'Run unittests with:\n# nose2 -F [tests.FOLDER]\n'\n" \
         >> $APIRC && \
     chown $APIUSER $APIRC
 
