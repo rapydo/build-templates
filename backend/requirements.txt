@@ -4,6 +4,7 @@ httpie
 ipython
 nose2
 cov-core
+coveralls
 uWSGI
 uwsgitop
 plumbum
