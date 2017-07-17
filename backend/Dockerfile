@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     # build dependencies for gssapi plugin (GSI and irods)
     build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev \
+    # criptography
+    libssl-dev libffi-dev python3.6-dev \
+    # nginx internal server for uwsgi
     nginx \
     # make this version the official python for anyone
     && cd /usr/bin && ln -s python3.6 python \
