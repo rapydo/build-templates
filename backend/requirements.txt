@@ -8,5 +8,6 @@ coveralls
 uWSGI
 uwsgitop
 plumbum
+git+https://github.com/rapydo/utils.git@0.5.2
+git+https://github.com/rapydo/http-api.git@0.5.2
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-git+https://github.com/rapydo/http-api.git@0.5.1

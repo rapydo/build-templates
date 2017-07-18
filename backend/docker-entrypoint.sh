@@ -35,16 +35,14 @@ if [ ! -f "$secret_file" ]; then
     # certificates for external oauth services (e.g. B2ACCESS)
     update-ca-certificates
 
-    # FIXME: use our python code to wait for all services to be up?
-    echo "WARNING: currently skipping automatic initialization"
-    # echo "Init flask app"
-    # restapi init --sleep
-    # if [ "$?" == "0" ]; then
-    #     echo
-    # else
-    #     echo "Failed to startup flask!"
-    #     exit 1
-    # fi
+    echo "Init flask app"
+    eval "$DEV_SU -c 'restapi init --wait'"
+    if [ "$?" == "0" ]; then
+        echo
+    else
+        echo "Failed to startup flask!"
+        exit 1
+    fi
 
 fi
 
@@ -74,28 +72,19 @@ if [ "$1" != 'rest' ]; then
     exit 0
 else
     ## NORMAL MODES
-
-    # FIXME: check again, when the vanilla directory seems to evanish
-    export PYTHONPATH=$CODE_DIR
-
     echo "REST API backend server is ready to be launched"
 
     if [ "$APP_MODE" == 'production' ]; then
 
+        echo "waiting for services"
+        eval "$DEV_SU -c 'restapi wait'"
         echo "launching uwsgi"
-
-        # TODO: check after init phase was implemented
-        # Fix to avoid: unable to load app 0 (mountpoint='')
-        # (callable not found or import error)
-        sleep 25
-
         myuwsgi
     elif [ "$APP_MODE" == 'development' ]; then
         echo "launching flask"
-        rapydo
+        eval "$DEV_SU -c 'restapi launch'"
     else
         echo "Debug mode"
-        # sleep infinity
     fi
 
     exec pysleeper
