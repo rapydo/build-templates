@@ -24,31 +24,36 @@ chown $APIUSERID $CODE_DIR
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
+check_volumes=$([ "$(ls -A $CODE_DIR)" ] && echo "yes" || echo "no")
+
 if [ ! -f "$secret_file" ]; then
-    echo "First time access"
+    if [ "$check_volumes" == 'yes' ]; then
+        echo "First time access"
 
-    # Create the secret to enable security on JWT tokens
-    mkdir -p $JWT_APP_SECRETS
-    head -c 24 /dev/urandom > $secret_file
-    chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
+        # Create the secret to enable security on JWT tokens
+        mkdir -p $JWT_APP_SECRETS
+        head -c 24 /dev/urandom > $secret_file
+        chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
 
-    # certificates for external oauth services (e.g. B2ACCESS)
-    update-ca-certificates
+        # certificates for external oauth services (e.g. B2ACCESS)
+        update-ca-certificates
 
-    echo "Init flask app"
-    eval "$DEV_SU -c 'restapi init --wait'"
-    if [ "$?" == "0" ]; then
-        echo
-    else
-        echo "Failed to startup flask!"
-        exit 1
+        echo "Init flask app"
+        eval "$DEV_SU -c 'restapi init --wait'"
+        if [ "$?" == "0" ]; then
+            echo
+        else
+            echo "Failed to startup flask!"
+            exit 1
+        fi
     fi
-
+else
+    #####################
+    # Sync after init with compose call from outside
+    if [ "$check_volumes" == 'yes' ]; then
+        touch /${JWT_APP_SECRETS}/initialized
+    fi
 fi
-
-#####################
-# Sync after init with compose call from outside
-touch /${JWT_APP_SECRETS}/initialized
 
 #####################
 # Extra scripts
