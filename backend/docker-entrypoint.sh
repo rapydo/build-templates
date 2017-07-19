@@ -76,8 +76,8 @@ else
 
     if [ "$APP_MODE" == 'production' ]; then
 
-        echo "waiting for services"
-        eval "$DEV_SU -c 'restapi wait'"
+        # echo "waiting for services"
+        # eval "$DEV_SU -c 'restapi wait'"
         echo "launching uwsgi"
         myuwsgi
     elif [ "$APP_MODE" == 'development' ]; then
