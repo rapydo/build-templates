@@ -10,7 +10,7 @@ import time
 
 def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
     # print("TEST", signal, frame)
-    print(f"got {name}")
+    print("got %s" % name)
     sys.exit(0)
 
 
