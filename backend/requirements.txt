@@ -13,7 +13,7 @@ uwsgitop
 #Flask
 plumbum
 
-rapydo-http==0.3.0
+rapydo-http==0.5.1
 #b2handle from b2stage instead of b2safe, to support python3.6.1
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 #git+https://github.com/irods/python-irodsclient.git@master

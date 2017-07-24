@@ -10,4 +10,4 @@ plumbum
 celery
 flower
 
-rapydo-http==0.3.0
+rapydo-http==0.5.1
