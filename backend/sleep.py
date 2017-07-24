@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# TODO: use log from rapydo.utils when packaged
+# TODO: use log from utilities when packaged
 
 import signal
 import sys
@@ -10,7 +10,7 @@ import time
 
 def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
     # print("TEST", signal, frame)
-    print(f"got {name}")
+    print("got %s" % name)
     sys.exit(0)
 
 
