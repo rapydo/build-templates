@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# TODO: use log from rapydo.utils when packaged
+# TODO: use log from utilities when packaged
 
 import signal
 import sys
