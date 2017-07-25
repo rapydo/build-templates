@@ -10,7 +10,8 @@ log = get_logger(__name__)
 
 
 def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
-    log.info(f"got {name}")
+    # log.info(f"got {name}")
+    print("got %s" % name)
     sys.exit(0)
 
 
