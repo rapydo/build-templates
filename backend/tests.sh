@@ -50,6 +50,7 @@ if [ "$?" == "0" ]; then
         else
             echo "Failed to create coverage"
             exit 1
+        fi
     else
         exit $?
     fi
