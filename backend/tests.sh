@@ -44,9 +44,11 @@ if [ "$?" == "0" ]; then
         ###################
         ## STEP 3
         # Print coverage if everything went well so far
+        echo "*** COMPUTING COVERAGE ***"
         $com $cov_options $cov_reports 2> /tmp/logfile.txt
         if [ "$?" == "0" ]; then
             grep "platform linux" -A 1000 /tmp/logfile.txt
+            echo "*** COVERAGE COMPLETED ***"
         else
             echo "Failed to create coverage"
             exit 1
