@@ -25,22 +25,31 @@ com="nose2 -F"
 option="-s tests"
 cov_reports=" --coverage-report term --coverage-report html"
 cov_options="--output-buffer -C --coverage ${CURRENT_PACKAGE}"
-
 echo $com $cov_options $cov_reports
 
-# Basic tests, written for the http-api-base sake
+###################
+## STEP 1
+# Basic tests, written for generic http-api-base sake
 $com $option/base --log-capture
+
 if [ "$?" == "0" ]; then
 
+    ###################
+    ## STEP 2
     # Custom tests from the developer, if available
     $com $option/custom --log-capture
+
     if [ "$?" == "0" ]; then
+
+        ###################
+        ## STEP 3
         # Print coverage if everything went well so far
         $com $cov_options $cov_reports 2> /tmp/logfile.txt
-        grep "platform linux" -A 1000 /tmp/logfile.txt
-        # move the coverage from this wrong position
-        cp .coverage $VANILLA_PACKAGE/
-
+        if [ "$?" == "0" ]; then
+            grep "platform linux" -A 1000 /tmp/logfile.txt
+        else
+            echo "Failed to create coverage"
+            exit 1
     else
         exit $?
     fi
