@@ -1,27 +1,14 @@
-#upgrade packaging
 pip
-#required by py27compat - setuptools
 six
-#Develpoment: required by interactive shell
 httpie
 ipython
 nose2
 cov-core
-#Production mode: adding workers multi-process
+coveralls
 uWSGI
 uwsgitop
-#Flask
 plumbum
-
-rapydo-http==0.5.1
-#b2handle from b2stage instead of b2safe, to support python3.6.1
+psutil
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-#git+https://github.com/irods/python-irodsclient.git@master
-#python-irodsclient==0.6.0
-#gssapi==1.2.0
-#git+https://github.com/pdonorio/python-irodsclient.git@b2stage
-#RAPyDo framework
-
-#CHECK IF THIS MAY BE LEFTED OUT
-#requests
-#urllib3
+git+https://github.com/rapydo/utils.git@0.5.2
+git+https://github.com/rapydo/http-api.git@0.5.2

@@ -6,9 +6,6 @@ FROM ubuntu:17.04
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
 
-# TODO: think about using tini for entrypoint
-# https://github.com/krallin/tini-images
-
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
@@ -21,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     # build dependencies for gssapi plugin (GSI and irods)
     build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev \
+    # criptography
+    libssl-dev libffi-dev python3.6-dev \
+    # nginx internal server for uwsgi
     nginx \
     # make this version the official python for anyone
     && cd /usr/bin && ln -s python3.6 python \
@@ -36,17 +36,21 @@ WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
-RUN pip install --upgrade \
-    --force-reinstall --no-cache-dir -r requirements.txt
+# Install in causal order
+# RUN pip install --upgrade \
+#     --force-reinstall --no-cache-dir -r requirements.txt
+# Install following the order found in the file
+RUN cat requirements.txt && echo "" && echo INSTALLING && \
+    xargs -L 1 pip install --upgrade < requirements.txt
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
 COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
-ENV CERTDIR /opt/certificates
 # Emulating irods user creation. See http://j.mp/2lGPqlq
-RUN useradd -r -M -d $CERTDIR/home -s /bin/bash -p ! $APIUSER
+RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
+RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
 
 ###################
 # UWSGI
@@ -64,7 +68,6 @@ RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
 COPY sleep.py /usr/local/bin/pysleeper
-COPY manage.py /usr/local/bin/manage
 COPY tests.sh /usr/local/bin/pyunittests
 
 ###################
@@ -77,32 +80,23 @@ ENV PYTHONIOENCODING="utf-8"
 ENV FLASK_PORT 5000
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
+ENV CERTDIR /opt/certificates
+ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
 
 ######################
-# alias
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
-ENV FLASK_CMD "flask run --host 0.0.0.0 --port \$FLASK_PORT --reload --no-debugger --eager-loading --with-threads"
-
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "alias testapi=\"DEV_SU -c 'nose2 -F '\"" >> /root/.bash_aliases
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'pyunittests'" > /usr/local/bin/testwithcoverage && chmod +x /usr/local/bin/testwithcoverage
-RUN echo "#!/bin/bash\\n$DEV_SU -c '$FLASK_CMD'" > /usr/local/bin/rapydo && chmod +x /usr/local/bin/rapydo
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage init'" > /usr/local/bin/initialize && chmod +x /usr/local/bin/initialize
-RUN echo "#!/bin/bash\\n$DEV_SU -c 'PYTHONPATH=$CODE_DIR FLASK_DEBUG=0 manage destroy'" > /usr/local/bin/demolition && chmod +x /usr/local/bin/demolition
-
-######################
-# instructions
-ENV MYRC /root/.bashrc
 RUN echo "Entrylevel" && \
-    echo "echo\necho 'Run Flask server (as \$APIUSER) with the command:'\necho '# rapydo'" >> $MYRC && \
-    echo "echo\necho 'Run tests in a similar way with:\n# testapi [test.FOLDER]'\n" \
-        >> $MYRC \
-    && echo "echo\necho 'You can also directly become the '\$APIUSER' user:\n# dev\n\$ $FLASK_CMD\n'\n" >> $MYRC
+    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
-# ###################
-# TESTING IRODS DEVELOPMENT?
-# RUN pip install --upgrade -i https://testpypi.python.org/pypi python-irodsclient
+ENV APIRC /home/$APIUSER/.bashrc
+ENV FLASK_CMD "restapi launch"
+RUN echo "Developer" && \
+    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
+    echo "echo\necho 'Run unittests with:\n# nose2 -F [tests.FOLDER]\n'\n" \
+        >> $APIRC && \
+    chown $APIUSER $APIRC
 
 ###################
 # closing entrypoint
@@ -113,3 +107,6 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["rest"]
+
+# TODO: verify if better using tini for entrypoint
+# https://github.com/krallin/tini-images

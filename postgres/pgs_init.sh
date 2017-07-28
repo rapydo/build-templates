@@ -1,8 +1,8 @@
 #!/bin/bash
 
 conf='/var/lib/postgresql/data/pg_hba.conf'
-## TOFIX: from an environment variable
-net="172.1.0.0/16"
+# net="172.1.0.0/16"
+net="0.0.0.0/0"
 ## http://www.postgresql.org/docs/9.1/static/auth-pg-hba-conf.html
 
 echo "Changing access"
