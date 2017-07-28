@@ -1,13 +1,9 @@
 pip
 six
-
-# Develpoment: required by interactive shell
 httpie
 ipython
-
 plumbum
-
 celery
 flower
-
-rapydo-http==0.5.1
+git+https://github.com/rapydo/utils.git@0.5.2
+git+https://github.com/rapydo/http-api.git@0.5.2
