@@ -18,7 +18,7 @@ ENV PATH $PATH:/tmp/jqt/bin
 # Install python packages
 COPY requirements.txt /tmp/
 WORKDIR /tmp
-Install in causal order
+# Install in causal order
 RUN pip install --upgrade \
     --force-reinstall --no-cache-dir -r requirements.txt
 # RUN pip --no-cache-dir install --upgrade \
