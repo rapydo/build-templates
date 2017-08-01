@@ -22,7 +22,9 @@ fi
 APIUSERID=$(id -u $APIUSER)
 chown -R $APIUSERID $CODE_DIR $CERTDIR
 
-# TODO: add urls fixers from a mounted file
+# TODO: execute fixers from a mounted dir
+
+# TODO: add simple ca certificates fixers if mounted some dir
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
