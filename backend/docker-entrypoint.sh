@@ -20,7 +20,9 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 APIUSERID=$(id -u $APIUSER)
-chown $APIUSERID $CODE_DIR
+chown -R $APIUSERID $CODE_DIR $CERTDIR
+
+# TODO: add urls fixers from a mounted file
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
