@@ -20,7 +20,14 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 APIUSERID=$(id -u $APIUSER)
-chown -R $APIUSERID $CODE_DIR $CERTDIR
+
+if [ -d "$CODE_DIR" ]; then
+    chown -R $APIUSERID $CODE_DIR
+fi
+
+if [ -d "$CERT_DIR" ]; then
+    chown -R $APIUSERID $CERT_DIR
+fi
 
 # TODO: execute fixers from a mounted dir
 
