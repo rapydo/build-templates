@@ -1,8 +1,9 @@
 
-###################
-FROM ubuntu:17.04
+FROM ubuntu:17.10
+# What python do I get here?
 
-# TODO: if switching to alpine, make better use of UWSGI:
+# TODO: check if possible switching to alpine,
+# and make better use of UWSGI:
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
 
