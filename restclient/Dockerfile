@@ -14,7 +14,7 @@ RUN pip --no-cache-dir install --upgrade \
     pip httpie http-prompt pyyaml \
     #https://github.com/json-transformations/jsoncut
     pygments jsoncut \
-    git+https://github.com/rapydo/utils.git@0.5.2
+    git+https://github.com/rapydo/utils.git@0.6.0
 
 # Install jqt/yq
 # https://fadado.github.io/jqt/
