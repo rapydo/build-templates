@@ -1,6 +1,8 @@
 
-FROM ubuntu:17.10
-# What python do I get here?
+# FROM ubuntu:17.10
+# TODO: check what python do I get by default here
+
+FROM ubuntu:17.04
 
 # TODO: check if possible switching to alpine,
 # and make better use of UWSGI:
@@ -43,6 +45,8 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # Install following the order found in the file
 RUN cat requirements.txt && echo "" && echo INSTALLING && \
     xargs -L 1 pip install --upgrade < requirements.txt
+# DEBUG CONFLICTS:
+# pip install pip-conflict-checker && pipconflictchecker
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
