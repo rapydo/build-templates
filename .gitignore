@@ -1,0 +1,4 @@
+icat/b2safe*/*/*.pem
+icat/b2safe*/*/*.crt
+icat/b2safe*/*/*.0
+icat/b2safe*/*/*.signing_policy
