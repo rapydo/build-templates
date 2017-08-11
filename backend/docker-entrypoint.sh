@@ -21,18 +21,6 @@ if [ -z APP_MODE ]; then
 fi
 APIUSERID=$(id -u $APIUSER)
 
-if [ -d "$CODE_DIR" ]; then
-    chown -R $APIUSERID $CODE_DIR
-fi
-
-if [ -d "$CERT_DIR" ]; then
-    chown -R $APIUSERID $CERT_DIR
-fi
-
-# TODO: execute fixers from a mounted dir
-
-# TODO: add simple ca certificates fixers if mounted some dir
-
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
 check_volumes=$([ "$(ls -A $CODE_DIR)" ] && echo "yes" || echo "no")
@@ -76,6 +64,21 @@ for f in `ls $dedir`; do
     esac
     echo
 done
+
+#####################
+# Fixers
+
+if [ -d "$CODE_DIR" ]; then
+    chown -R $APIUSERID $CODE_DIR
+fi
+
+if [ -d "$CERT_DIR" ]; then
+    chown -R $APIUSERID $CERT_DIR
+fi
+
+# TODO: execute fixers from a mounted dir
+
+# TODO: add simple ca certificates fixers if mounted some dir
 
 #####################
 # Completed

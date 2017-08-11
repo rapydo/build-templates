@@ -30,7 +30,7 @@ do
   sleep 1
 done
 
-# Is it init time?
+# Is it init time? If that is the case then this directory is empty:
 checkirods=$(ls /etc/irods/)
 if [ "$checkirods" == "" ]; then
 
@@ -74,5 +74,11 @@ done
 
 # Completed
 echo "iRODS is ready"
+
+##############################
+# TODO: cleaner shutdown:
+# 1. create pysleeper package
+# 2. install with pip (2?)
+# 3. execute here and then "service irods stop && exit 0"
 sleep infinity
 exit 0

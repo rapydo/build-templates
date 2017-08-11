@@ -54,8 +54,13 @@ COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
 # Emulating irods user creation. See http://j.mp/2lGPqlq
-RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+ENV APIUID 990
+RUN useradd \
+    -r -M -d /home/$APIUSER -s /bin/bash -p ! \
+    --uid $APIUID $APIUSER \
+    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
+# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
+# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
 
 ###################
 # UWSGI

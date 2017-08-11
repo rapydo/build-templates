@@ -10,7 +10,8 @@ uwsgitop
 plumbum
 psutil
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
+git+https://github.com/irods/python-irodsclient.git@master
+dill
 git+https://github.com/rapydo/utils.git@0.5.4
 git+https://github.com/rapydo/http-api.git@0.5.4
-git+https://github.com/pdonorio/python-irodsclient.git@connection-timeout
-
+requests==2.11.1

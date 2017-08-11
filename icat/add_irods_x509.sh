@@ -10,17 +10,48 @@ mkdir -p $mydir
 
 ##############################
 # CA authority
-if [ ! -d "/etc/grid-security/certificates" ]; then
-    grid-ca-create -noint -dir $CERTDIR/simple_ca
+if [ ! -d "$GRIDCERTDIR/certificates" ]; then
+    grid-ca-create -noint -dir $CADIR
     yes 1 | grid-default-ca
-    cp /etc/grid-security/certificates/* $CERTDIR/simple_ca/
+    # do this if no certificates in simple ca
+    cp $GRIDCERTDIR/certificates/* $CADIR
 fi
 # grid-default-ca -list
 
-# HOST
+if [ ! -s $CADIR/cacert.pem ]; then
+
+    # prefix to copy
+    pref=`grid-default-ca -list | grep Loc | sed 's/Location://' | sed 's/0$//' | tr -d ' '`
+    cp ${pref}* $CADIR/
+
+    # FIX necessary with GT6
+    gt6dir="/var/lib/globus/simple_ca"
+    if [ -s "$gt6dir/cacert.pem" ]; then
+        echo "Copy globus6 ca cert"
+        cp $gt6dir/cacert.pem $CADIR/
+    fi
+    if [ -s "$gt6dir/grid-ca-ssl.conf" ]; then
+        echo "Copy globus6 ca conf"
+        cp $gt6dir/grid-ca-ssl.conf $CADIR/
+    fi
+
+fi
+
+##############################
+## HOST
+
+if [ `ls -1 $GRIDCERTDIR/host*.* 2> /dev/null | wc -l` == "3" ]; then
+    echo "Host certificate based on gt6"
+    # fix permissions for current validated host
+    chown -R $IRODS_USER $GRIDCERTDIR/host*
+    mkdir -p $CERTDIR/host
+    cp $GRIDCERTDIR/host* $CERTDIR/host/
+fi
+
 if [ ! -s "$CERTDIR/host/hostcert.pem" ]; then
+    echo "no host certificate found"
     yes | grid-cert-request -host $HOSTNAME -force -dir $CERTDIR/host
-    yes globus | grid-ca-sign -dir $CERTDIR/simple_ca \
+    yes globus | grid-ca-sign -dir $CADIR \
         -in $CERTDIR/host/hostcert_request.pem -out $CERTDIR/host/hostcert.pem
 
     mkdir -p /var/lib/irods/.globus
@@ -48,7 +79,7 @@ fi
 # Sign the certificate
 certin="$mydir/usercert_request.pem"
 certout="$mydir/usercert.pem"
-yes globus | grid-ca-sign -dir $CERTDIR/simple_ca \
+yes globus | grid-ca-sign -dir $CADIR \
     -in $certin -out $certout
 # clear
 
