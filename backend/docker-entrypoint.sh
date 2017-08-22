@@ -34,7 +34,7 @@ if [ ! -f "$secret_file" ]; then
         head -c 24 /dev/urandom > $secret_file
         chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
 
-        # certificates for external oauth services (e.g. B2ACCESS)
+        # certificates chains for external oauth services (e.g. B2ACCESS)
         update-ca-certificates
 
         echo "Init flask app"

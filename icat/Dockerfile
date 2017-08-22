@@ -1,9 +1,19 @@
 
 ###################
-# LTS
-# FROM ubuntu:16.04
 FROM ubuntu:17.04
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+
+##############
+### HOW TO ###
+
+## CREATE A USER
+# iadmin mkuser paolo rodsuser
+# iadmin moduser paolo password tester
+
+## CLOCK SYNC ISSUES
+# apt-get install -y tzdata
+# unlink /etc/localtime
+# ln -s /usr/share/zoneinfo/Etc/GMT+6 /etc/localtime
 
 ###################
 # Preparation
@@ -33,16 +43,8 @@ RUN apt-get update -qq && apt-get install -y \
 ###################
 # Add repos, download and install
 ENV URL https://packages.irods.org
-
-# UBUNTU 16.04
-# RUN apt-key adv --fetch-keys $URL/irods-signing-key.asc \
-#     # && echo "deb $URL/apt/ $(lsb_release -sc) main" \
-#     && echo "deb $URL/apt/ trusty main" \
-#         > /etc/apt/sources.list.d/renci-irods.list
-
-# UBUNTU 17.04
 RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
-    && echo "deb [arch=amd64] https://packages.irods.org/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/renci-irods.list
+    && echo "deb [arch=amd64] https://packages.irods.org/apt/ trusty main" | tee /etc/apt/sources.list.d/renci-irods.list
 
 # Make sure the main irods user is the same id into HTTP API server
 ENV IRODS_UNAME irods
@@ -51,9 +53,16 @@ RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
     --uid $IRODS_UID $IRODS_UNAME \
     && mkdir -p /home/$IRODS_UNAME && chown $IRODS_UID /home/$IRODS_UNAME
+RUN echo "alias berods='HOME=/home/$IRODS_UNAME su -p irods'" >> /root/.bash_aliases
+# RUN echo "alias berods='HOME=/var/lib/irods su -p irods'" >> /root/.bash_aliases
+RUN echo "\\necho\\necho 'Become irods administrator user with the command:'\\necho '$ berods'" >> /root/.bashrc
+
+###################
+# GSI and certificates
 
 # ENV IRODS_VERSION 4.2.0
 # ENV GSI_VERSION 2.0.0
+
 ENV IRODS_VERSION 4.2.1
 ENV GSI_VERSION 2.1.0
 
@@ -70,33 +79,24 @@ RUN apt-get update && apt-get install -y \
 
 # # Note: USER and GROUP are added automatically by irods install scripts
 
-###################
-# OTHER OPERATIONS
-ENV TERM xterm-256color
-
 # certificates
 ENV CERTDIR /opt/certificates
 ENV GRIDCERTDIR /etc/grid-security
 ENV CADIR $CERTDIR/simple_ca
 RUN mkdir -p $CADIR
+# x509 and gsi scripts
 COPY add_irods_x509.sh /usr/local/bin/add-irods-X509
 COPY switch_gsi_user.sh /usr/local/bin/switch-gsi
-RUN echo "alias berods='HOME=/var/lib/irods su -p irods'" >> /root/.bash_aliases
-
-###################
-# TODO: move outside into docker-compose
-# add certification authorities
-ENV B2ACCESS_CAS /tmp/b2access_certificates
-COPY b2access_certificates/b2access.ca.dev.pem $B2ACCESS_CAS/
-COPY b2access_certificates/b2access.ca.dev.signing_policy $B2ACCESS_CAS/
-COPY b2access_certificates/b2access.ca.prod.pem $B2ACCESS_CAS/
-COPY b2access_certificates/b2access.ca.prod.signing_policy $B2ACCESS_CAS/
 
 ###################
 # VOLUMES
 VOLUME /etc
 VOLUME /var/lib/irods
 VOLUME /opt/certificates
+
+###################
+# OTHER OPERATIONS
+ENV TERM xterm-256color
 
 ###################
 # ENTRYPOINT
@@ -111,8 +111,3 @@ COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 # WORKDIR /tmp
 EXPOSE 1247
 CMD ["irods"]
-
-###################
-# fix irods id?
-# simpleca:x:999:999:User to run the SimpleCA:/var/lib/globus/simple_ca:/bin/nologin
-# irods:x:998:998:iRODS Administrator:/var/lib/irods:/bin/bash

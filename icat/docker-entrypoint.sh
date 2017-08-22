@@ -48,6 +48,7 @@ if [ "$checkirods" == "" ]; then
     sudo python /var/lib/irods/scripts/setup_irods.py < $MYDATA
     # Verify how it went
     if [ "$?" == "0" ]; then
+        rm $MYDATA
         echo ""
         echo "iRODS INSTALLED!"
     else
