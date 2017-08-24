@@ -14,22 +14,13 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 ###################
 # APT
 RUN apt-get update && apt-get install -y \
-    # utils
     bash less vim curl wget telnet git jq \
-    # latest python
-    python3.6 \
-    # build dependencies for gssapi plugin (GSI and irods)
-    build-essential libkrb5-dev python3.6-dev \
-    libglobus-gssapi-gsi-dev \
-    # criptography
-    libssl-dev libffi-dev python3.6-dev \
-    # nginx internal server for uwsgi
+    python3.6 build-essential libkrb5-dev python3.6-dev \
+    libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     nginx \
-    # make this version the official python for anyone
     && cd /usr/bin && ln -s python3.6 python \
     && apt-get autoremove && apt-get clean \
     && echo "done"
-
 ###################
 # PIP
 
@@ -43,10 +34,15 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # RUN pip install --upgrade \
 #     --force-reinstall --no-cache-dir -r requirements.txt
 # Install following the order found in the file
-RUN cat requirements.txt && echo "" && echo INSTALLING && \
-    xargs -L 1 pip install --upgrade < requirements.txt
-# DEBUG CONFLICTS:
-# pip install pip-conflict-checker && pipconflictchecker
+# RUN cat requirements.txt && echo "" && echo INSTALLING && \
+#     xargs -L 1 pip install --upgrade < requirements.txt
+
+# # DEBUG CONFLICTS:
+# RUN pip install pip-conflict-checker
+# # && pipconflictchecker
+
+RUN for package in `cat requirements.txt`; do \
+    echo "adding: $package"; pip3 install --upgrade $package; done
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
