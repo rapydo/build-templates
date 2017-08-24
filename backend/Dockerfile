@@ -30,19 +30,12 @@ WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
-# Install in causal order
-# RUN pip install --upgrade \
-#     --force-reinstall --no-cache-dir -r requirements.txt
-# Install following the order found in the file
-# RUN cat requirements.txt && echo "" && echo INSTALLING && \
-#     xargs -L 1 pip install --upgrade < requirements.txt
-
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker
 # # && pipconflictchecker
 
 RUN for package in `cat requirements.txt`; do \
-    echo "adding: $package"; pip3 install --upgrade $package; done
+    echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

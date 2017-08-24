@@ -6,14 +6,9 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 ###################
 # APT
 RUN apt-get update && apt-get install -y \
-    # utils
     bash less vim curl wget telnet git jq \
-    # latest python
-    python3.6 \
-    # build dependencies for gssapi plugin (GSI and irods)
-    build-essential libkrb5-dev python3.6-dev \
+    python3.6 build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev \
-    # make this version the official python for anyone
     && cd /usr/bin && ln -s python3.6 python \
     && apt-get autoremove && apt-get clean \
     && echo "done"
@@ -25,7 +20,9 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
 COPY requirements.txt /tmp/
-RUN pip install --upgrade --force-reinstall --no-cache-dir -r /tmp/requirements.txt
+RUN for package in `cat requirements.txt`; do \
+    echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
+# RUN pip install --upgrade --force-reinstall --no-cache-dir -r /tmp/requirements.txt
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
