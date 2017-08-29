@@ -1,8 +1,11 @@
 
-###################
+# FROM ubuntu:17.10
+# TODO: check what python do I get by default here
+
 FROM ubuntu:17.04
 
-# TODO: if switching to alpine, make better use of UWSGI:
+# TODO: check if possible switching to alpine,
+# and make better use of UWSGI:
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
 
@@ -11,22 +14,13 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 ###################
 # APT
 RUN apt-get update && apt-get install -y \
-    # utils
     bash less vim curl wget telnet git jq \
-    # latest python
-    python3.6 \
-    # build dependencies for gssapi plugin (GSI and irods)
-    build-essential libkrb5-dev python3.6-dev \
-    libglobus-gssapi-gsi-dev \
-    # criptography
-    libssl-dev libffi-dev python3.6-dev \
-    # nginx internal server for uwsgi
+    python3.6 build-essential libkrb5-dev python3.6-dev \
+    libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     nginx \
-    # make this version the official python for anyone
     && cd /usr/bin && ln -s python3.6 python \
     && apt-get autoremove && apt-get clean \
     && echo "done"
-
 ###################
 # PIP
 
@@ -36,12 +30,12 @@ WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
-# Install in causal order
-# RUN pip install --upgrade \
-#     --force-reinstall --no-cache-dir -r requirements.txt
-# Install following the order found in the file
-RUN cat requirements.txt && echo "" && echo INSTALLING && \
-    xargs -L 1 pip install --upgrade < requirements.txt
+# # DEBUG CONFLICTS:
+# RUN pip install pip-conflict-checker
+# # && pipconflictchecker
+
+RUN for package in `cat requirements.txt`; do \
+    echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -49,8 +43,14 @@ COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
 # Emulating irods user creation. See http://j.mp/2lGPqlq
-RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+
+ENV APIUID 990
+RUN useradd \
+    -r -M -d /home/$APIUSER -s /bin/bash -p ! \
+    --uid $APIUID $APIUSER \
+    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
+# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
+# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
 
 ###################
 # UWSGI

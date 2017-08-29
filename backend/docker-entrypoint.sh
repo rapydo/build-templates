@@ -20,7 +20,6 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 APIUSERID=$(id -u $APIUSER)
-chown $APIUSERID $CODE_DIR
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
@@ -35,7 +34,7 @@ if [ ! -f "$secret_file" ]; then
         head -c 24 /dev/urandom > $secret_file
         chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
 
-        # certificates for external oauth services (e.g. B2ACCESS)
+        # certificates chains for external oauth services (e.g. B2ACCESS)
         update-ca-certificates
 
         echo "Init flask app"
@@ -65,6 +64,21 @@ for f in `ls $dedir`; do
     esac
     echo
 done
+
+#####################
+# Fixers
+
+if [ -d "$CODE_DIR" ]; then
+    chown -R $APIUSERID $CODE_DIR
+fi
+
+if [ -d "$CERT_DIR" ]; then
+    chown -R $APIUSERID $CERT_DIR
+fi
+
+# TODO: execute fixers from a mounted dir
+
+# TODO: add simple ca certificates fixers if mounted some dir
 
 #####################
 # Completed
