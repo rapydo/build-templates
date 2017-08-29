@@ -18,25 +18,16 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 ###################
 # Preparation
 WORKDIR /tmp
+# GSI and Grid FTP dependencies + # update to globus toolkit 6
 RUN apt-get update -qq && apt-get install -y \
-        ## normal base
         wget git vim expect lsof sudo \
-        ## fix lsb_release missing command in ubuntu 17.04
-        # lsb-release \
-        ## fix the ssl error for apt-key
-        # gnupg-curl \
-        ## fix "The method driver /usr/lib/apt/methods/https could not be found"
         apt-transport-https \
-        ## fix the plugin error at irods installation time
         libxml2 \
-    # update to globus toolkit 6
     && wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/deb/globus-toolkit-repo_latest_all.deb \
     && dpkg -i *.deb \
     && apt-get update -qq && apt-get install -y \
-        ## GSI and Grid FTP dependencies
         globus-proxy-utils \
         globus-gsi-cert-utils-progs globus-simple-ca \
-    # clean
     && apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log /tmp/*
 
@@ -53,9 +44,6 @@ RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
     --uid $IRODS_UID $IRODS_UNAME \
     && mkdir -p /home/$IRODS_UNAME && chown $IRODS_UID /home/$IRODS_UNAME
-RUN echo "alias berods='HOME=/home/$IRODS_UNAME su -p irods'" >> /root/.bash_aliases
-# RUN echo "alias berods='HOME=/var/lib/irods su -p irods'" >> /root/.bash_aliases
-RUN echo "\\necho\\necho 'Become irods administrator user with the command:'\\necho '$ berods'" >> /root/.bashrc
 
 ###################
 # GSI and certificates
@@ -67,26 +55,32 @@ ENV IRODS_VERSION 4.2.1
 ENV GSI_VERSION 2.1.0
 
 RUN apt-get update && apt-get install -y \
-        # iCAT
         irods-runtime=$IRODS_VERSION irods-icommands=$IRODS_VERSION \
         irods-server=$IRODS_VERSION \
-        # iRODS Plugins (also GSI)
         irods-database-plugin-postgres=$IRODS_VERSION \
         irods-auth-plugin-gsi=$GSI_VERSION \
-    # clean
     && apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log /tmp/*
 
-# # Note: USER and GROUP are added automatically by irods install scripts
+# Note: USER and GROUP may be added automatically by irods install scripts
 
 # certificates
 ENV CERTDIR /opt/certificates
 ENV GRIDCERTDIR /etc/grid-security
 ENV CADIR $CERTDIR/simple_ca
 RUN mkdir -p $CADIR
-# x509 and gsi scripts
+
+# irods, x509 and gsi scripts
+COPY ./expect_irods.sh /usr/local/bin/prepare_answers
 COPY add_irods_x509.sh /usr/local/bin/add-irods-X509
-COPY switch_gsi_user.sh /usr/local/bin/switch-gsi
+COPY switch_irods_user.sh /usr/local/bin/switch
+RUN chmod +x /usr/local/bin/*
+
+###################
+# Add bash rc commands
+RUN echo "alias berods='HOME=/home/$IRODS_UNAME su -p irods'" >> /root/.bash_aliases
+RUN echo "\\necho\\necho 'Become irods administrator user with the command:'\\necho '$ berods'" >> /root/.bashrc
+RUN echo "if [ \"\$IRODS_SWITCH\" != '1' ]; then echo; echo \"Switch to irods users with the 'switch' cli command\"; echo; fi" >> /home/$IRODS_UNAME/.bashrc
 
 ###################
 # VOLUMES
@@ -104,7 +98,6 @@ ENV TERM xterm-256color
 # allow custom scripts to be executed at launch time
 RUN mkdir /docker-entrypoint.d/
 ENTRYPOINT ["docker-entrypoint"]
-COPY ./expect_irods.sh /prepare_answers
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ###################
