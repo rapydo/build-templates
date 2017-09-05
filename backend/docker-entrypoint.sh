@@ -66,19 +66,19 @@ for f in `ls $dedir`; do
 done
 
 #####################
-# Fixers
+# Fixers: part 1
+
+# FIXME: execute fixers on all mounted dirs?
+# can we get this info from df or similar?
 
 if [ -d "$CODE_DIR" ]; then
+    # TODO: evaluate if this should be executed before init
     chown -R $APIUSERID $CODE_DIR
 fi
 
 if [ -d "$CERT_DIR" ]; then
     chown -R $APIUSERID $CERT_DIR
 fi
-
-# TODO: execute fixers from a mounted dir
-
-# TODO: add simple ca certificates fixers if mounted some dir
 
 #####################
 # Completed
@@ -95,13 +95,19 @@ else
 
     if [ "$APP_MODE" == 'production' ]; then
 
-        # echo "waiting for services"
-        # eval "$DEV_SU -c 'restapi wait'"
-        echo "launching uwsgi"
+        ############################
+        # TODO: to be tested, at least in DEBUG mode
+        echo "waiting for services"
+        eval "$DEV_SU -c 'restapi wait'"
+        ############################
+        echo "ready to launch production proxy+wsgi"
         myuwsgi
+
     elif [ "$APP_MODE" == 'development' ]; then
+
         echo "launching flask"
         eval "$DEV_SU -c 'restapi launch'"
+
     else
         echo "Debug mode"
     fi

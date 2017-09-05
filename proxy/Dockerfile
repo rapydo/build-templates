@@ -9,7 +9,7 @@ RUN apk update && \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /tmp
-# TOFIX: choose the right directory for installation
+# FIXME: choose a better directory for installation
 ENV ACMEDIR /acme
 ENV ACMEV "2.6.8"
 
@@ -20,8 +20,8 @@ ENV ACMEV "2.6.8"
 #     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
 #     && unzip ${ACMEV}.zip
 
+# git clone https://github.com/Neilpang/acme.sh.git
 RUN echo acme && \
-    # git clone https://github.com/Neilpang/acme.sh.git \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
