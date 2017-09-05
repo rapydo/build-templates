@@ -70,14 +70,16 @@ done
 
 # FIXME: execute fixers on all mounted dirs?
 # can we get this info from df or similar?
-
 if [ -d "$CODE_DIR" ]; then
     # TODO: evaluate if this should be executed before init
     chown -R $APIUSERID $CODE_DIR
 fi
-
 if [ -d "$CERT_DIR" ]; then
     chown -R $APIUSERID $CERT_DIR
+fi
+UPLOAD_DIR="/uploads"
+if [ -d "$UPLOAD_DIR" ]; then
+    chown -R $APIUSERID $UPLOAD_DIR
 fi
 
 #####################
