@@ -49,6 +49,7 @@ VOLUME /etc/letsencrypt
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY letsencrypt.sh /usr/local/bin/updatecertificates
 COPY create_self_signed_ssl.sh /usr/local/bin/selfsign
+COPY 502.html /usr/share/nginx/html/custom_502.html
 
 ###################
 # closing entrypoint
