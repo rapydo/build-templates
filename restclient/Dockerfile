@@ -30,6 +30,7 @@ RUN pip install --upgrade \
 # Handle a guest user
 ENV GUEST_USER developer
 ENV GUEST_UID 1000
+# ENV GUEST_UID 990
 ENV GUEST_SHELL /bin/bash
 RUN adduser -s $GUEST_SHELL -u $GUEST_UID -D -h /home/$GUEST_USER $GUEST_USER
 
