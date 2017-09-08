@@ -20,6 +20,7 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
 COPY requirements.txt /tmp/
+WORKDIR /tmp
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
 # RUN pip install --upgrade --force-reinstall --no-cache-dir -r /tmp/requirements.txt
