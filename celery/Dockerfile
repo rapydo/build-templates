@@ -16,11 +16,12 @@ RUN apt-get update && apt-get install -y \
 ###################
 # PIP
 
+COPY requirements.txt /tmp/
+WORKDIR /tmp
+
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
-COPY requirements.txt /tmp/
-WORKDIR /tmp
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
 # RUN pip install --upgrade --force-reinstall --no-cache-dir -r /tmp/requirements.txt
@@ -30,8 +31,14 @@ RUN for package in `cat requirements.txt`; do \
 COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
+
+ENV APIUID 990
+RUN useradd \
+    -r -M -d /home/$APIUSER -s /bin/bash -p ! \
+    --uid $APIUID $APIUSER \
+    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
+
 ENV CERTDIR /opt/certificates
-RUN useradd -r -M -d $CERTDIR/home -s /bin/bash -p ! $APIUSER
 
 ###################
 # UWSGI
