@@ -16,6 +16,10 @@ if [ "$API_PORT" == "" ]; then
     fi
 fi
 
+if [ -d "$CODE_DIR" ]; then
+    chown $GUEST_UID $CODE_DIR
+fi
+
 
 #####################
 # Extra scripts

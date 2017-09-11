@@ -19,7 +19,6 @@ fi
 if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
-APIUSERID=$(id -u $APIUSER)
 
 # IF INIT is necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
@@ -32,7 +31,7 @@ if [ ! -f "$secret_file" ]; then
         # Create the secret to enable security on JWT tokens
         mkdir -p $JWT_APP_SECRETS
         head -c 24 /dev/urandom > $secret_file
-        chown -R $APIUSERID $JWT_APP_SECRETS $UPLOAD_PATH
+        chown -R $APIUSER $JWT_APP_SECRETS $UPLOAD_PATH
 
         # certificates chains for external oauth services (e.g. B2ACCESS)
         update-ca-certificates
@@ -66,19 +65,21 @@ for f in `ls $dedir`; do
 done
 
 #####################
-# Fixers
+# Fixers: part 1
 
+# FIXME: execute fixers on all mounted dirs?
+# can we get this info from df or similar?
 if [ -d "$CODE_DIR" ]; then
-    chown -R $APIUSERID $CODE_DIR
+    # TODO: evaluate if this should be executed before init
+    chown -R $APIUSER $CODE_DIR
 fi
-
-if [ -d "$CERT_DIR" ]; then
-    chown -R $APIUSERID $CERT_DIR
+if [ -d "$CERTDIR" ]; then
+    chown -R $APIUSER $CERTDIR
 fi
-
-# TODO: execute fixers from a mounted dir
-
-# TODO: add simple ca certificates fixers if mounted some dir
+UPLOAD_DIR="/uploads"
+if [ -d "$UPLOAD_DIR" ]; then
+    chown -R $APIUSER $UPLOAD_DIR
+fi
 
 #####################
 # Completed
@@ -95,13 +96,19 @@ else
 
     if [ "$APP_MODE" == 'production' ]; then
 
-        # echo "waiting for services"
-        # eval "$DEV_SU -c 'restapi wait'"
-        echo "launching uwsgi"
+        ############################
+        # TODO: to be tested, at least in DEBUG mode
+        echo "waiting for services"
+        eval "$DEV_SU -c 'restapi wait'"
+        ############################
+        echo "ready to launch production proxy+wsgi"
         myuwsgi
+
     elif [ "$APP_MODE" == 'development' ]; then
+
         echo "launching flask"
         eval "$DEV_SU -c 'restapi launch'"
+
     else
         echo "Debug mode"
     fi

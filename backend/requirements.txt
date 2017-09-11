@@ -8,11 +8,12 @@ coveralls
 uWSGI
 uwsgitop
 plumbum
-psutil
+psutil==5.3.0
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 
 git+https://github.com/irods/python-irodsclient.git@master
 dill
 git+https://github.com/rapydo/utils.git@0.6.0
 git+https://github.com/rapydo/http-api.git@0.6.0
+
 requests==2.11.1

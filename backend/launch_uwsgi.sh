@@ -34,9 +34,21 @@ fi
 ####################################
 if [ "$LOGS" != "" ]; then
     sleep 2
-    echo "Waiting for logs:"
+
+    # # NOTE: a possibility to debug failure
+    # # grep failed logs: 'no app loaded'
+    # failure=$(grep "no app loaded" $LOGS)
+    # if [ "$failure" != "" ]; then
+    #     echo "FAILED. Trying to debug:"
+    #     restapi launch
+    # else
+    #     tail -f $LOGS
+    #     echo "There was a problem with uwsgi/nginx logs! Hanging."
+    # fi
+
     tail -f $LOGS
-    echo "There was a problem. Hanging."
+    echo "Main WSGI/PROXY logging interrupted!"
+    sleep infinity
 fi
 
 ####################################
