@@ -9,7 +9,6 @@ RUN apk update && apk upgrade && apk add \
     jq \
     && rm -rf /var/cache/apk/*
 
-<<<<<<< HEAD
 # Install python packages
 RUN pip --no-cache-dir install --upgrade \
     pip httpie http-prompt pyyaml \
@@ -17,8 +16,6 @@ RUN pip --no-cache-dir install --upgrade \
     pygments jsoncut \
     git+https://github.com/rapydo/utils.git@0.6.0
 
-=======
->>>>>>> 50e0bb5d9466be9f171ee28f87d50fa93b6f5ae3
 # Install jqt/yq
 # https://fadado.github.io/jqt/
 RUN git clone https://github.com/fadado/jqt.git /tmp/jqt \
