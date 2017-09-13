@@ -9,13 +9,6 @@ RUN apk update && apk upgrade && apk add \
     jq \
     && rm -rf /var/cache/apk/*
 
-# Install python packages
-RUN pip --no-cache-dir install --upgrade \
-    pip httpie http-prompt pyyaml \
-    #https://github.com/json-transformations/jsoncut
-    pygments jsoncut \
-    git+https://github.com/rapydo/utils.git@0.6.0
-
 # Install jqt/yq
 # https://fadado.github.io/jqt/
 RUN git clone https://github.com/fadado/jqt.git /tmp/jqt \
@@ -28,10 +21,6 @@ WORKDIR /tmp
 # Install in causal order
 RUN pip install --upgrade \
     --force-reinstall --no-cache-dir -r requirements.txt
-# RUN pip --no-cache-dir install --upgrade \
-#     pip httpie http-prompt pyyaml \
-#     pygments jsoncut \
-#     rapydo-utils
 
 ###################################
 # Handle a guest user
