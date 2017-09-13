@@ -102,10 +102,6 @@ else
         eval "$DEV_SU -c 'restapi wait'"
         ############################
         echo "ready to launch production proxy+wsgi"
-<<<<<<< HEAD
-=======
-
->>>>>>> 190d49757b9ea37ac547b5dabbd3e3b045c91252
         myuwsgi
 
     elif [ "$APP_MODE" == 'development' ]; then
