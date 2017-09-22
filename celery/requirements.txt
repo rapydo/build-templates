@@ -3,8 +3,10 @@ six
 httpie
 ipython
 plumbum
-celery
-flower
 
-git+https://github.com/rapydo/utils.git@0.5.4
-git+https://github.com/rapydo/http-api.git@0.5.4
+git+https://github.com/irods/python-irodsclient.git@master
+
+flower
+git+https://github.com/rapydo/utils.git@0.5.5
+git+https://github.com/rapydo/http-api.git@0.5.5
+celery

@@ -9,21 +9,21 @@ backend:
 celery:
   build: celery
 
-ftp:
-  build: ftp
-
 icat:
   build: icat
-
-proxy:
-  build: proxy
 
 restclient:
   build: restclient
 
-sqlalchemyui:
-  build: sqlalchemyui
-
 swaggerui:
   build: swaggerui
+
+ftp:
+  build: ftp
+
+proxy:
+  build: proxy
+
+sqlalchemyui:
+  build: sqlalchemyui
 

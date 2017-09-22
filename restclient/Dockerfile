@@ -21,10 +21,6 @@ WORKDIR /tmp
 # Install in causal order
 RUN pip install --upgrade \
     --force-reinstall --no-cache-dir -r requirements.txt
-# RUN pip --no-cache-dir install --upgrade \
-#     pip httpie http-prompt pyyaml \
-#     pygments jsoncut \
-#     rapydo-utils
 
 ###################################
 # Handle a guest user
