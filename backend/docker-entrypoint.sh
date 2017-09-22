@@ -34,7 +34,6 @@ if [ ! -f "$secret_file" ]; then
         chown -R $APIUSER $JWT_APP_SECRETS $UPLOAD_PATH
 
         # certificates chains for external oauth services (e.g. B2ACCESS)
-
         update-ca-certificates
 
         echo "Init flask app"
@@ -103,7 +102,6 @@ else
         eval "$DEV_SU -c 'restapi wait'"
         ############################
         echo "ready to launch production proxy+wsgi"
-
         myuwsgi
 
     elif [ "$APP_MODE" == 'development' ]; then

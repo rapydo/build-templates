@@ -2,7 +2,9 @@ pip
 six
 httpie
 ipython
-nose2
+# nose2
+pytest-flask
+pytest-cov
 cov-core
 coveralls
 uWSGI
