@@ -7,12 +7,12 @@ python:
 env:
 - SERVICE=backend
 - SERVICE=celery
-- SERVICE=ftp
 - SERVICE=icat
-- SERVICE=proxy
+- SERVICE=swaggerui
 - SERVICE=restclient
 - SERVICE=sqlalchemyui
-- SERVICE=swaggerui
+- SERVICE=proxy
+- SERVICE=ftp
 services:
 - docker
 before_install:
