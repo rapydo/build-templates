@@ -11,7 +11,4 @@ echo "Launching unittests with coverage"
 echo "Package: $CURRENT_PACKAGE"
 sleep 1
 
-# Avoid colors when saving tests output into files
-export TESTING_FLASK="True"
-
 py.test --confcutdir=tests -x -s --cov=$CURRENT_PACKAGE tests
