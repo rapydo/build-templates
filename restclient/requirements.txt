@@ -4,4 +4,4 @@ http-prompt
 pyyaml
 pygments
 jsoncut
-git+https://github.com/rapydo/utils.git@0.5.5
+git+https://github.com/rapydo/utils.git@0.5.6
