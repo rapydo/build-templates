@@ -8,7 +8,7 @@ net="0.0.0.0/0"
 echo "Changing access"
 echo "" > $conf
 
-# Enable to allow health checks
+# Enable the user to perform health checks on localhost
 echo "local   $POSTGRES_USER  $POSTGRES_USER  trust" >> $conf
 
 echo "hostnossl       postgres  $POSTGRES_USER  $net   password" >> $conf
