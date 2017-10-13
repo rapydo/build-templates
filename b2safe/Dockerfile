@@ -47,4 +47,5 @@ ADD config.ini $B2SAFE_CONFIG
 VOLUME /opt
 
 USER root
-WORKDIR /tmp
+WORKDIR /opt
+# WORKDIR /tmp
