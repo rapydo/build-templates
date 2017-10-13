@@ -78,7 +78,7 @@ RUN chmod +x /usr/local/bin/*
 
 ###################
 # Add bash rc commands
-RUN echo "alias berods='HOME=/home/$IRODS_UNAME su -p irods'" >> /root/.bash_aliases
+RUN echo "alias berods=\"HOME=/home/$IRODS_UNAME su -p irods\"" >> /root/.bash_aliases
 RUN echo "\\necho\\necho 'Become irods administrator user with the command:'\\necho '$ berods'" >> /root/.bashrc
 RUN echo "if [ \"\$IRODS_SWITCH\" != '1' ]; then echo; echo \"Switch to irods users with the 'switch' cli command\"; echo; fi" >> /home/$IRODS_UNAME/.bashrc
 
