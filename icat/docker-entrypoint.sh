@@ -56,6 +56,12 @@ if [ "$checkirods" == "" ]; then
         exit 1
     fi
 
+    # Anonymous user
+    if [ "$IRODS_ANONYMOUS" == 1 ]; then
+        # enable the anonymous user in irods with the custom script
+        ianonymous
+    fi
+
 else
     # NO: launch irods
     echo "Already installed. Launching..."

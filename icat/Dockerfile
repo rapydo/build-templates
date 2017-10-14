@@ -74,6 +74,7 @@ RUN mkdir -p $CADIR
 COPY ./expect_irods.sh /usr/local/bin/prepare_answers
 COPY add_irods_x509.sh /usr/local/bin/add-irods-X509
 COPY switch_irods_user.sh /usr/local/bin/switch
+COPY anonymous.sh /usr/local/bin/ianonymous
 RUN chmod +x /usr/local/bin/*
 
 ###################
