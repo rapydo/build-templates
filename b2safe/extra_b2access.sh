@@ -33,6 +33,17 @@ if [ ! -z "$B2ACCESS_CAS" ]; then
         cp $CADIR/$caid* $gridcerts/
     fi
 
+    ## STAGING
+    label="b2access.ca.staging"
+    caid=$(openssl x509 -in $B2ACCESS_CAS/$label.pem -hash -noout)
+    # caid=$(openssl x509 -in $label.pem -hash -noout)
+    if [ `ls -1 $gridcerts/$caid.* 2> /dev/null | wc -l` != "2" ]; then
+        echo "B2ACCESS CA [staging]: label is $caid"
+        cp $B2ACCESS_CAS/$label.* $CADIR/
+        mv $label.pem ${caid}.0
+        mv $label.signing_policy ${caid}.signing_policy
+        cp $CADIR/$caid* $gridcerts/
+    fi
 
     ## PROD
     label="b2access.ca.prod"
