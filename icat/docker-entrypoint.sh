@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# set the current password for 'system' user "irods"
+yes $IRODS_PASSWORD | passwd $IRODS_USER
+
 if [ "$1" != 'irods' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
