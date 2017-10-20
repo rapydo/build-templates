@@ -2,7 +2,7 @@
 set -e
 
 if [ -z "$1" ]; then
-    CURRENT_PACKAGE="$VANILLA_PACKAGE.apis"
+    CURRENT_PACKAGE="$VANILLA_PACKAGE"
 else
     CURRENT_PACKAGE=$1
 fi
