@@ -6,7 +6,8 @@ plumbum
 
 git+https://github.com/irods/python-irodsclient.git@master
 
-flower
 git+https://github.com/rapydo/utils.git@0.5.6
 git+https://github.com/rapydo/http-api.git@0.5.6
+
+flower
 celery
