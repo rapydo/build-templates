@@ -60,13 +60,17 @@ ENV MYUWSGI_HOME /tmp/uwsgi
 RUN mkdir -p $UWSGI_LOGS
 RUN mkdir -p $UWSGI_RUN
 RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
-COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 RUN chmod +x /usr/local/bin/myuwsgi
+
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
+COPY nginx_base.conf /etc/nginx/nginx.conf
+COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+
 COPY sleep.py /usr/local/bin/pysleeper
 COPY tests.sh /usr/local/bin/pyunittests
 
@@ -94,10 +98,7 @@ ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
 RUN echo "Developer" && \
     echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
-    # echo "echo\necho 'Run unittests with:\n# nose2 -F [tests.FOLDER]\n'\n" \
-    echo "echo\necho 'Run unittests with:\n# restapi tests]\n'\n" \
-        >> $APIRC && \
-    chown $APIUSER $APIRC
+    echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
 # closing entrypoint

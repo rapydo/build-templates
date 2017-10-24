@@ -1,5 +1,5 @@
 
-FROM nginx:1.11.13-alpine
+FROM nginx:1.13.5-alpine
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 RUN apk update && apk add wget
@@ -7,6 +7,7 @@ WORKDIR /usr/share/nginx/html
 
 # ENV SWAGGER_VERSION master
 ENV SWAGGER_VERSION 2.2.8
+# ENV SWAGGER_VERSION 3.2.1
 # not for master
 ENV SWAGGER_ID v$SWAGGER_VERSION
 

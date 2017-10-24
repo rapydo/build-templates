@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# set the current password for 'system' user "irods"
+yes $IRODS_PASSWORD | passwd $IRODS_USER
+
 if [ "$1" != 'irods' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
@@ -54,6 +57,12 @@ if [ "$checkirods" == "" ]; then
     else
         echo "Failed to install irods..."
         exit 1
+    fi
+
+    # Anonymous user
+    if [ "$IRODS_ANONYMOUS" == 1 ]; then
+        # enable the anonymous user in irods with the custom script
+        ianonymous
     fi
 
 else

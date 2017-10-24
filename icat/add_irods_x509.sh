@@ -9,7 +9,15 @@ mydir="$CERTDIR/$MYUSER"
 mkdir -p $mydir
 
 ##############################
-# CA authority
+## CERTIFICATES
+##############################
+
+# NOTE TO SELF:
+# This must be splitted in two pieces.
+# The first one is set the certificates (CA auth + host) -> at init time
+# The second one is a binary -> to be called only if necessary
+
+## CA authority
 if [ ! -d "$GRIDCERTDIR/certificates" ]; then
     grid-ca-create -noint -dir $CADIR
     yes 1 | grid-default-ca
@@ -37,9 +45,7 @@ if [ ! -s $CADIR/cacert.pem ]; then
 
 fi
 
-##############################
 ## HOST
-
 if [ `ls -1 $GRIDCERTDIR/host*.* 2> /dev/null | wc -l` == "3" ]; then
     echo "Host certificate based on gt6"
     # fix permissions for current validated host
@@ -60,8 +66,15 @@ if [ ! -s "$CERTDIR/host/hostcert.pem" ]; then
     echo "Created host certificate"
 fi
 
+chown -R $IRODS_USER /opt/certificates
+echo
+echo "Completed basic certificates setup"
+echo
+
+
 ##############################
-# NEW USER
+## NEW USER
+##############################
 
 # Check
 out=`su -c "iadmin lua" $IRODS_USER | grep ^$MYUSER`
