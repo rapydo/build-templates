@@ -1,11 +1,11 @@
 
 # EACL entry #1|
 
-access_id_CA      X509         '/C=DE/L=Juelich/O=FZJ/OU=JSC/CN=test.ca'
+access_id_CA      X509         '/C=EU/O=EUDAT/OU=B2ACCESS Developement/CN=SLCS-CA'
 
 pos_rights        globus        CA:sign
 
-cond_subjects     globus       '"/C=DE/L=Juelich/O=FZJ/OU=JSC/*"'
+cond_subjects     globus       '"/C=EU/O=EUDAT/OU=B2ACCESS Developement/*"'
 
 # end of EACL
 
