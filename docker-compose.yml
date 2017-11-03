@@ -10,7 +10,12 @@ celery:
   build: celery
 
 icat:
+  # image: b2safe/server:icat
   build: icat
+
+# b2safe:
+#   # NOTE: this depends on icat
+#   build: b2safe
 
 restclient:
   build: restclient
