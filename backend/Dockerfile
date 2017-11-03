@@ -4,12 +4,16 @@
 
 FROM ubuntu:17.04
 
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION"
+
 # TODO: check if possible switching to alpine,
 # and make better use of UWSGI:
 # FROM python:3.6-alpine
 # http://j.mp/2rxvp3r
 
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+
 
 ###################
 # APT
@@ -36,6 +40,9 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
+
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

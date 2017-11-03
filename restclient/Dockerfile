@@ -1,5 +1,9 @@
 
 FROM python:3.6-alpine
+
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION"
+
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################################
@@ -14,7 +18,7 @@ RUN pip --no-cache-dir install --upgrade \
     pip httpie http-prompt pyyaml \
     #https://github.com/json-transformations/jsoncut
     pygments jsoncut \
-    git+https://github.com/rapydo/utils.git@0.6.0
+    git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 
 # Install jqt/yq
 # https://fadado.github.io/jqt/
