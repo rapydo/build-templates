@@ -22,16 +22,25 @@ RUN git clone https://github.com/fadado/jqt.git /tmp/jqt \
     && ln -s /usr/local/bin/python /usr/bin/
 ENV PATH $PATH:/tmp/jqt/bin
 
+# Install python packages
+COPY requirements.txt /tmp/
+WORKDIR /tmp
+# Install in causal order
+RUN pip install --upgrade \
+    --force-reinstall --no-cache-dir -r requirements.txt
+
 ###################################
 # Handle a guest user
 ENV GUEST_USER developer
 ENV GUEST_UID 1000
+# ENV GUEST_UID 990
 ENV GUEST_SHELL /bin/bash
 RUN adduser -s $GUEST_SHELL -u $GUEST_UID -D -h /home/$GUEST_USER $GUEST_USER
 
 ENV PAGER less
 ENV TERM=xterm-256color
 ENV HISTCONTROL ignoreboth:erasedups
+ENV CODE_DIR /code
 
 # Use the new user
 USER $GUEST_USER
@@ -41,13 +50,13 @@ RUN echo "Adding welcome message" \
     && echo "echo -e 'Hello\\n\\nYou may call the client with:'" >> $BASHRC \
     && echo "echo -e '$ http \$APP_HOST\$APP_PORT/api/status\\n'" >> $BASHRC \
     && echo "echo -e 'There is also available a utility:'" >> $BASHRC \
-    && echo "echo -e '$ . /code/client/queryapi [help]\\n'" >> $BASHRC
+    && echo "echo -e '$ . $CODE_DIR/client/queryapi [help]\\n'" >> $BASHRC
 USER root
 
 ###################################
-RUN mkdir -p /code/client
-COPY client_init.sh /code/client/gettoken
-COPY query_api.sh /code/client/queryapi
+RUN mkdir -p $CODE_DIR/client
+COPY client_init.sh $CODE_DIR/client/gettoken
+COPY query_api.sh $CODE_DIR/client/queryapi
 COPY sleep.py /usr/local/bin/pysleeper
 
 # TODO: use tini?
@@ -62,4 +71,4 @@ ENTRYPOINT ["docker-entrypoint"]
 CMD ["client"]
 
 # WORKDIR /home/$GUEST_USER
-WORKDIR /code
+WORKDIR $CODE_DIR

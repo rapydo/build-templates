@@ -1,6 +1,6 @@
 
 # PROXY that accepts challenges
-FROM nginx:1.13.1-alpine
+FROM nginx:1.13.5-alpine
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 RUN apk update && \
@@ -9,7 +9,7 @@ RUN apk update && \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /tmp
-# TOFIX: choose the right directory for installation
+# FIXME: choose a better directory for installation
 ENV ACMEDIR /acme
 ENV ACMEV "2.6.8"
 
@@ -20,8 +20,8 @@ ENV ACMEV "2.6.8"
 #     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
 #     && unzip ${ACMEV}.zip
 
+# git clone https://github.com/Neilpang/acme.sh.git
 RUN echo acme && \
-    # git clone https://github.com/Neilpang/acme.sh.git \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
@@ -49,6 +49,7 @@ VOLUME /etc/letsencrypt
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY letsencrypt.sh /usr/local/bin/updatecertificates
 COPY create_self_signed_ssl.sh /usr/local/bin/selfsign
+COPY 502.html /usr/share/nginx/html/custom_502.html
 
 ###################
 # closing entrypoint

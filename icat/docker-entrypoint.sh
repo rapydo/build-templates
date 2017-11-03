@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# set the current password for 'system' user "irods"
+yes $IRODS_PASSWORD | passwd $IRODS_USER
+
 if [ "$1" != 'irods' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
@@ -30,7 +33,7 @@ do
   sleep 1
 done
 
-# Is it init time?
+# Is it init time? If that is the case then this directory is empty:
 checkirods=$(ls /etc/irods/)
 if [ "$checkirods" == "" ]; then
 
@@ -43,16 +46,23 @@ if [ "$checkirods" == "" ]; then
     #############################
 
     MYDATA="/tmp/answers"
-    sudo -E /prepare_answers $MYDATA
+    sudo -E prepare_answers $MYDATA
     # Launch the installation
     sudo python /var/lib/irods/scripts/setup_irods.py < $MYDATA
     # Verify how it went
     if [ "$?" == "0" ]; then
+        rm $MYDATA
         echo ""
         echo "iRODS INSTALLED!"
     else
         echo "Failed to install irods..."
         exit 1
+    fi
+
+    # Anonymous user
+    if [ "$IRODS_ANONYMOUS" == 1 ]; then
+        # enable the anonymous user in irods with the custom script
+        ianonymous
     fi
 
 else
@@ -74,5 +84,11 @@ done
 
 # Completed
 echo "iRODS is ready"
+
+##############################
+# TODO: cleaner shutdown:
+# 1. create pysleeper package
+# 2. install with pip (2?)
+# 3. execute here and then "service irods stop && exit 0"
 sleep infinity
 exit 0

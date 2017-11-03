@@ -1,17 +1,19 @@
 #!/bin/bash
 
-conf='/var/lib/postgresql/data/pg_hba.conf'
+## http://www.postgresql.org/docs/9.1/static/auth-pg-hba-conf.html
 # net="172.1.0.0/16"
 net="0.0.0.0/0"
-## http://www.postgresql.org/docs/9.1/static/auth-pg-hba-conf.html
+
+# base_conf='/var/lib/postgresql/data/postgresql.conf'
+hba_conf='/var/lib/postgresql/data/pg_hba.conf'
 
 echo "Changing access"
-echo "" > $conf
+echo "" > $hba_conf
 
-# Enable to allow health checks
-echo "local   $POSTGRES_USER  $POSTGRES_USER  trust" >> $conf
+# Enable the user to perform health checks on localhost
+echo "local   $POSTGRES_USER  $POSTGRES_USER  trust" >> $hba_conf
 
-echo "hostnossl       postgres  $POSTGRES_USER  $net   password" >> $conf
+echo "hostnossl       postgres  $POSTGRES_USER  $net   password" >> $hba_conf
 
 ###################
 # DBs handling
@@ -25,7 +27,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" << EOSQL
 EOSQL
     # GRANT ALL PRIVILEGES ON DATABASE "$db" TO $POSTGRES_USER;
 # Add privileges
-echo "hostnossl       $db  $POSTGRES_USER  $net   password" >> $conf
+echo "hostnossl       $db  $POSTGRES_USER  $net   password" >> $hba_conf
 done
 
 ###################

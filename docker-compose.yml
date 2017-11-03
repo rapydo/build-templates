@@ -9,21 +9,26 @@ backend:
 celery:
   build: celery
 
-ftp:
-  build: ftp
-
 icat:
+  # image: b2safe/server:icat
   build: icat
 
-proxy:
-  build: proxy
+# b2safe:
+#   # NOTE: this depends on icat
+#   build: b2safe
 
 restclient:
   build: restclient
 
-sqlalchemyui:
-  build: sqlalchemyui
-
 swaggerui:
   build: swaggerui
+
+ftp:
+  build: ftp
+
+proxy:
+  build: proxy
+
+sqlalchemyui:
+  build: sqlalchemyui
 

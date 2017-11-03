@@ -1,10 +1,18 @@
-#############################
 language: python
 sudo: required
 dist: trusty
 group: deprecated-2017Q2
 python:
 - 3.6.1
+env:
+- SERVICE=backend
+- SERVICE=celery
+- SERVICE=icat
+- SERVICE=swaggerui
+- SERVICE=restclient
+- SERVICE=sqlalchemyui
+- SERVICE=proxy
+- SERVICE=ftp
 services:
 - docker
 before_install:
@@ -15,4 +23,5 @@ install:
 script:
 - docker --version
 - docker-compose --version
-- docker-compose build
+- echo "Building service $SERVICE"
+- docker-compose build $SERVICE
