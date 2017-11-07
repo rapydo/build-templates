@@ -2,7 +2,6 @@ pip
 six
 httpie
 ipython
-# nose2
 pytest-flask
 pytest-cov
 cov-core
