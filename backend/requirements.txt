@@ -1,3 +1,4 @@
+
 pip
 six
 httpie
@@ -9,6 +10,9 @@ coveralls
 uWSGI
 uwsgitop
 plumbum
+
+pika
+gdapi-python
 
 psutil==5.3.0
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
