@@ -51,8 +51,7 @@ if [ "$AUTH" == '' ]; then
 
     # Read credentials from current files
     dfile="/usr/local/lib/python3.6/site-packages/utilities/projects_defaults.yaml"
-    # dfile="/code/base.yml"
-    cfile="/code/custom.yml"
+    cfile="/code/confs/project_configuration.yaml"
 
     jpath="variables.backend.credentials"
 
