@@ -39,6 +39,7 @@ RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
 
 # Make sure the main irods user is the same id into HTTP API server
 ENV IRODS_UNAME irods
+# FIXME: not possible at the moment to change this name from configuration
 ENV IRODS_UID 990
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \

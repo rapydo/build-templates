@@ -1,6 +1,6 @@
 
 # FROM ubuntu:17.10
-# TODO: check what python do I get by default here
+# TODO: check what python do I get by default here (probably 3.6.3)
 
 FROM ubuntu:17.04
 
