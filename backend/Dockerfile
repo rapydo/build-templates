@@ -1,19 +1,17 @@
 
-# FROM ubuntu:17.10
-# TODO: check what python do I get by default here (probably 3.6.3)
-
-FROM ubuntu:17.04
-
-ARG RAPYDO_VERSION
-RUN test -n "$RAPYDO_VERSION"
-
-# TODO: check if possible switching to alpine,
-# and make better use of UWSGI:
-# FROM python:3.6-alpine
-# http://j.mp/2rxvp3r
-
+###################
+FROM ubuntu:17.10
+# FROM ubuntu:17.04
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
+# TODO: check if possible switching to alpine, make better use of UWSGI:
+# http://j.mp/2rxvp3r
+# FROM python:3.6-alpine
+# or https://revsys.com/tidbits/optimized-python/
+
+###################
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION"
 
 ###################
 # APT
