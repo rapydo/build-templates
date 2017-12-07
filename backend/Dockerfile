@@ -1,6 +1,7 @@
 
 ###################
 FROM ubuntu:17.10
+# FROM krallin/ubuntu-tini:
 # FROM ubuntu:17.04
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
@@ -106,14 +107,21 @@ RUN echo "Developer" && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
+# dumb init
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
+    && dpkg -i dumb-init_*.deb \
+    && rm *.deb
+
+###################
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
 WORKDIR $CODE_DIR
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["rest"]
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["docker-entrypoint", "rest"]
 
 # TODO: verify if better using tini for entrypoint
 # https://github.com/krallin/tini-images

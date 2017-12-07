@@ -89,7 +89,6 @@ if [ "$1" != 'rest' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
     $@
-    exit 0
 else
     ## NORMAL MODES
     echo "REST API backend server is ready to be launched"
@@ -114,5 +113,4 @@ else
     fi
 
     exec pysleeper
-    exit 0
 fi
