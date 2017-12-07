@@ -90,5 +90,4 @@ echo "iRODS is ready"
 # 1. create pysleeper package
 # 2. install with pip (2?)
 # 3. execute here and then "service irods stop && exit 0"
-sleep infinity
-exit 0
+exec sleep infinity

@@ -99,10 +99,20 @@ ENV TERM xterm-256color
 # if you need to add future commands after irods installation:
 # allow custom scripts to be executed at launch time
 RUN mkdir /docker-entrypoint.d/
-ENTRYPOINT ["docker-entrypoint"]
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+###################
+# dumb init
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
+    && dpkg -i dumb-init_*.deb \
+    && rm *.deb
 
 ###################
 # WORKDIR /tmp
 EXPOSE 1247
-CMD ["irods"]
+
+# ENTRYPOINT ["docker-entrypoint"]
+# CMD ["irods"]
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["docker-entrypoint", "irods"]
