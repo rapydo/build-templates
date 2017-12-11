@@ -27,9 +27,9 @@ WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
 # Save production certificates across multiple run
+ENV CERTDIR /etc/letsencrypt/real
 ENV CERTKEY ${CERTDIR}/privkey1.pem
 ENV CERTCHAIN ${CERTDIR}/fullchain1.pem
-ENV CERTDIR /etc/letsencrypt/real
 RUN mkdir -p $CERTDIR
 VOLUME /etc/letsencrypt
 

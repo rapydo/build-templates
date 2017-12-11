@@ -36,7 +36,7 @@ fi
 
 #####################
 # ## HOW TO FORCE TESTING ON OUTSIDE SERVER
-# SERVER="https://b2stage.cineca.it"
+# SERVER="https://b2stage-test.cineca.it"
 # IHOME="/tempZone/home/0a646980c779"
 # TOKEN="SOMETHING"
 # AUTH="Authorization:Bearer $TOKEN"
