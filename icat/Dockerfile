@@ -52,8 +52,11 @@ RUN useradd \
 # ENV IRODS_VERSION 4.2.0
 # ENV GSI_VERSION 2.0.0
 
-ENV IRODS_VERSION 4.2.1
-ENV GSI_VERSION 2.1.0
+# ENV IRODS_VERSION 4.2.1
+# ENV GSI_VERSION 2.1.0
+
+ENV IRODS_VERSION 4.2.2
+ENV GSI_VERSION 2.2.0
 
 RUN apt-get update && apt-get install -y \
         irods-runtime=$IRODS_VERSION irods-icommands=$IRODS_VERSION \
