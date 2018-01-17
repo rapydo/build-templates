@@ -1,6 +1,10 @@
 
 ###################
 FROM ubuntu:17.04
+
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION"
+
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
@@ -25,6 +29,9 @@ WORKDIR /tmp
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
 # RUN pip install --upgrade --force-reinstall --no-cache-dir -r /tmp/requirements.txt
+
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

@@ -43,5 +43,4 @@ done
 #####################
 # Completed
 echo "launching server"
-nginx -g 'daemon off;'
-exit 0
+exec nginx -g 'daemon off;'

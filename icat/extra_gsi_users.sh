@@ -2,6 +2,8 @@
 
 # For testing GSI & certificates purposes
 add-irods-X509 rodsminer admin
+
+# TODO: check if a different default zone makes some problem here
 add-irods-X509 guest
 
 echo

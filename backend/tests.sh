@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+if [ ! -d "tests" ]; then
+    echo "Missing 'tests' directory"
+    echo "Did you use the '--development' option when starting?"
+    exit 1
+fi
+
 if [ -z "$1" ]; then
     CURRENT_PACKAGE="$VANILLA_PACKAGE"
     COV="--cov=$CURRENT_PACKAGE.apis --cov=$CURRENT_PACKAGE.tasks --cov=$CURRENT_PACKAGE.models"

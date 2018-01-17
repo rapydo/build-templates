@@ -1,5 +1,7 @@
 #!/bin/bash
 
+### TODO: demoResc has to be a variables
+
 echo "Becoming B2SAFE"
 
 ###############

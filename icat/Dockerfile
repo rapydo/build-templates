@@ -39,6 +39,7 @@ RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
 
 # Make sure the main irods user is the same id into HTTP API server
 ENV IRODS_UNAME irods
+# FIXME: not possible at the moment to change this name from configuration
 ENV IRODS_UID 990
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
@@ -51,8 +52,11 @@ RUN useradd \
 # ENV IRODS_VERSION 4.2.0
 # ENV GSI_VERSION 2.0.0
 
-ENV IRODS_VERSION 4.2.1
-ENV GSI_VERSION 2.1.0
+# ENV IRODS_VERSION 4.2.1
+# ENV GSI_VERSION 2.1.0
+
+ENV IRODS_VERSION 4.2.2
+ENV GSI_VERSION 2.2.0
 
 RUN apt-get update && apt-get install -y \
         irods-runtime=$IRODS_VERSION irods-icommands=$IRODS_VERSION \
@@ -98,10 +102,20 @@ ENV TERM xterm-256color
 # if you need to add future commands after irods installation:
 # allow custom scripts to be executed at launch time
 RUN mkdir /docker-entrypoint.d/
-ENTRYPOINT ["docker-entrypoint"]
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+###################
+# dumb init
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
+    && dpkg -i dumb-init_*.deb \
+    && rm *.deb
 
 ###################
 # WORKDIR /tmp
 EXPOSE 1247
-CMD ["irods"]
+
+# ENTRYPOINT ["docker-entrypoint"]
+# CMD ["irods"]
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["docker-entrypoint", "irods"]

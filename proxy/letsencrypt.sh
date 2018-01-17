@@ -1,7 +1,7 @@
 # !/bin/bash
 set -e
 
-# DOMAIN="b2stage.cineca.it"
+# DOMAIN="b2stage-test.cineca.it"
 # MODE="--staging"
 # MODE=""
 

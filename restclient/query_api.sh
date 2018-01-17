@@ -36,7 +36,7 @@ fi
 
 #####################
 # ## HOW TO FORCE TESTING ON OUTSIDE SERVER
-# SERVER="https://b2stage.cineca.it"
+# SERVER="https://b2stage-test.cineca.it"
 # IHOME="/tempZone/home/0a646980c779"
 # TOKEN="SOMETHING"
 # AUTH="Authorization:Bearer $TOKEN"
@@ -50,9 +50,11 @@ ALL_COMMAND=""
 if [ "$AUTH" == '' ]; then
 
     # Read credentials from current files
-    dfile="/usr/local/lib/python3.6/site-packages/utilities/projects_defaults.yaml"
-    # dfile="/code/base.yml"
-    cfile="/code/custom.yml"
+    # dfile="/usr/local/lib/python3.6/site-packages/utilities/projects_defaults.yaml"
+    # cfile="/code/confs/project_configuration.yaml"
+
+    dfile="/code/base.yaml"
+    cfile="/code/custom.yaml"
 
     jpath="variables.backend.credentials"
 
