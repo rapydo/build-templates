@@ -1,6 +1,7 @@
 
 ###################
-FROM ubuntu:17.04
+# FROM ubuntu:17.04
+FROM ubuntu:17.10
 
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
