@@ -1,9 +1,14 @@
 FROM node:carbon
 
-WORKDIR /data/frontend/
+WORKDIR /opt
+RUN npm install package-merge
 
 # RUN npm install
 # RUN npm install --only=production
+
+ENV NODE_PATH /opt/node_modules
+
+WORKDIR /data/frontend/
 
 # COPY . .
 
