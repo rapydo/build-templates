@@ -7,7 +7,7 @@ set -e
 #
 ######################################
 
-node /rapydo/merge.js
+node /rapydo/nodejs/merge.js
 
 npm --prefix $MODULE_PATH install
 
