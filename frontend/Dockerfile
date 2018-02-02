@@ -1,16 +1,14 @@
 FROM node:carbon
 
 WORKDIR /opt
-RUN npm install package-merge
 
-# RUN npm install
-# RUN npm install --only=production
+
+# RUN npm install package-merge && npm cache clean
+RUN npm install package-merge
 
 ENV NODE_PATH /opt/node_modules
 
-WORKDIR /data/frontend/
-
-# COPY . .
+WORKDIR /rapydo/
 
 EXPOSE 8080
 # CMD ["npm", "start"]
