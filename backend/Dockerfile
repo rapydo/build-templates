@@ -1,8 +1,5 @@
 
-# FROM ubuntu:17.10
-# TODO: check what python do I get by default here
-
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 
 # TODO: check if possible switching to alpine,
 # and make better use of UWSGI:
