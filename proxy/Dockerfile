@@ -48,6 +48,6 @@ COPY 502.html /usr/share/nginx/html/custom_502.html
 # closing entrypoint
 RUN mkdir /docker-entrypoint.d
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-ENTRYPOINT ["tini", "docker-entrypoint"]
+ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
 # ENTRYPOINT ["docker-entrypoint"]
 CMD ["proxy"]
