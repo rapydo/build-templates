@@ -1,6 +1,6 @@
 
 ###################
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ##############
