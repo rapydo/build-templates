@@ -32,6 +32,12 @@ done
 
 ###############
 # DO THE COPY
+
+if [ "$BATCH_SRC_PATH" == "" -o "$BATCH_DEST_PATH" == "" ]; then
+    echo "Missing source and/or destination to be copied"
+    exit 1
+fi
+
 # 1. check if IRODS_HOST variable exists
 if [ "$IRODS_HOST" != "" ]; then
 
@@ -56,13 +62,16 @@ if [ "$IRODS_HOST" != "" ]; then
         echo 'irods login completed'
     fi
     # 3. check with ils
-    ils
+    ils -A $BATCH_SRC_PATH
     if [ "$?" != "0" ]; then
-        echo "FAILURE: not able to test ils"
+        echo "FAILURE: not able to test ils on batch path"
         exit 1
     fi
 
-    # 4. copy the file
+    # 4. copy the file into the destination directory
+    # TODO: build, push and test it
+    iget -f $BATCH_SRC_PATH $BATCH_DEST_PATH
+    echo "File copied"
 
 else
     echo "Please set IRODS minimum set of variables as described in:"
