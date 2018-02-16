@@ -9,6 +9,11 @@ set -e
 echo "Mode: *$MODE*"
 echo "Domain: $DOMAIN"
 
+if [ "$SMTP_ADMIN" != "" ]; then
+    echo "Reference email: $SMTP_ADMIN"
+    ./acme.sh --update-account  --accountemail $SMTP_ADMIN
+fi
+
 ./acme.sh --issue --debug \
     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
     -d $DOMAIN -w $WWWDIR $MODE
