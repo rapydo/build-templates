@@ -1,8 +1,14 @@
 
-# PROXY that accepts challenges
-FROM nginx:1.13.7-alpine
+# PROXY that accepts ACME challenges for letsencrypt
+FROM nginx:1.13.8-alpine
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
+###################
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION" && \
+    mkdir -p /etc/rapydo && echo $RAPYDO_VERSION > /etc/rapydo/release
+
+###################
 RUN apk update && \
     apk add vim wget git bash \
     openssl curl netcat-openbsd \
@@ -11,7 +17,7 @@ RUN apk update && \
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
-ENV ACMEV "2.7.5"
+ENV ACMEV "2.7.6"
 RUN echo acme && \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
@@ -43,6 +49,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY letsencrypt.sh /usr/local/bin/updatecertificates
 COPY create_self_signed_ssl.sh /usr/local/bin/selfsign
 COPY 502.html /usr/share/nginx/html/custom_502.html
+# COPY rocket.conf /etc/nginx/sites-enabled/production
 
 ###################
 # closing entrypoint

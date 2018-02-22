@@ -14,12 +14,6 @@ fi
 #
 ######################################
 
-# IRODS_PASSWORD=chooseapasswordwisely
-# IRODS_VERSION=4.2.1
-# IRODS_UID=1001
-# IRODS_UNAME=irods
-
-###############
 # Extra scripts
 dedir="/docker-entrypoint.d"
 for f in `ls $dedir`; do
@@ -64,7 +58,7 @@ if [ "$IRODS_HOST" != "" ]; then
     # 3. check with ils
     ils -A $BATCH_SRC_PATH
     if [ "$?" != "0" ]; then
-        echo "FAILURE: not able to test ils on batch path"
+        echo "FAILURE: not able to test ILS on batch path"
         exit 1
     fi
 
@@ -72,6 +66,10 @@ if [ "$IRODS_HOST" != "" ]; then
     # TODO: build, push and test it
     iget -f $BATCH_SRC_PATH $BATCH_DEST_PATH
     echo "File copied"
+
+    # whoami
+    # fix permissions
+    chown 1000 -R $BATCH_DEST_PATH
 
 else
     echo "Please set IRODS minimum set of variables as described in:"

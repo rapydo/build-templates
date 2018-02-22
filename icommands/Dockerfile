@@ -31,13 +31,14 @@ RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
 
 ENV IRODS_VERSION 4.2.1
 # ENV IRODS_VERSION 4.2.2
-ENV IRODS_UNAME irods
-# ENV IRODS_UID 990
-ENV IRODS_UID 1001
-RUN useradd \
-    -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
-    --uid $IRODS_UID $IRODS_UNAME \
-    && mkdir -p /home/$IRODS_UNAME && chown $IRODS_UID /home/$IRODS_UNAME
+
+# ENV IRODS_UNAME irods
+# # ENV IRODS_UID 990
+# ENV IRODS_UID 1001
+# RUN useradd \
+#     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
+#     --uid $IRODS_UID $IRODS_UNAME \
+#     && mkdir -p /home/$IRODS_UNAME && chown $IRODS_UID /home/$IRODS_UNAME
 
 RUN apt-get update && apt-get install -y \
         irods-runtime=$IRODS_VERSION \
@@ -50,12 +51,16 @@ RUN apt-get update && apt-get install -y \
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
     && dpkg -i dumb-init_*.deb \
     && rm *.deb
-RUN mkdir /docker-entrypoint.d/
+ENV TERM xterm-256color
 # ENTRYPOINT
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/*
+
 # command
-USER $IRODS_UNAME
-ENV TERM xterm-256color
+RUN chmod +x /usr/local/bin/*
 CMD ["docker-entrypoint", "download"]
+
+# # FIXME: use root
+# # to adjust batch dir permissions
+# USER $IRODS_UNAME
