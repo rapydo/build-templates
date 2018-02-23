@@ -24,6 +24,10 @@ if [ "$?" == "0" ]; then
     ./acme.sh --list
 
     nginx -s reload
+
+    cd ${CERTDIR}
+    ln -sfn fullchain1.pem ../neo4j.cert
+    ln -sfn privkey1.pem ../neo4j.key
 else
     echo "ACME FAILED!"
 fi
