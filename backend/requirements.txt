@@ -2,6 +2,7 @@
 pip
 six
 httpie
+beeprint
 prettyprinter
 better_exceptions
 ipython

@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     python3.6 build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
+    globus-proxy-utils \
     nginx \
     && cd /usr/bin && ln -s python3.6 python \
     && apt-get autoremove && apt-get clean \
