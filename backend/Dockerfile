@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -s python3.6 python \
+    && cd /usr/bin && ln -s python3.6 python && ln -s python3.6 python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################

@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     python3.6 build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev \
-    && cd /usr/bin && ln -s python3.6 python \
+    && cd /usr/bin && ln -s python3.6 python && ln -s python3.6 python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 
