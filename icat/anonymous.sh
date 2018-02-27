@@ -14,9 +14,10 @@ if [ "$?" != "0" ]; then
     exit 1
 fi
 
-# create a home to use
-berods -c 'imkdir /tempZone/home/anonymous'
-berods -c 'ichmod write anonymous /tempZone/home/anonymous'
+# CHECK with @claudio if this could be removed
+# # create a home to use
+# berods -c 'imkdir /tempZone/home/anonymous'
+# berods -c 'ichmod write anonymous /tempZone/home/anonymous'
 
 # public is readable for anonymous
 berods -c 'ichmod read anonymous /tempZone/home/public'
