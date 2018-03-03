@@ -16,8 +16,8 @@ fi
 
 # CHECK with @claudio if this could be removed
 # # create a home to use
-# berods -c 'imkdir /tempZone/home/anonymous'
-# berods -c 'ichmod write anonymous /tempZone/home/anonymous'
+# berods -c 'imkdir /$IRODS_ZONE/home/anonymous'
+# berods -c 'ichmod write anonymous /$IRODS_ZONE/home/anonymous'
 
 # public is readable for anonymous
-berods -c 'ichmod read anonymous /tempZone/home/public'
+berods -c 'ichmod read anonymous /$IRODS_ZONE/home/public'
