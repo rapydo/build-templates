@@ -27,7 +27,7 @@ if [ "$?" == "0" ]; then
 
     cd ${CERTDIR}
     cd ..
-    rm neo4j.cert neo4j.key
+    rm -f neo4j.cert neo4j.key
     ln -sfn ${CERTCHAIN} neo4j.cert
     ln -sfn ${CERTKEY} neo4j.key
 else
