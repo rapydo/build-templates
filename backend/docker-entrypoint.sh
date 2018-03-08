@@ -69,8 +69,8 @@ done
 
 # FIXME: execute fixers on all mounted dirs?
 # can we get this info from df or similar?
+# TODO: evaluate if this should be executed before init
 if [ -d "$CODE_DIR" ]; then
-    # TODO: evaluate if this should be executed before init
     chown -R $APIUSER $CODE_DIR
 fi
 if [ -d "$CERTDIR" ]; then

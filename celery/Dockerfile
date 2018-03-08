@@ -6,6 +6,9 @@ FROM ubuntu:17.10
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
+
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
@@ -40,7 +43,7 @@ COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
 
-ENV APIUID 990
+ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \

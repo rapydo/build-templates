@@ -14,6 +14,9 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
+
 ###################
 # APT
 RUN apt-get update && apt-get install -y \
@@ -51,7 +54,7 @@ COPY gsi.conf /etc/gss/mech.d/
 ENV APIUSER developer
 # Emulating irods user creation. See http://j.mp/2lGPqlq
 
-ENV APIUID 990
+ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \

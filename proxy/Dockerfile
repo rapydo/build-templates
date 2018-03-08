@@ -8,6 +8,9 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION" && \
     mkdir -p /etc/rapydo && echo $RAPYDO_VERSION > /etc/rapydo/release
 
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
+
 ###################
 RUN apk update && \
     apk add vim wget git bash \

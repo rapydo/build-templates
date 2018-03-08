@@ -3,6 +3,9 @@
 FROM ubuntu:17.10
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
+
 ##############
 ### HOW TO ###
 
@@ -40,7 +43,7 @@ RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
 # Make sure the main irods user is the same id into HTTP API server
 ENV IRODS_UNAME irods
 # FIXME: not possible at the moment to change this name from configuration
-ENV IRODS_UID 990
+ENV IRODS_UID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
     --uid $IRODS_UID $IRODS_UNAME \
