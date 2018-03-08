@@ -13,5 +13,8 @@ EXPOSE 8080
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
+# Only required for Angularjs ... remove me in a near future
+RUN apt-get update && apt-get install -y unzip
+
 # ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint"]
