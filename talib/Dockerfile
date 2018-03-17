@@ -10,9 +10,7 @@ WORKDIR /tmp
 RUN wget https://sourceforge.net/projects/ta-lib/files/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz
 RUN tar xvf ta-lib-0.4.0-src.tar.gz
 WORKDIR /tmp/ta-lib
-RUN ./configure --prefix=/usr
-RUN make
-RUN make install
+RUN ./configure --prefix=/usr && make && make install
 
 RUN pip install --upgrade numpy pandas matplotlib TA-Lib
 
