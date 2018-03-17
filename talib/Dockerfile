@@ -14,5 +14,5 @@ RUN ./configure --prefix=/usr
 RUN make
 RUN make install
 
-RUN pip install --upgrade numpy
-RUN pip install --upgrade pandas
+RUN pip install --upgrade numpy pandas matplotlib TA-Lib
+
