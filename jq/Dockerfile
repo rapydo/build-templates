@@ -1,5 +1,6 @@
 
-FROM alpine:edge
+# FROM alpine:edge
+FROM alpine:3.7
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 WORKDIR /tmp
