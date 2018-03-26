@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-if [ "$1" != 'download' ]; then
-    echo "Requested custom command:"
-    echo "\$ $@"
-    $@
-    exit 0
-fi
+# if [ "$1" != 'download' ]; then
+#     echo "Requested custom command:"
+#     echo "\$ $@"
+#     $@
+#     exit 0
+# fi
 
 ######################################
 #
@@ -30,6 +30,12 @@ done
 if [ "$BATCH_SRC_PATH" == "" -o "$BATCH_DEST_PATH" == "" ]; then
     echo "Missing source and/or destination to be copied"
     exit 1
+else
+    if [ "$1" == 'download' ]; then
+        IPATH=$BATCH_SRC_PATH
+    elif [ "$1" == 'upload' ]; then
+        IPATH=$BATCH_DEST_PATH
+    fi
 fi
 
 # 1. check if IRODS_HOST variable exists
@@ -56,20 +62,30 @@ if [ "$IRODS_HOST" != "" ]; then
         echo 'irods login completed'
     fi
     # 3. check with ils
-    ils -A $BATCH_SRC_PATH
+    ils -A $IPATH
     if [ "$?" != "0" ]; then
         echo "FAILURE: not able to test ILS on batch path"
         exit 1
     fi
 
-    # 4. copy the file into the destination directory
-    # TODO: build, push and test it
-    iget -f $BATCH_SRC_PATH $BATCH_DEST_PATH
-    echo "File copied"
+    if [ "$1" == 'download' ]; then
+        # 4. copy the file into the destination directory
+        # TODO: build, push and test it
+        iget -f $BATCH_SRC_PATH $BATCH_DEST_PATH
+        echo "File copied"
 
-    # whoami
-    # fix permissions
-    chown 1000 -R $BATCH_DEST_PATH
+        # whoami
+        # fix permissions
+        # TODO: get to know which user should be mapped here
+        chown 1000 -R $BATCH_DEST_PATH
+    elif [ "$1" == 'upload' ]; then
+        # the variable this time is a list
+        for file in $FILES;
+        do
+            iput -f $BATCH_SRC_PATH/$file $BATCH_DEST_PATH
+            echo "Deposited: $file into $BATCH_DEST_PATH"
+        done
+    fi
 
 else
     echo "Please set IRODS minimum set of variables as described in:"
