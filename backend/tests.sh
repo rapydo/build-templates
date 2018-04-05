@@ -7,6 +7,8 @@ if [ ! -d "tests" ]; then
     exit 1
 fi
 
+export COVERAGE_FILE="/tmp/.coverage"
+
 if [ -z "$1" ]; then
     CURRENT_PACKAGE="$VANILLA_PACKAGE"
     COV="--cov=$CURRENT_PACKAGE.apis --cov=$CURRENT_PACKAGE.tasks --cov=$CURRENT_PACKAGE.models"
