@@ -1,7 +1,10 @@
 
 ###################
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
 
 ##############
 ### HOW TO ###
@@ -40,7 +43,7 @@ RUN wget -qO - $URL/irods-signing-key.asc | apt-key add - \
 # Make sure the main irods user is the same id into HTTP API server
 ENV IRODS_UNAME irods
 # FIXME: not possible at the moment to change this name from configuration
-ENV IRODS_UID 990
+ENV IRODS_UID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
     --uid $IRODS_UID $IRODS_UNAME \
@@ -52,11 +55,12 @@ RUN useradd \
 # ENV IRODS_VERSION 4.2.0
 # ENV GSI_VERSION 2.0.0
 
-# ENV IRODS_VERSION 4.2.1
-# ENV GSI_VERSION 2.1.0
+ENV IRODS_VERSION 4.2.1
+ENV GSI_VERSION 2.1.0
 
-ENV IRODS_VERSION 4.2.2
-ENV GSI_VERSION 2.2.0
+# BUGGED against b2safe!
+# ENV IRODS_VERSION 4.2.2
+# ENV GSI_VERSION 2.2.0
 
 RUN apt-get update && apt-get install -y \
         irods-runtime=$IRODS_VERSION irods-icommands=$IRODS_VERSION \

@@ -13,6 +13,7 @@ env:
 - SERVICE=sqlalchemyui
 - SERVICE=proxy
 - SERVICE=ftp
+- SERVICE=frontend
 services:
 - docker
 before_install:
@@ -24,4 +25,4 @@ script:
 - docker --version
 - docker-compose --version
 - echo "Building service $SERVICE"
-- docker-compose build --build-arg RAPYDO_VERSION=0.6.0 $SERVICE
+- docker-compose build --build-arg RAPYDO_VERSION=0.6.1 --build-arg CURRENT_UID=990 $SERVICE
