@@ -35,6 +35,8 @@ else
         IPATH=$BATCH_SRC_PATH
     elif [ "$1" == 'upload' ]; then
         IPATH=$BATCH_DEST_PATH
+    elif [ "$1" == 'addzip' ]; then
+        echo 'zip to add'
     fi
 fi
 
@@ -85,6 +87,10 @@ if [ "$IRODS_HOST" != "" ]; then
             iput -f $BATCH_SRC_PATH/$file $BATCH_DEST_PATH
             echo "Deposited: $file into $BATCH_DEST_PATH"
         done
+    elif [ "$1" == 'addzip' ]; then
+        echo 'TO DO :)'
+        echo "uhm: $BATCH_SRC_PATH"
+        echo "zip to add: $BATCH_DEST_PATH"
     fi
 
 else

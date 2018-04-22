@@ -59,8 +59,9 @@ COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 # command
 RUN chmod +x /usr/local/bin/*
-CMD ["docker-entrypoint", "upload"]
 # CMD ["docker-entrypoint", "download"]
+# CMD ["docker-entrypoint", "upload"]
+CMD ["docker-entrypoint", "addzip"]
 
 # NOTE: using root to adjust batch dir permissions
 # USER $IRODS_UNAME
