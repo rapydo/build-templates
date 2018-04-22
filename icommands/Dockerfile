@@ -19,6 +19,7 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 # Preparation
 WORKDIR /tmp
 RUN apt-get update -qq && apt-get install -y \
+        zip zipmerge \
         wget git vim apt-transport-https libxml2 \
     && apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log /tmp/*
@@ -65,3 +66,6 @@ CMD ["docker-entrypoint", "addzip"]
 
 # NOTE: using root to adjust batch dir permissions
 # USER $IRODS_UNAME
+
+ENV LINES 28
+ENV COLUMNS 160

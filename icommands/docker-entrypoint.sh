@@ -64,7 +64,9 @@ if [ "$IRODS_HOST" != "" ]; then
         echo 'irods login completed'
     fi
     # 3. check with ils
-    ils -A $IPATH
+    echo 'check irods connection:'
+    # ils -A $IPATH
+    ils $IPATH
     if [ "$?" != "0" ]; then
         echo "FAILURE: not able to test ILS on batch path"
         exit 1
@@ -88,9 +90,41 @@ if [ "$IRODS_HOST" != "" ]; then
             echo "Deposited: $file into $BATCH_DEST_PATH"
         done
     elif [ "$1" == 'addzip' ]; then
-        echo 'TO DO :)'
-        echo "uhm: $BATCH_SRC_PATH"
-        echo "zip to add: $BATCH_DEST_PATH"
+        echo
+
+        # 1. iget unzip uploaded
+        zip1="uploaded.zip"
+        iget -f $BATCH_DEST_PATH $zip1
+        echo "Obtained: $BATCH_DEST_PATH"
+        zip -T $zip1
+        zipinfo -1 $zip1
+        echo
+
+        # 2. iget current if existing
+        current="${BATCH_SRC_PATH}_unrestricted.zip"
+        check=$(ils $current 2>&1 | tr -d ' ')
+        if [ "$check" == "$current" ]; then
+            zip2="current.zip"
+            iget -f $current $zip2
+            echo "Obtained: $current"
+            zip -T $zip2
+            zipinfo -1 $zip2
+            echo
+        fi
+
+        # 3. zipmerge
+        zip3="new.zip"
+        zipmerge -s $zip3 $zip1 $zip2
+        ls *.zip
+        echo
+
+        # 4. iput new zip
+        echo "zip info:"
+        zipinfo $zip3
+        # zipinfo -1 $zip3
+        iput -f $zip3 $current
+        echo "SAVED"
+
     fi
 
 else
