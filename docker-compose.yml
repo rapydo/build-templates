@@ -6,6 +6,9 @@
 backend:
   build: backend
 
+frontend:
+  build: frontend 
+
 celery:
   build: celery
 

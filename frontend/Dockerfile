@@ -2,6 +2,8 @@ FROM node:carbon
 
 WORKDIR /opt
 
+RUN git clone https://github.com/angular/angular-cli.git && cd angular-cli && npm link
+
 RUN npm install package-merge
 
 ENV NODE_PATH /opt/node_modules
