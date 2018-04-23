@@ -42,7 +42,7 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # # && pipconflictchecker
 
 RUN for package in `cat requirements.txt`; do \
-    echo "adding: $package"; pip3 install --upgrade --no-cache-dir $package; done
+    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
