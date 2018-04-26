@@ -1,7 +1,5 @@
 #!/bin/bash
 
-### TODO: demoResc has to be a variables
-
 echo "Becoming B2SAFE"
 
 ###############
@@ -17,7 +15,9 @@ source ~/.bash_aliases
 chown -R $IRODS_UNAME $RESOURCES_DIR
 
 echo "Fix resources"
+# TODO: demoResc should be a variable?
 berods -c "iadmin rmresc demoResc"
+# berods -c "iadmin rmresc $IRODS_DEFAULT_RESOURCE"
 if [ "$?" != "0" ]; then
     echo "failed to admin resource"
     exit 1
@@ -67,12 +67,15 @@ cd /opt/eudat/b2safe/packaging
 keytochange='CHANGEME'
 sed -i "15s/$keytochange/$MAINRES/" $B2SAFE_CONFIG
 sed -i "20s/$keytochange/$HOSTNAME/" $B2SAFE_CONFIG
+# https://github.com/EUDAT-Training/B2SAFE-B2STAGE-Training/blob/master/11a-Setup-HTTP-API.md#download-and-install-b2safe
+# put some variables here
 # sed -i "22s/$keytochange/$HANDLE_BASE/" $B2SAFE_CONFIG
 # sed -i "23s/$keytochange/$HANDLE_USER/" $B2SAFE_CONFIG
 # sed -i "24s/$keytochange/$HANDLE_PREFIX/" $B2SAFE_CONFIG
 cp $B2SAFE_CONFIG install.conf
 chown $IRODS_UNAME install*
 
+## YOU WILL BE PROMPTED FOR A PASSWORD
 # # Install b2safe mod
 # PASSFILE='mypass'
 # echo $HANDLE_PASS > $PASSFILE
@@ -92,9 +95,26 @@ cd /opt/eudat/b2safe/cmd \
     && ./epicclient2.py --help \
     && ./logmanager.py -h \
     && ./messageManager.py -h \
-    && ./metadataManager.py -h \
     && ./timeconvert.py epoch_to_iso8601 2000000
 
+# && ./metadataManager.py -h \ ## WHERE DID IT GO?
+
+
+##########################
+touch /opt/eudat/b2safe/rulebase/myrules.re
+# change re_rulebase_set in /etc/irods/server_config.json
+# order does count
+#https://github.com/EUDAT-Training/B2SAFE-B2STAGE-Training/blob/master/11a-Setup-HTTP-API.md#installing-the-b2safe-replication-event-hook
+
+# happening only in ON($objPath like "/$rodsZoneClient/home/$userNameClient/b2safe/*"){
+
+
+##########################
+# if federated
+# hook EUDATReplication
+
+
+##########################
 if [ "$?" == "0" ]; then
     echo "EUDAT-B2SAFE setup completed"
 else

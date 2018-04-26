@@ -1,5 +1,6 @@
 
-FROM b2safe/server:icat
+# FROM b2safe/server:icat
+FROM rapydo/icat:0.6.1
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 #################
@@ -42,6 +43,8 @@ RUN ./create_deb_package.sh
 ENV B2SAFE_HOME /opt/eudat/b2safe
 ENV B2SAFE_CONFIG /tmp/myb2safe.conf
 ADD config.ini $B2SAFE_CONFIG
+ADD extra_b2access.sh /docker-entrypoint.d/b2access.sh
+ADD extra_b2safe.sh /docker-entrypoint.d/b2safe.sh
 
 # Save resources and eudat configurations
 VOLUME /opt
