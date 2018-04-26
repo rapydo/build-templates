@@ -1,7 +1,7 @@
 
 ###################
 FROM ubuntu:17.10
-MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ##############
 ### HOW TO ###
