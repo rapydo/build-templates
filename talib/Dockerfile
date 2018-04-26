@@ -1,5 +1,5 @@
-FROM python:3.6.4-alpine3.7
-MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
+FROM python:3.6.5-alpine3.7
+LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 WORKDIR /tmp
 

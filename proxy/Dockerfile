@@ -1,7 +1,7 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.13.9-alpine
-MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+FROM nginx:1.13.12-alpine
+LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
 ARG RAPYDO_VERSION
