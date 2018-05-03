@@ -6,6 +6,7 @@ better_exceptions
 httpie
 ipython
 plumbum
-git+https://github.com/irods/python-irodsclient.git@master
+#git+https://github.com/irods/python-irodsclient.git@master
+git+https://github.com/pdonorio/python-irodsclient.git@master
 flower
 celery
