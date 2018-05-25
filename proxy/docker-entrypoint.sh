@@ -40,6 +40,9 @@ for f in `ls $dedir`; do
     echo
 done
 
+# Let other services, like neo4j, to write into this volume
+chmod -R +w /etc/letsencrypt
+
 #####################
 # Completed
 echo "launching server"
