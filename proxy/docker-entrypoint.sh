@@ -42,6 +42,7 @@ done
 
 # Let other services, like neo4j, to write into this volume
 chmod -R +w /etc/letsencrypt
+chmod +x /etc/letsencrypt
 
 #####################
 # Completed
