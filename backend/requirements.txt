@@ -14,13 +14,10 @@ uWSGI
 uwsgitop
 plumbum
 glom
-
 pika
 gdapi-python
 websocket-client
 celery
 psutil
-
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
-#git+https://github.com/irods/python-irodsclient.git@master
-git+https://github.com/pdonorio/python-irodsclient.git@master
+git+https://github.com/irods/python-irodsclient.git@master
