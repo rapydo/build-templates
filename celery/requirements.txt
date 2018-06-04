@@ -7,7 +7,6 @@ httpie
 ipython
 plumbum
 git+https://github.com/irods/python-irodsclient.git@master
-#git+https://github.com/pdonorio/python-irodsclient.git@master
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 flower
 celery
