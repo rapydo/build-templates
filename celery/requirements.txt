@@ -11,3 +11,4 @@ git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 flower
 celery
 pika
+redis
