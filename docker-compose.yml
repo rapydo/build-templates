@@ -9,6 +9,12 @@ backend:
 frontend:
   build: frontend 
 
+angular:
+  build: angular 
+
+react:
+  build: react 
+
 celery:
   build: celery
 
