@@ -12,3 +12,4 @@ flower
 celery
 pika
 redis
+elasticsearch
