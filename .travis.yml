@@ -13,7 +13,8 @@ env:
 - SERVICE=sqlalchemyui
 - SERVICE=proxy
 - SERVICE=ftp
-- SERVICE=frontend
+- SERVICE=angular
+- SERVICE=react
 services:
 - docker
 before_install:
