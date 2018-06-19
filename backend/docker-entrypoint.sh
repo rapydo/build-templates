@@ -67,17 +67,8 @@ done
 #####################
 # Fixers: part 1
 
-# TODO: evaluate if this should be executed before init
-if [ -d "$CODE_DIR" ]; then
-    chown -R $APIUSER $CODE_DIR
-fi
-
 if [ -d "$CERTDIR" ]; then
     chown -R $APIUSER $CERTDIR
-fi
-UPLOAD_DIR="/uploads"
-if [ -d "$UPLOAD_DIR" ]; then
-    chown -R $APIUSER $UPLOAD_DIR
 fi
 
 #####################
