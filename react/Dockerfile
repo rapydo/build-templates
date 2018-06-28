@@ -1,22 +1,34 @@
-FROM node:carbon
 
-WORKDIR /opt
+###############
+FROM node:8.11.3-alpine
+LABEL maintainer="Paolo D'Onorio De Meo <paolo@proofmedia.io>"
 
-# RUN git clone https://github.com/angular/angular-cli.git && cd angular-cli && # npm link
+###############
+RUN apk --no-cache update && \
+    apk --no-cache upgrade && apk add \
+    bash less vim git \
+    g++ make bash zlib-dev libpng-dev \
+    && rm -rf /var/cache/apk/*
+# curl wget bind-tools jq \
+# https://github.com/imagemin/pngquant-bin/issues/36#issuecomment-381587705
 
-RUN npm install package-merge
-
+###############
 ENV NODE_PATH /opt/node_modules
+WORKDIR /opt
+# RUN npm install package-merge
 
-WORKDIR /rapydo/
+###############
+# # FIXME: add a user?
+# ARG CURRENT_UID
+# RUN test -n "$CURRENT_UID"
 
-EXPOSE 8080
-
+###############
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-
-# Only required for Angularjs ... remove me in a near future
-# RUN apt-get update && apt-get install -y unzip
-
 # ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint"]
+
+###############
+# EXPOSE 8080
+EXPOSE 5000
+WORKDIR /rapydo/
