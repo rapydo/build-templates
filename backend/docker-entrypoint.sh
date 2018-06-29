@@ -28,9 +28,6 @@ if [ ! -f "$secret_file" ]; then
     if [ "$check_volumes" == 'yes' ]; then
         echo "First time access"
 
-        # set permission on the main development folder
-        chown $APIUSER $CODE_DIR
-
         # Create the secret to enable security on JWT tokens
         mkdir -p $JWT_APP_SECRETS
         head -c 24 /dev/urandom > $secret_file
@@ -55,6 +52,9 @@ else
         touch /${JWT_APP_SECRETS}/initialized
     fi
 fi
+
+# fix permissions on the main development folder
+chown $APIUSER $CODE_DIR
 
 #####################
 # Extra scripts
