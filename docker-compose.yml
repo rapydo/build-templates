@@ -6,14 +6,17 @@
 backend:
   build: backend
 
+lightbackend:
+  build: lightbackend
+
 frontend:
-  build: frontend 
+  build: frontend
 
 angular:
-  build: angular 
+  build: angular
 
 react:
-  build: react 
+  build: react
 
 celery:
   build: celery
