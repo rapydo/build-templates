@@ -9,9 +9,6 @@ backend:
 backendirods:
   build: backendirods 
 
-lightbackend:
-  build: lightbackend
-
 angular:
   build: angular
 
