@@ -9,9 +9,6 @@ backend:
 lightbackend:
   build: lightbackend
 
-frontend:
-  build: frontend
-
 angular:
   build: angular
 
