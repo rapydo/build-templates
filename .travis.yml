@@ -6,6 +6,7 @@ python:
 - 3.6.1
 env:
 - SERVICE=backend
+- SERVICE=backendirods
 - SERVICE=celery
 - SERVICE=icat
 - SERVICE=swaggerui
