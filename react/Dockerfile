@@ -8,8 +8,10 @@ RUN apk --no-cache update && \
     apk --no-cache upgrade && apk add \
     bash less vim git \
     g++ make bash zlib-dev libpng-dev \
+    python3 \
     && rm -rf /var/cache/apk/*
-# curl wget bind-tools jq \
+# NOTE: python3 to be removed when switching to nginx
+# other packages: curl wget bind-tools jq
 # https://github.com/imagemin/pngquant-bin/issues/36#issuecomment-381587705
 
 ###############
