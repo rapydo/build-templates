@@ -23,8 +23,9 @@ if [ "$APP_MODE" == 'production' ]; then
   echo "Not implemented yet"
   exec sleep 1234567890
 elif [ "$APP_MODE" == 'development' ]; then
-  echo "Prod mode: build and serve"
-  exec yarn build && cd build && python3 -m http.server 5000
+  echo "Remote mode: build"
+  # exec yarn build && cd build && python3 -m http.server 5000
+  exec yarn build
 elif [ "$APP_MODE" == 'debug' ]; then
   echo "Dev mode: sleeping"
   exec sleep 1234567890
