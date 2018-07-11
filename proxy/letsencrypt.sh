@@ -34,10 +34,9 @@ if [ "$?" == "0" ]; then
     nginx -s reload
 
     cd ${CERTDIR}
-    cd ..
     rm -f neo4j.cert neo4j.key
-    ln -sfn ${CERTCHAIN} neo4j.cert
-    ln -sfn ${CERTKEY} neo4j.key
+    ln -sfn ${CERTCHAINFILE} neo4j.cert
+    ln -sfn ${CERTKEYFILE} neo4j.key
 else
     echo "ACME FAILED!"
 fi
