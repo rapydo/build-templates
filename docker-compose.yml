@@ -15,8 +15,8 @@ angular:
 react:
   build: react
 
-celery:
-  build: celery
+# celery:
+#   build: celery
 
 icat:
   # image: b2safe/server:icat

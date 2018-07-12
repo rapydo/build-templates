@@ -7,7 +7,6 @@ python:
 env:
 - SERVICE=backend
 - SERVICE=backendirods
-- SERVICE=celery
 - SERVICE=icat
 - SERVICE=swaggerui
 - SERVICE=restclient
