@@ -37,13 +37,15 @@ ENV WWWDIR /usr/share/nginx/html
 
 # Save production certificates across multiple run
 ENV CERTDIR /etc/letsencrypt
-ENV CERTKEYFILE real/privkey1.pem
-ENV CERTCHAINFILE real/fullchain1.pem
+ENV CERTSUBDIR real
+ENV CERTKEYFILE $CERTSUBDIR/privkey1.pem
+ENV CERTCHAINFILE $CERTSUBDIR/fullchain1.pem
 
 ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
 ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
 
 RUN mkdir -p $CERTDIR
+RUN mkdir -p $CERTDIR/$CERTSUBDIR
 VOLUME /etc/letsencrypt
 
 # dhparam for better security
