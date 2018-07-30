@@ -1,6 +1,6 @@
 
 FROM b2safe/server:icat
-MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 #################
 # USER root

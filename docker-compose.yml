@@ -6,11 +6,17 @@
 backend:
   build: backend
 
-frontend:
-  build: frontend 
+backendirods:
+  build: backendirods 
 
-celery:
-  build: celery
+angular:
+  build: angular
+
+react:
+  build: react
+
+# celery:
+#   build: celery
 
 icat:
   # image: b2safe/server:icat

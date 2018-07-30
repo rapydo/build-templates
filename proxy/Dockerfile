@@ -1,7 +1,7 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.13.9-alpine
-MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+FROM nginx:1.13.12-alpine
+LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
 
 ###################
 ARG RAPYDO_VERSION
@@ -36,10 +36,16 @@ WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
 # Save production certificates across multiple run
-ENV CERTDIR /etc/letsencrypt/real
-ENV CERTKEY ${CERTDIR}/privkey1.pem
-ENV CERTCHAIN ${CERTDIR}/fullchain1.pem
+ENV CERTDIR /etc/letsencrypt
+ENV CERTSUBDIR real
+ENV CERTKEYFILE $CERTSUBDIR/privkey1.pem
+ENV CERTCHAINFILE $CERTSUBDIR/fullchain1.pem
+
+ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
+ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
+
 RUN mkdir -p $CERTDIR
+RUN mkdir -p $CERTDIR/$CERTSUBDIR
 VOLUME /etc/letsencrypt
 
 # dhparam for better security

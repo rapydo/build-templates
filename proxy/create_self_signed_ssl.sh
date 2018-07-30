@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-# # Where to store key and cert files
-# key=${CERTDIR}/privkey1.pem
-# cert=${CERTDIR}/fullchain1.pem
-
 command="openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $CERTKEY -out $CERTCHAIN"
 
 # Input values required by the command:
