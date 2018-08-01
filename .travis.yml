@@ -26,4 +26,10 @@ script:
 - docker --version
 - docker-compose --version
 - echo "Building service $SERVICE"
-- docker-compose build --build-arg RAPYDO_VERSION=0.6.3 --build-arg CURRENT_UID=990 $SERVICE
+- docker-compose build --build-arg RAPYDO_VERSION=0.6.3 --build-arg CURRENT_UID=990
+  $SERVICE
+notifications:
+  email: false
+  slack:
+    rooms:
+      secure: d+uZmTIufQtUYTzBAO4fjnwp7zR2E9d2ElSnkKssWCGiX5EzgEJx7RDOFTLqYrMNvs1kYywpti+4BEWzckyDOR0uyv91L+EM17mFVkrqiqM2wXJlVxFW2xQYCnggiu8SjBS29PZvAoTmx28xQcCQfeo7zqAHf5RssRQWIYqUTkb854kEtrpiafwy5Ap1zJVEaMqg5lnoBIHI1/1gFK/zsJswrnS4OCIMAXbREMK0kQ+RzgW5ZLeUd8GHKPK8Ehf5WqFh/3BWrJUci6UCZtZFW9BEUJ/pTwOd+gUYZYw9ROFsJOAycfQQUVPxSXc5/HXQoB1qCUxzEeQrySO6qqRM75V29evfLecqJ1ns2L3FndlM47j25T36KANgw4OFeLkwi4PbPH78l9UhFw63ZG1BpyWTv7GTVg2WuXCy/s/fiRhhYK14l8GJ6Y4f8eN8kJ1kqqTpRiggEm+oXg+ts4Gw2cwerjMGEgD6OdaU0H+rp9cc79j7I2r9Xlzn3KpyeGmj20uVDcDwi4DrugxjD94bcJ7fYbisJS4MvhBZi4zLT2I9bXTV4ozl/N1xifsazZa5xU23Lh22JqDeKnD2th/JL/+7M2WWsAdXPjXRPNRJkZZeNzBncvXcrTOsJyM87XMhTfqoCmPyww3wr2mYancadM5EdtPwRq9vyk7mHfEYyNE=
