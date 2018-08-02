@@ -30,7 +30,7 @@ script:
 - docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990
   ${SERVICE}
 - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker login --username "${DOCKER_USERNAME}" --password "${DOCKER_PASSWORD}"
 - docker push rapydo/${SERVICE}:${RAPYDO_VERSION}
 notifications:
   email: false
