@@ -25,9 +25,13 @@ install:
 script:
 - docker --version
 - docker-compose --version
-- echo "Building service $SERVICE"
-- docker-compose build --build-arg RAPYDO_VERSION=0.6.3 --build-arg CURRENT_UID=990
-  $SERVICE
+- echo "Building service ${SERVICE}"
+- export RAPYDO_VERSION=0.6.3
+- docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990
+  ${SERVICE}
+- docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker push rapydo/${SERVICE}:${RAPYDO_VERSION}
 notifications:
   email: false
   slack:
