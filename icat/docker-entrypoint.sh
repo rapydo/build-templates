@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+
+DEVID=`id -u developer`
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing developer uid from $DEVID to $CURRENT_UID..."
+    usermod -u $CURRENT_UID developer
+fi
+
 # set the current password for 'system' user "irods"
 yes $IRODS_PASSWORD | passwd $IRODS_USER
 
