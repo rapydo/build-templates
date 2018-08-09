@@ -29,16 +29,14 @@ RUN apt-get update && apt-get install -y \
     && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
     && apt-get autoremove && apt-get clean \
     && echo "setup installed"
-    # && ln -s python${MYPYTHON_VERSION} python3 \
-    # libkrb5-dev libglobus-gssapi-gsi-dev libssl-dev libffi-dev globus-proxy-utils \
+
 ###################
 COPY requirements.txt /tmp/
 WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 # # DEBUG CONFLICTS:
-# RUN pip install pip-conflict-checker
-# # && pipconflictchecker
+# RUN pip install pip-conflict-checker && pipconflictchecker
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 # Install the right version of RAPYDO components
