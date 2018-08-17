@@ -23,4 +23,3 @@ redis
 psutil
 elasticsearch
 datasheets
-mailchimp3
