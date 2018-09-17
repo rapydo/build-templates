@@ -37,7 +37,7 @@ if [ ! -f "$secret_file" ]; then
         # Create the secret to enable security on JWT tokens
         mkdir -p $JWT_APP_SECRETS
         head -c 24 /dev/urandom > $secret_file
-        # chown -R $APIUSER $JWT_APP_SECRETS $UPLOAD_PATH
+        chown -R $APIUSER $JWT_APP_SECRETS $UPLOAD_PATH
 
         # certificates chains for external oauth services (e.g. B2ACCESS)
         update-ca-certificates
@@ -78,6 +78,11 @@ done
 
 if [ -d "$CERTDIR" ]; then
     chown -R $APIUSER $CERTDIR
+fi
+
+UPLOAD_DIR="/uploads"
+if [ -d "$UPLOAD_DIR" ]; then
+    chown -R $APIUSER $UPLOAD_DIR
 fi
 
 #####################
