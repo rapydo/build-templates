@@ -1,5 +1,5 @@
 
-FROM node:10.9.0-alpine
+FROM node:10.12.0-alpine
 LABEL maintainer="Paolo <paolo@proofmedia.io>"
 
 RUN apk --no-cache update && \
@@ -9,6 +9,10 @@ RUN apk --no-cache update && \
     g++ make bash zlib-dev libpng-dev \
     && rm -rf /var/cache/apk/*
 # about npm packages problem in alpine: http://j.mp/2ubNUcd
+
+# NOTE: yarn will be at the maximum possible release
+# related to current node release
+# v1.12.1 latest, 1.10.1 is installed
 
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
