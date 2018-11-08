@@ -18,5 +18,6 @@ exec $@ &
 pid="$!"                                                                                                                 
 # no success with wait...
 # trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && wait {$pid}" INT TERM
-trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && sleep 5" INT TERM
+trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && sleep 5" TERM
+trap "echo Sending SIGINT to process ${pid} && kill -SIGINT ${pid} && sleep 5" INT
 wait
