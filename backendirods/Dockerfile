@@ -113,7 +113,7 @@ RUN echo "Developer" && \
 
 ##### CELERY COMMANDS #####
 RUN echo "#!/bin/bash\\nexport HOME=/tmp; cd /code; celery worker -c 1 -A restapi.flask_ext.flask_celery.worker.celery_app -n \${HOSTNAME}@\${VANILLA_PACKAGE}" > /usr/local/bin/mycelery && chmod +x /usr/local/bin/mycelery
-RUN echo "#!/bin/bash\\nexport HOME=/tmp; cd /code; flower --basic_auth=\${CELERYUI_USER}:\${CELERYUI_PASSWORD} --port=\${CELERYUI_PORT} persistent=True -A restapi.flask_ext.flask_celery.worker.celery_app -n flower_monitor" > /usr/local/bin/start_flower && chmod +x /usr/local/bin/start_flower
+RUN echo "#!/bin/bash\\nexport HOME=/tmp; cd /code; flower --basic_auth=\${CELERYUI_USER}:\${CELERYUI_PASSWORD} --port=\${CELERYUI_PORT} --persistent --db=${CELERYUI_DBDIR}/flower -A restapi.flask_ext.flask_celery.worker.celery_app -n flower_monitor" > /usr/local/bin/start_flower && chmod +x /usr/local/bin/start_flower
 
 
 ###################
