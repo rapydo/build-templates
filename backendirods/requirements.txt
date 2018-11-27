@@ -18,7 +18,7 @@ pika
 gdapi-python
 websocket-client
 celery
-flower
+git+https://github.com/mher/flower/zipball/master#egg=flower
 redis
 psutil
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
