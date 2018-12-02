@@ -28,11 +28,11 @@ export NODE_PATH=$MODULE_PATH/node_modules
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	exec npm run build 
+	exec npm run build
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-	exec npm start 
+	exec npm start
 
 else
 	echo 'Unknown APP_MODE: [${APP_MODE}]'

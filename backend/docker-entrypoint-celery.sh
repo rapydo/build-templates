@@ -14,8 +14,8 @@ echo "Requested command: $@"
 # $@
 # exit 0
 
-exec $@ &                                                                                                                   
-pid="$!"                                                                                                                 
+exec $@ &
+pid="$!"
 # no success with wait...
 # trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && wait {$pid}" INT TERM
 trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && sleep 5" TERM
