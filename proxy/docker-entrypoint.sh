@@ -1,6 +1,20 @@
 #!/bin/bash
 set -e
 
+
+if [ "$1" == 'updatecertificates' ]; then
+    if pgrep "nginx" > /dev/null
+        then
+            echo "nginx is already running"
+        else 
+            echo "Starting nginx..."
+            exec nginx -g 'daemon off;' &
+    fi
+
+    /bin/bash $@
+    exit 0
+fi
+
 if [ "$1" != 'proxy' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
