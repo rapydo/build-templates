@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+
+DEVID=`id -u $IRODS_UNAME`
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing user $IRODS_UNAME uid from $DEVID to $CURRENT_UID..."
+    usermod -u $CURRENT_UID $IRODS_UNAME
+fi
+
 # set the current password for 'system' user "irods"
 yes $IRODS_PASSWORD | passwd $IRODS_USER
 

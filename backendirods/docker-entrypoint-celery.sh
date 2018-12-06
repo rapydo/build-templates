@@ -1,15 +1,23 @@
 #!/bin/bash
 set -e
 
+# fix permissions of flower db dir
+if [ -d "$CELERYUI_DBDIR" ]; then
+    chown -R $APIUSER $CELERYUI_DBDIR
+fi
+
 echo "waiting for services"
-#eval "$DEV_SU -c 'restapi wait'"
 eval 'restapi wait'
 
 echo "Requested command: $@"
 
-# SLEEP=30
-# echo "This request will be satisfied in ${SLEEP} seconds..."
-# sleep $SLEEP
+# $@
+# exit 0
 
-$@
-exit 0
+$@ &
+pid="$!"
+# no success with wait...
+# trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && wait {$pid}" INT TERM
+trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && sleep 5" TERM
+trap "echo Sending SIGINT to process ${pid} && kill -SIGINT ${pid} && sleep 5" INT
+wait

@@ -6,6 +6,11 @@ set -e
 # Entrypoint!
 #
 ######################################
+DEVID=`id -u developer`
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing developer uid from $DEVID to $CURRENT_UID..."
+    usermod -u $CURRENT_UID developer
+fi
 
 if [ "$API_PORT" == "" ]; then
     if [ "$DOMAIN" != "" ]; then
