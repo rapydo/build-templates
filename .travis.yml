@@ -16,9 +16,6 @@ env:
 - SERVICE=react
 services:
 - docker
-before_install:
-- sudo apt-get update
-- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
 install:
 - pip3 install docker-compose
 script:
