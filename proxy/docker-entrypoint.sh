@@ -8,7 +8,7 @@ if [ "$1" == 'updatecertificates' ]; then
             echo "nginx is already running"
         else 
             echo "Starting nginx..."
-            exec nginx -g 'daemon off;'
+            exec nginx -g 'daemon off;' &
     fi
 
     /bin/bash $@
