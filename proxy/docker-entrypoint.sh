@@ -46,7 +46,7 @@ fi
 #####################
 # Extra scripts
 dedir="/docker-entrypoint.d"
-for f in `ls $dedir`; do
+for f in $(ls $dedir); do
     case "$f" in
         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
         *)        echo "ignoring $f" ;;
