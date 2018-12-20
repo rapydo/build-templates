@@ -11,7 +11,21 @@ if [ "$1" == 'updatecertificates' ]; then
             exec nginx -g 'daemon off;' &
     fi
 
-    /bin/bash $@
+    echo "Creating SSL certificate for domain: ${DOMAIN}"
+    if [ "$DOMAIN" == "localhost" ]; then
+
+        if [ ! -f "$CERTCHAIN" ]; then
+            echo "Creating a self signed SSL certificate"
+            mkdir -p $CERTDIR/$CERTSUBDIR
+            selfsign
+        else
+            echo "A SSL certificate already exist, cannot create new self signed"
+        fi
+    else
+        echo "Requesting new SSL certificate to letsencrypt"
+
+        /bin/bash $@
+    fi
     exit 0
 fi
 
