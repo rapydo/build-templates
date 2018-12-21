@@ -5,7 +5,7 @@ COPY ./ftp_utilities.sh /usr/local/bin/myftp
 RUN chmod +x /usr/local/bin/myftp
 
 
-RUN "Use 'myftp' command to create/modify users" >> /root/.bashrc
+RUN echo "Use 'myftp' command to create/modify users" >> /root/.bashrc
 
 
 # startup
