@@ -23,4 +23,10 @@ if [ "$4" == '' ]; then
 	exit 1
 fi
 
-echo "pure-pw $1 $2 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/$3 < $4"
+if [ "$1" == 'useradd' ]; then
+	(echo "${4}"; echo "${4}") | echo "pure-pw ${1} ${2} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/${3}"
+    exit 0
+else
+	echo "Command not found: ${1}"
+	exit 1
+fi
