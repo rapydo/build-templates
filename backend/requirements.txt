@@ -1,4 +1,3 @@
-
 pip
 six
 httpie
@@ -18,7 +17,7 @@ pika
 gdapi-python
 websocket-client
 celery
-https://github.com/mher/flower/zipball/master#egg=flower
+flower
 redis
 psutil
 elasticsearch
