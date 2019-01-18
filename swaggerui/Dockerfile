@@ -1,6 +1,6 @@
 
 FROM nginx:1.13.12-alpine
-LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 RUN apk update && apk add wget
 WORKDIR /usr/share/nginx/html
