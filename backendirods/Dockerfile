@@ -41,8 +41,8 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # RUN pip install pip-conflict-checker
 # # && pipconflictchecker
 
-# Compatibility errors with pip 19
-RUN pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir pip==18.1
+# Compatibility errors with pip 19, --no-cache-dir brings to errors
+RUN pip3 install --trusted-host pypi.python.org --upgrade pip==18.1
 
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
