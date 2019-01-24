@@ -38,16 +38,13 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
 # # DEBUG CONFLICTS:
-# RUN pip install pip-conflict-checker
-# # && pipconflictchecker
-
-# --no-cache-dir brings to errors with pip 19
+# RUN pip install pip-conflict-checker && pipconflictchecker
 
 RUN for package in `cat requirements.txt`; do \
-    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade $package; done
+    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 
-RUN pip3 install --upgrade git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
-RUN pip3 install --upgrade git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
