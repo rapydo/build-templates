@@ -29,7 +29,7 @@ RUN apt-get update -qq && apt-get install -y \
         apt-transport-https \
         libxml2 \
     # && wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/deb/globus-toolkit-repo_latest_all.deb \
-    && https://downloads.globus.org/toolkit/gt6/stable/installers/repo/deb/globus-toolkit-repo_6.0.14_all.deb \
+    && wget https://downloads.globus.org/toolkit/gt6/stable/installers/repo/deb/globus-toolkit-repo_6.0.14_all.deb \
     && dpkg -i *.deb \
     && apt-get update -qq && apt-get install -y \
         globus-proxy-utils \
