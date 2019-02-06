@@ -46,7 +46,8 @@ if [ "$LOGS" != "" ]; then
     #     echo "There was a problem with uwsgi/nginx logs! Hanging."
     # fi
 
-    tail -f $LOGS
+    # tail -f $LOGS
+    echo ${LOGS}
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity
 fi
