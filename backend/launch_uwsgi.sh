@@ -28,7 +28,7 @@ if [ -n "$NGINX_ACTIVE" ]; then
     echo "Starting nginx"
     service nginx start
     echo ""
-    LOGS="/var/log/nginx/*log $LOGS"
+    # LOGS="/var/log/nginx/*log $LOGS"
 fi
 
 ####################################
