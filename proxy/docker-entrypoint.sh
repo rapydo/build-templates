@@ -1,6 +1,34 @@
 #!/bin/bash
 set -e
 
+
+if [ "$1" == 'updatecertificates' ]; then
+    if pgrep "nginx" > /dev/null
+        then
+            echo "nginx is already running"
+        else 
+            echo "Starting nginx..."
+            exec nginx -g 'daemon off;' &
+    fi
+
+    echo "Creating SSL certificate for domain: ${DOMAIN}"
+    if [ "$DOMAIN" == "localhost" ]; then
+
+        if [ ! -f "$CERTCHAIN" ]; then
+            echo "Creating a self signed SSL certificate"
+            mkdir -p $CERTDIR/$CERTSUBDIR
+            selfsign
+        else
+            echo "A SSL certificate already exist, cannot create new self signed"
+        fi
+    else
+        echo "Requesting new SSL certificate to letsencrypt"
+
+        /bin/bash $@
+    fi
+    exit 0
+fi
+
 if [ "$1" != 'proxy' ]; then
     echo "Requested custom command:"
     echo "\$ $@"
@@ -32,7 +60,7 @@ fi
 #####################
 # Extra scripts
 dedir="/docker-entrypoint.d"
-for f in `ls $dedir`; do
+for f in $(ls $dedir); do
     case "$f" in
         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
         *)        echo "ignoring $f" ;;

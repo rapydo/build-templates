@@ -7,7 +7,7 @@ set -e
 #
 ######################################
 
-DEVID=`id -u $APIUSER`
+DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user $APIUSER uid from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID $APIUSER
@@ -65,7 +65,7 @@ chown $APIUSER $CODE_DIR
 #####################
 # Extra scripts
 dedir="/docker-entrypoint.d"
-for f in `ls $dedir`; do
+for f in $(ls $dedir); do
     case "$f" in
         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
         *)        echo "ignoring $f" ;;

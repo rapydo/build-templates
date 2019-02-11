@@ -2,7 +2,7 @@
 set -e
 
 
-DEVID=`id -u $IRODS_UNAME`
+DEVID=$(id -u $IRODS_UNAME)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user $IRODS_UNAME uid from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID $IRODS_UNAME
@@ -81,7 +81,7 @@ fi
 
 # Extra scripts
 dedir="/docker-entrypoint.d"
-for f in `ls $dedir`; do
+for f in $(ls $dedir); do
     case "$f" in
         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
         *)        echo "ignoring $f" ;;

@@ -35,11 +35,13 @@ COPY requirements.txt /tmp/
 WORKDIR /tmp
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
+
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
+
 RUN for package in `cat requirements.txt`; do \
     echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
-# Install the right version of RAPYDO components
+
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
@@ -104,10 +106,6 @@ RUN echo "Developer" && \
     echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
-##### CELERY COMMANDS #####
-RUN echo "#!/bin/bash\\nexport HOME=/tmp; cd /code; celery worker -c 1 -A restapi.flask_ext.flask_celery.worker.celery_app -n \${HOSTNAME}@\${VANILLA_PACKAGE}" > /usr/local/bin/mycelery && chmod +x /usr/local/bin/mycelery
-RUN echo "#!/bin/bash\\nexport HOME=/tmp; cd /code; flower --basic_auth=\${CELERYUI_USER}:\${CELERYUI_PASSWORD} --port=\${CELERYUI_PORT} --persistent --db=${CELERYUI_DBDIR}/flower -A restapi.flask_ext.flask_celery.worker.celery_app -n flower_monitor" > /usr/local/bin/start_flower && chmod +x /usr/local/bin/start_flower
-
 ###################
 # dumb init
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
@@ -125,11 +123,6 @@ COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
-
-# CELERY
-# ENTRYPOINT ["docker-entrypoint"]
-# CMD ["mycelery"]
-
 
 # TODO: verify if better using tini for entrypoint
 # https://github.com/krallin/tini-images

@@ -11,7 +11,7 @@ echo "Using server $SERVER"
 
 echo "Login"
 # export CREDENTIALS="username=user@nomail.org password=test"
-TOKEN=`http POST $SERVER/auth/login $CREDENTIALS | jq '.Response.data.token' | tr -d '"'`
+TOKEN=$(http POST $SERVER/auth/login $CREDENTIALS | jq '.Response.data.token' | tr -d '"')
 
 if [ "$TOKEN" == "" ]; then
     echo ""

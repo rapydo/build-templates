@@ -28,7 +28,7 @@ if [ -n "$NGINX_ACTIVE" ]; then
     echo "Starting nginx"
     service nginx start
     echo ""
-    LOGS="/var/log/nginx/*log $LOGS"
+    # LOGS="/var/log/nginx/*log $LOGS"
 fi
 
 ####################################
@@ -46,6 +46,7 @@ if [ "$LOGS" != "" ]; then
     #     echo "There was a problem with uwsgi/nginx logs! Hanging."
     # fi
 
+    echo ${LOGS}
     tail -f $LOGS
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity

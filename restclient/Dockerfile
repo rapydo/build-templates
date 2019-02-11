@@ -7,7 +7,7 @@ RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
-LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################################
 RUN apk update && apk upgrade && apk add \

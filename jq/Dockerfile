@@ -1,7 +1,7 @@
 
 # FROM alpine:edge
 FROM alpine:3.7
-LABEL maintainer="Paolo D'Onorio De Meo <p.donoriodemeo@cineca.it>"
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 WORKDIR /tmp
 RUN apk update && apk upgrade && apk add \
