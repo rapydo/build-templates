@@ -1,5 +1,12 @@
 FROM docker:dind
 
+LABEL maintainer="Mattia D'Antonio"
+
+ARG RAPYDO_VERSION
+RUN test -n "$RAPYDO_VERSION"
+ARG CURRENT_UID
+RUN test -n "$CURRENT_UID"
+
 RUN apk add git python3
 
 RUN pip3 install --upgrade pip
