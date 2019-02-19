@@ -40,3 +40,6 @@ proxy:
 sqlalchemyui:
   build: sqlalchemyui
 
+dind:
+  build: dind
+

@@ -14,6 +14,7 @@ env:
 - SERVICE=ftp
 - SERVICE=angular
 - SERVICE=react
+- SERVICE=dind
 services:
 - docker
 install:
