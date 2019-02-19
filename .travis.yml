@@ -4,6 +4,7 @@ dist: xenial
 python:
 - 3.7.1
 env:
+- SERVICE=dind
 - SERVICE=backend
 - SERVICE=backendirods
 - SERVICE=icat
@@ -14,7 +15,6 @@ env:
 - SERVICE=ftp
 - SERVICE=angular
 - SERVICE=react
-- SERVICE=dind
 services:
 - docker
 install:
