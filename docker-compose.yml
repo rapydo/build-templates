@@ -42,4 +42,5 @@ sqlalchemyui:
 
 dind:
   build: dind
+  privileged: true
 
