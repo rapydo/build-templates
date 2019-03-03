@@ -17,6 +17,7 @@ pika
 gdapi-python
 websocket-client
 celery
+tornado==5.1.1
 flower
 redis
 psutil
