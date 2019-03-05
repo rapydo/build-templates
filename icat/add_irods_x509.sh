@@ -29,7 +29,7 @@ fi
 if [ ! -s $CADIR/cacert.pem ]; then
 
     # prefix to copy
-    pref=$(grid-default-ca -list | grep Loc | sed 's/Location://' | sed 's/0$//' | tr -d ' ')
+    pref=`grid-default-ca -list | grep Loc | sed 's/Location://' | sed 's/0$//' | tr -d ' '`
     cp ${pref}* $CADIR/
 
     # FIX necessary with GT6
@@ -77,7 +77,7 @@ echo
 ##############################
 
 # Check
-out=$(su -c "iadmin lua" $IRODS_USER | grep ^$MYUSER)
+out=`su -c "iadmin lua" $IRODS_USER | grep ^$MYUSER`
 if [ "$out" != "" ]; then
     echo "User $MYUSER already exists";
     exit 0
