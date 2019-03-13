@@ -12,7 +12,6 @@ coveralls
 uWSGI
 uwsgitop
 plumbum
-glom
 pika
 gdapi-python
 websocket-client
