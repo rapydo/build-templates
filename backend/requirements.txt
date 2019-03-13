@@ -11,5 +11,4 @@ celery
 tornado==5.1.1
 flower
 redis
-psutil
 elasticsearch
