@@ -15,7 +15,8 @@ RUN apk add git python3
 # paramiko is a dependency of docker[ssh] / docker-compose
 # Previous versions do not required that, so let's try to
 # remove in a near future with next versions
-RUN apk add python3-dev libc-dev libffi-dev gcc
+# libssl-dev is required by cryptography
+RUN apk add python3-dev libc-dev libffi-dev gcc libssl-dev
 
 RUN pip3 install --upgrade pip
 
