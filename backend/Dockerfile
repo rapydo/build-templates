@@ -4,8 +4,6 @@ FROM ubuntu:18.04
 # ubuntu LTS
 # TODO: check if alpine is the way?
 # switching make better use of UWSGI: http://j.mp/2rxvp3r
-# FROM python:3.6-alpine # or https://revsys.com/tidbits/optimized-python/
-# no 3.7 yet https://hub.docker.com/_/python/ 3.7.0b5
 LABEL maintainer="Paolo D'Onorio De Meo"
 
 ###################
@@ -37,7 +35,7 @@ COPY requirements.txt /tmp/
 WORKDIR /tmp
 
 # # DEBUG CONFLICTS:
-# RUN pip install pip-conflict-checker && pipconflictchecker
+# RUN pip3 install pip-conflict-checker && pipconflictchecker
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 

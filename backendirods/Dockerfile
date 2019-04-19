@@ -36,7 +36,7 @@ COPY requirements.txt /tmp/
 WORKDIR /tmp
 
 # # DEBUG CONFLICTS:
-# RUN pip install pip-conflict-checker && pipconflictchecker
+# RUN pip3 install pip-conflict-checker && pipconflictchecker
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
