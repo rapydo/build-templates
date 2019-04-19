@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
-    python${MYPYTHON_VERSION}-pip \
+    python3-pip \
     python3-distutils \
     && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
     && apt-get autoremove && apt-get clean \
