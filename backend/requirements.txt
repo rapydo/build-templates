@@ -8,7 +8,6 @@ pika
 gdapi-python
 websocket-client
 celery
-tornado==5.1.1
-flower
+flower==0.9.3
 redis
 elasticsearch
