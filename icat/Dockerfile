@@ -1,6 +1,7 @@
 
 ###################
-FROM ubuntu:17.10
+# FROM ubuntu:17.10
+FROM ubuntu:18.04
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ARG CURRENT_UID
