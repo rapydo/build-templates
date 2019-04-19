@@ -21,7 +21,8 @@ ENV MYPYTHON_VERSION 3.6
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     build-essential libkrb5-dev \
-    python${MYPYTHON_VERSION} \ python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION} \
+    python${MYPYTHON_VERSION}-dev \
     python3-pip \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
