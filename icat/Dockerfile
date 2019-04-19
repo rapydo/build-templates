@@ -1,10 +1,14 @@
 
 ###################
-FROM ubuntu:17.10
+# FROM ubuntu:17.10
+FROM ubuntu:18.04
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
+
+# Certain Installers make 'installations' easier by having a nice front-end. While this is great when you have a manual install, this becomes an issue during automated installations.
+ENV DEBIAN_FRONTEND=noninteractive 
 
 ##############
 ### HOW TO ###
