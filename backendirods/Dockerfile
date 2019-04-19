@@ -16,10 +16,13 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
+ENV MYPYTHON_VERSION 3.6
 # APT
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
-    python3.6 build-essential libkrb5-dev python3.6-dev \
+    build-essential libkrb5-dev \
+    python${MYPYTHON_VERSION} \ python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION}-pip \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
@@ -32,14 +35,8 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /tmp/
 WORKDIR /tmp
 
-RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
-    && python get-pip.py && rm *.py
-
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
-
-# RUN for package in `cat requirements.txt`; do \
-#    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 

@@ -24,7 +24,9 @@ ENV LANG C.UTF-8
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     build-essential nginx \
-    python${MYPYTHON_VERSION} python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION} \
+    python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION}-pip \
     python3-distutils \
     && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
     && apt-get autoremove && apt-get clean \
@@ -33,14 +35,9 @@ RUN apt-get update && apt-get install -y \
 ###################
 COPY requirements.txt /tmp/
 WORKDIR /tmp
-RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
-    && python get-pip.py && rm *.py
 
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
-
-# RUN for package in `cat requirements.txt`; do \
-#    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
