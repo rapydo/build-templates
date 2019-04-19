@@ -1,6 +1,8 @@
 
 ###################
-FROM ubuntu:18.04
+FROM ubuntu:17.10
+# FROM krallin/ubuntu-tini:
+# FROM ubuntu:17.04
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 # TODO: check if possible switching to alpine, make better use of UWSGI:
@@ -16,17 +18,14 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
-ENV MYPYTHON_VERSION 3.6
 # APT
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
-    build-essential nginx libkrb5-dev \
-    python${MYPYTHON_VERSION} \
-    python${MYPYTHON_VERSION}-dev \
-    python3-pip \
+    python3.6 build-essential libkrb5-dev python3.6-dev \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
-    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
+    nginx \
+    && cd /usr/bin && ln -s python3.6 python && ln -s python3.6 python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################
@@ -35,8 +34,14 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /tmp/
 WORKDIR /tmp
 
+RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
+    && python get-pip.py && rm *.py
+
 # # DEBUG CONFLICTS:
-# RUN pip3 install pip-conflict-checker && pipconflictchecker
+# RUN pip install pip-conflict-checker && pipconflictchecker
+
+# RUN for package in `cat requirements.txt`; do \
+#    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
