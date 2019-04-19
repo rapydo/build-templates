@@ -1,8 +1,6 @@
 
 ###################
 FROM ubuntu:17.10
-# FROM krallin/ubuntu-tini:
-# FROM ubuntu:17.04
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 # TODO: check if possible switching to alpine, make better use of UWSGI:
