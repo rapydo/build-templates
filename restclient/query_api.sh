@@ -59,10 +59,10 @@ if [ "$AUTH" == '' ]; then
     jpath="variables.backend.credentials"
 
     # Custom
-    credentials=`yq --json -c ".$jpath" $cfile`
+    credentials=$(yq --json -c ".$jpath" $cfile)
     if [ "$credentials" == "null" ]; then
         # if not custom, base
-        credentials=`yq --json -c ".$jpath" $dfile`
+        credentials=$(yq --json -c ".$jpath" $dfile)
         if [ "$credentials" == "null" ]; then
             echo "FATAL!"
             echo "No credentials found"
@@ -72,8 +72,8 @@ if [ "$AUTH" == '' ]; then
         fi
     fi
 
-    username=`echo $credentials | jq .username | tr -d '"'`
-    password=`echo $credentials | jq .password | tr -d '"'`
+    username=$(echo $credentials | jq .username | tr -d '"')
+    password=$(echo $credentials | jq .password | tr -d '"')
     export CREDENTIALS="username=$username password=$password"
 
     echo "Generating authentication token"
@@ -116,13 +116,13 @@ function api_call()
         com="http $2 $ENDPOINT${3} $4"
     fi
     echo "Command: [ $com \"\$AUTH\" ]"
-    out=`$com "$AUTH"`
+    out=$($com "$AUTH")
 
     # default if not set or number?
     if [ -z "$out" ]; then
         status="$DEFAULT_INVALID_STATUS"
     else
-        status=`echo $out | jq '.Meta.status'`
+        status=$(echo $out | jq '.Meta.status')
     fi
     # if [ -z "$status" ]; then
     #     ${status:-500}
@@ -131,10 +131,10 @@ function api_call()
     if [ "$status" -gt "$MIN_INVALID_STATUS" ]; then
         echo ""
         echo "API called exit with error [$status]:"
-        errors=`echo $out | jq '.Response.errors'`
+        errors=$(echo $out | jq '.Response.errors')
         echo $errors | jq
     else
-        data=`echo $out | jq '.Response.data'`
+        data=$(echo $out | jq '.Response.data')
         echo $data | jq
     fi
 

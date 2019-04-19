@@ -40,8 +40,10 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
 
-RUN for package in `cat requirements.txt`; do \
-    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
+# RUN for package in `cat requirements.txt`; do \
+#    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
+
+RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION

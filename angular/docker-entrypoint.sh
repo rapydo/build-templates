@@ -35,5 +35,5 @@ elif [ "$APP_MODE" == 'debug' ]; then
 	exec npm start
 
 else
-	echo 'Unknown APP_MODE: [${APP_MODE}]'
+	echo "Unknown APP_MODE: [${APP_MODE}]"
 fi
