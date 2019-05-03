@@ -14,3 +14,4 @@ git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
 gssapi==1.5.1
 elasticsearch
+urllib3==1.24.3
