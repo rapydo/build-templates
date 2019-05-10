@@ -20,6 +20,15 @@ RUN test -n "$CURRENT_UID"
 
 ###################
 # Preparation
+
+# ubuntu 17.10 is no longer support (reached EOL)
+# repositores are unmaintained and moved to
+# http://old-releases.ubuntu.com
+# Workaround found here:
+# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
+
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 WORKDIR /tmp
 # GSI and Grid FTP dependencies + # update to globus toolkit 6
 
