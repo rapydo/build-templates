@@ -28,17 +28,11 @@ icat:
 restclient:
   build: restclient
 
-swaggerui:
-  build: swaggerui
-
 ftp:
   build: ftp
 
 proxy:
   build: proxy
-
-sqlalchemyui:
-  build: sqlalchemyui
 
 dind:
   build: dind

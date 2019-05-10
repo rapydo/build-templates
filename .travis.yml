@@ -8,9 +8,7 @@ env:
 - SERVICE=backend
 - SERVICE=backendirods
 - SERVICE=icat
-- SERVICE=swaggerui
 - SERVICE=restclient
-- SERVICE=sqlalchemyui
 - SERVICE=proxy
 - SERVICE=ftp
 - SERVICE=angular

@@ -8,7 +8,8 @@ RUN npm install package-merge
 
 ENV NODE_PATH /opt/node_modules
 
-WORKDIR /rapydo/
+# WORKDIR /rapydo/
+WORKDIR /modules/
 
 EXPOSE 8080
 

@@ -20,6 +20,7 @@ RUN test -n "$CURRENT_UID"
 
 ###################
 # Preparation
+
 # ubuntu 17.10 is no longer support (reached EOL)
 # repositores are unmaintained and moved to
 # http://old-releases.ubuntu.com
