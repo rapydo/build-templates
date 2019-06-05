@@ -42,6 +42,9 @@ RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.pyth
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
+# Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
+RUN pip3 install --upgrade --no-cache-dir flask==1.0.2
+
 ###################
 # # Adding gsi as gssapi available mechanism for PRC
 # COPY gsi.conf /etc/gss/mech.d/
