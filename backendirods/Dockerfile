@@ -58,7 +58,7 @@ RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.gi
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 # Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
-RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.
+RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.0 PyYAML==3.13
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
