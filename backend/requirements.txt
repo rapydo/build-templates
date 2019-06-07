@@ -1,6 +1,5 @@
 pytest-flask
 pytest-cov
-cov-core
 coveralls
 uWSGI
 uwsgitop

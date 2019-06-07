@@ -1,6 +1,5 @@
 pytest-flask
 pytest-cov
-cov-core
 coveralls
 uWSGI
 uwsgitop
@@ -10,7 +9,7 @@ websocket-client
 celery
 flower==0.9.3
 redis
+elasticsearch
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
 gssapi==1.5.1
-elasticsearch
