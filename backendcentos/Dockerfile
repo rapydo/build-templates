@@ -16,14 +16,14 @@ ENV TERM=xterm-256color
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 RUN yum install -y \
-    bash less vim curl wget telnet git gcc build-essential nginx https://centos7.iuscommunity.org/ius-release.rpm
+    bash less vim curl wget telnet git gcc build-essential nginx epel-release
 
-# Once enabled ius repository we can install any Python 3.x
-RUN yum install -y python36u python36u-libs python36u-devel python36u-pip \
+# Once enabled epel repository we can install any Python 3.x
+RUN yum install -y rh-python36 python36-devel python36-pip \
     && yum clean all -y
     
-RUN ln -s /usr/bin/pip3.6 /bin/pip3 && \
-    ln -s /usr/bin/python3.6 /usr/bin/python3
+# RUN ln -s /usr/bin/pip3.6 /bin/pip3 && \
+#    ln -s /usr/bin/python3.6 /usr/bin/python3
 
 ###################
 COPY requirements.txt /tmp/
