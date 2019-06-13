@@ -94,14 +94,14 @@ EXPOSE $FLASK_PORT
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 RUN echo "Entrylevel" && \
-    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
+    echo "Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\" >> /root/.bashrc
 
 ###### BACKEND COMMANDS
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
 RUN echo "Developer" && \
-    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
-    echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
+    echo "Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD" >> $APIRC && \
+    echo "Run unittests with:\n# restapi tests\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
 # closing entrypoint
