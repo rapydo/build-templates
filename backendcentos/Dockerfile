@@ -94,14 +94,8 @@ EXPOSE $FLASK_PORT
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 
-###### BACKEND COMMANDS
-ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
-RUN echo "Developer" && \
-    echo "Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD" >> $APIRC && \
-    echo "Run unittests with:\n# restapi tests\n" >> $APIRC && chown $APIUSER $APIRC
 
-###################
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
