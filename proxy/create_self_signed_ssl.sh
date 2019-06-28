@@ -12,11 +12,11 @@ command="openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $CERTKEY -o
 #        Common Name (e.g. server FQDN or YOUR name) []:
 #        Email Address []:
 
-country='IT'
-state='Rome'
-locality='Rome'
-organization='CINECA'
-organization_unit='SCAI'
+country='XX'
+state='Nowhere'
+locality='Web'
+organization='RAPyDo'
+organization_unit='SSL'
 common_name=$DOMAIN
 # common_name='apiserver.dockerized.io'
 email='user@nomail.org'

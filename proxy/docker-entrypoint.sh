@@ -53,8 +53,8 @@ if [ "$DOMAIN" != "" ]; then
 fi
 
 if [ ! -f "$DHPARAM" ]; then
-    echo "DHParam is missing, creating a new $DHPARAM"
-    openssl dhparam -out $DHPARAM 2048 -dsaparam
+    echo "DHParam is missing, creating a new $DHPARAM with length = ${DEFAULT_DHLEN}"
+    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
 fi
 
 #####################

@@ -9,7 +9,6 @@ set -e
 echo "Mode: *$MODE*"
 echo "Domain: $DOMAIN"
 
-# TODO: test if it works
 if [ "$SMTP_ADMIN" != "" ]; then
     echo "Reference email: $SMTP_ADMIN"
     ./acme.sh --update-account  --accountemail $SMTP_ADMIN
@@ -22,7 +21,12 @@ if [ "$SMTP_ADMIN" != "" ]; then
     fi
 fi
 
-./acme.sh --issue --debug \
+force=""
+if [[ "$1" == "--force" ]]; then
+        force="--force"
+fi
+
+./acme.sh --issue ${force} --debug \
     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
     -d $DOMAIN -w $WWWDIR $MODE
 

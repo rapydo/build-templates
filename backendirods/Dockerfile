@@ -28,6 +28,15 @@ RUN test -n "$CURRENT_UID"
 RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
 # APT
+
+# ubuntu 17.10 is no longer support (reached EOL)
+# repositores are unmaintained and moved to
+# http://old-releases.ubuntu.com
+# Workaround found here:
+# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
+
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     python3.6 build-essential libkrb5-dev python3.6-dev \
@@ -56,6 +65,9 @@ RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.pyth
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+
+# Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
+RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.0 PyYAML==3.13
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

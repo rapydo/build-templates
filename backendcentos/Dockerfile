@@ -1,10 +1,6 @@
+FROM centos:7
 
-###################
-FROM ubuntu:18.04
-# ubuntu LTS
-# TODO: check if alpine is the way?
-# switching make better use of UWSGI: http://j.mp/2rxvp3r
-LABEL maintainer="Paolo D'Onorio De Meo"
+LABEL maintainer="Mattia D'Antonio <m.dantonio@cineca.it>"
 
 ###################
 ARG RAPYDO_VERSION
@@ -13,26 +9,27 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
-# ENV MYPYTHON_VERSION 3.7
-# NOTE 3.7.0b3 at 01/07/2018 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.6
+
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
 ENV TERM=xterm-256color
-ENV LC_ALL C.UTF-8
-ENV LANG C.UTF-8
-RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet git jq \
-    build-essential nginx \
-    python${MYPYTHON_VERSION} \
-    python${MYPYTHON_VERSION}-dev \
-    python3-pip \
-    python3-distutils \
-    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
-    && apt-get autoremove && apt-get clean \
-    && echo "setup installed"
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+RUN yum install -y \
+    bash less vim curl wget telnet git gcc gcc-c++ make epel-release
+
+# Once enabled epel repository we can install any Python 3.x and nginx
+RUN yum install -y nginx rh-python36 python36-devel python36-pip \
+    && yum clean all -y
+    
+# RUN ln -s /usr/bin/pip3.6 /bin/pip3 && \
+#    ln -s /usr/bin/python3.6 /usr/bin/python3
 
 ###################
 COPY requirements.txt /tmp/
 WORKDIR /tmp
+
+RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
@@ -67,7 +64,7 @@ ENV UWSGI_RUN /var/run/uwsgi
 ENV MYUWSGI_HOME /tmp/uwsgi
 RUN mkdir -p $UWSGI_LOGS
 RUN mkdir -p $UWSGI_RUN
-RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
+# RUN chown -R nobody:nobody $UWSGI_LOGS $UWSGI_RUN
 
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
@@ -77,7 +74,7 @@ RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
 COPY nginx_base.conf /etc/nginx/nginx.conf
-COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+COPY nginx_uwsgi.conf /etc/nginx/sites-enabled/default
 
 COPY sleep.py /usr/local/bin/pysleeper
 COPY tests.sh /usr/local/bin/pyunittests
@@ -96,23 +93,9 @@ EXPOSE $FLASK_PORT
 ######################
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "Entrylevel" && \
-    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
-###### BACKEND COMMANDS
-ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
-RUN echo "Developer" && \
-    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
-    echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
-###################
-# dumb init
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
-    && dpkg -i dumb-init_*.deb \
-    && rm *.deb
-
-###################
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
@@ -121,7 +104,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
 # TODO: verify if better using tini for entrypoint
