@@ -74,7 +74,7 @@ RUN chmod +x /usr/local/bin/myuwsgi
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
 COPY nginx_base.conf /etc/nginx/nginx.conf
-COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+COPY nginx_uwsgi.conf /etc/nginx/sites-enabled/default
 
 COPY sleep.py /usr/local/bin/pysleeper
 COPY tests.sh /usr/local/bin/pyunittests
