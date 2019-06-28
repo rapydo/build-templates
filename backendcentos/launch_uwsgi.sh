@@ -26,7 +26,8 @@ if [ -n "$NGINX_ACTIVE" ]; then
     # remove defaults
     # rm -rf /etc/nginx/sites-enabled
     echo "Starting nginx"
-    service nginx start
+    # service nginx start
+    systemctl nginx start
     echo ""
     # LOGS="/var/log/nginx/*log $LOGS"
 fi

@@ -16,10 +16,10 @@ ENV TERM=xterm-256color
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 RUN yum install -y \
-    bash less vim curl wget telnet git gcc build-essential nginx epel-release
+    bash less vim curl wget telnet git gcc gcc-c++ make epel-release
 
-# Once enabled epel repository we can install any Python 3.x
-RUN yum install -y rh-python36 python36-devel python36-pip \
+# Once enabled epel repository we can install any Python 3.x and nginx
+RUN yum install -y nginx rh-python36 python36-devel python36-pip \
     && yum clean all -y
     
 # RUN ln -s /usr/bin/pip3.6 /bin/pip3 && \
