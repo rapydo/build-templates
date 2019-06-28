@@ -64,7 +64,7 @@ ENV UWSGI_RUN /var/run/uwsgi
 ENV MYUWSGI_HOME /tmp/uwsgi
 RUN mkdir -p $UWSGI_LOGS
 RUN mkdir -p $UWSGI_RUN
-# RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
+# RUN chown -R nobody:nobody $UWSGI_LOGS $UWSGI_RUN
 
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
