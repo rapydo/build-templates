@@ -54,7 +54,7 @@ fi
 
 if [ ! -f "$DHPARAM" ]; then
     echo "DHParam is missing, creating a new $DHPARAM"
-    openssl dhparam -out $DHPARAM 2048 -dsaparam
+    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
 fi
 
 #####################
