@@ -1,14 +1,8 @@
 
 ###################
-FROM ubuntu:17.10
-# FROM krallin/ubuntu-tini:
-# FROM ubuntu:17.04
-LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
+FROM ubuntu:16.04
 
-# TODO: check if possible switching to alpine, make better use of UWSGI:
-# http://j.mp/2rxvp3r
-# FROM python:3.6-alpine
-# or https://revsys.com/tidbits/optimized-python/
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
 ARG RAPYDO_VERSION
@@ -18,14 +12,6 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
-
-# ubuntu 17.10 is no longer support (reached EOL)
-# repositores are unmaintained and moved to
-# http://old-releases.ubuntu.com
-# Workaround found here:
-# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
-
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
 ENV MYPYTHON_VERSION 3.6
 
