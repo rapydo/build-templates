@@ -37,6 +37,8 @@ WORKDIR /tmp
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
+RUN pip3 install --upgrade --no-cache-dir pip dumb-init
+
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
@@ -104,12 +106,6 @@ RUN echo "Developer" && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
-# dumb init
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
-    && dpkg -i dumb-init_*.deb \
-    && rm *.deb
-
-###################
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
@@ -118,7 +114,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
 # TODO: verify if better using tini for entrypoint
