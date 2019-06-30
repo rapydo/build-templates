@@ -27,23 +27,17 @@ RUN test -n "$CURRENT_UID"
 
 RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
-# APT
-
-# ubuntu 17.10 is no longer support (reached EOL)
-# repositores are unmaintained and moved to
-# http://old-releases.ubuntu.com
-# Workaround found here:
-# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
-
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+# ENV MYPYTHON_VERSION 3.8
+# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
+ENV MYPYTHON_VERSION 3.7
 
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
-    python3.6 build-essential libkrb5-dev python3.6-dev \
+    python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -s python3.6 python && ln -s python3.6 python3 \
+    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python && ln -s python${MYPYTHON_VERSION} python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################

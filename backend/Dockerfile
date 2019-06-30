@@ -13,9 +13,9 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
-# ENV MYPYTHON_VERSION 3.7
-# NOTE 3.7.0b3 at 01/07/2018 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.6
+# ENV MYPYTHON_VERSION 3.8
+# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
+ENV MYPYTHON_VERSION 3.7
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
