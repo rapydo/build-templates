@@ -13,7 +13,7 @@ RUN test -n "$CURRENT_UID"
 
 ###################
 
-ENV MYPYTHON_VERSION 3.6
+ENV MYPYTHON_VERSION 3.5
 
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
