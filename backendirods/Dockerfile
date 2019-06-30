@@ -27,9 +27,7 @@ RUN test -n "$CURRENT_UID"
 
 RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
-# ENV MYPYTHON_VERSION 3.8
-# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.7
+ENV MYPYTHON_VERSION 3.6
 
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
