@@ -15,6 +15,7 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV TERM=xterm-256color
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
+
 RUN yum install -y \
     bash less vim curl wget telnet git gcc gcc-c++ make epel-release
 
@@ -92,6 +93,10 @@ ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 
 ENV FLASK_CMD "restapi launch"
+
+#### Make the terminal prettier ####
+# generated with http://bashrcgenerator.com/
+RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bash.bashrc
 
 # closing entrypoint
 
