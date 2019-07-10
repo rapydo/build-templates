@@ -40,20 +40,16 @@ RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.pyth
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
-###################
-# # Adding gsi as gssapi available mechanism for PRC
-# COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
-# Emulating irods user creation. See http://j.mp/2lGPqlq
 
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
     && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
-# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+
+RUN if [ ! -f /home/$APIUSER/.bashrc ]; then cp /root/.bashrc /home/$APIUSER/.bashrc ; fi
 
 ###################
 # UWSGI
@@ -96,7 +92,7 @@ ENV FLASK_CMD "restapi launch"
 
 #### Make the terminal prettier ####
 # generated with http://bashrcgenerator.com/
-RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bash.bashrc
+RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bashrc
 
 # closing entrypoint
 
