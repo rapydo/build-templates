@@ -8,6 +8,7 @@ gdapi-python
 websocket-client
 celery
 flower==0.9.3
+git+https://github.com/zmap/celerybeat-mongo.git@master
 redis
 elasticsearch
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
