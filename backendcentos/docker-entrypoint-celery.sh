@@ -6,6 +6,11 @@ if [ -d "$CELERYUI_DBDIR" ]; then
     chown -R $APIUSER $CELERYUI_DBDIR
 fi
 
+# fix permissions of celery beat pid dir
+if [ -d "/pids" ]; then
+    chown -R $APIUSER /pids
+fi
+
 echo "waiting for services"
 eval 'restapi wait'
 
