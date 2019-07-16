@@ -1,6 +1,5 @@
 pytest-flask
 pytest-cov
-coveralls
 uWSGI
 uwsgitop
 pika
