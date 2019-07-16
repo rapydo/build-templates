@@ -28,7 +28,11 @@ export NODE_PATH=$MODULE_PATH/node_modules
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	exec npm run build
+	if [ "$ENABLE_AOT" == 'true' ]; then
+		exec npm run build-aot
+	else
+		exec npm run build
+	fi
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
