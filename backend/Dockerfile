@@ -72,7 +72,8 @@ RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
-RUN chmod +x /usr/local/bin/myuwsgi
+COPY flask_migrate /usr/local/bin/flask_migrate 
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
