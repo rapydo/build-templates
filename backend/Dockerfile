@@ -13,12 +13,13 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
-# ENV MYPYTHON_VERSION 3.7
-# NOTE 3.7.0b3 at 01/07/2018 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.6
+# ENV MYPYTHON_VERSION 3.8
+# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
+ENV MYPYTHON_VERSION 3.7
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
+
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
     build-essential nginx \
@@ -37,13 +38,12 @@ WORKDIR /tmp
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
+RUN pip3 install --upgrade --no-cache-dir pip dumb-init
+
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
-
-# Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
-RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.0 PyYAML==3.13
 
 ###################
 # # Adding gsi as gssapi available mechanism for PRC
@@ -72,7 +72,8 @@ RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
-RUN chmod +x /usr/local/bin/myuwsgi
+COPY flask_migrate /usr/local/bin/flask_migrate 
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
@@ -107,12 +108,11 @@ RUN echo "Developer" && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
-# dumb init
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
-    && dpkg -i dumb-init_*.deb \
-    && rm *.deb
 
-###################
+#### Make the terminal prettier ####
+# generated with http://bashrcgenerator.com/
+RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bash.bashrc
+
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
@@ -121,7 +121,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
 # TODO: verify if better using tini for entrypoint

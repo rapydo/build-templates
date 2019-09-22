@@ -15,6 +15,7 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV TERM=xterm-256color
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
+
 RUN yum install -y \
     bash less vim curl wget telnet git gcc gcc-c++ make epel-release
 
@@ -39,23 +40,16 @@ RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.pyth
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
-# Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
-RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.0 PyYAML==3.13
-
-###################
-# # Adding gsi as gssapi available mechanism for PRC
-# COPY gsi.conf /etc/gss/mech.d/
 # main user for launching the apis
 ENV APIUSER developer
-# Emulating irods user creation. See http://j.mp/2lGPqlq
 
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
     && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
-# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+
+RUN if [ ! -f /home/$APIUSER/.bashrc ]; then cp /root/.bashrc /home/$APIUSER/.bashrc ; fi
 
 ###################
 # UWSGI
@@ -69,7 +63,8 @@ RUN mkdir -p $UWSGI_RUN
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
-RUN chmod +x /usr/local/bin/myuwsgi
+COPY flask_migrate /usr/local/bin/flask_migrate 
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
@@ -95,6 +90,10 @@ ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
 
 ENV FLASK_CMD "restapi launch"
+
+#### Make the terminal prettier ####
+# generated with http://bashrcgenerator.com/
+RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bashrc
 
 # closing entrypoint
 

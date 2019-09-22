@@ -1,6 +1,5 @@
 pytest-flask
 pytest-cov
-coveralls
 uWSGI
 uwsgitop
 pika
@@ -8,5 +7,7 @@ gdapi-python
 websocket-client
 celery
 flower==0.9.3
+git+https://github.com/zmap/celerybeat-mongo.git@master
 redis
 elasticsearch
+Flask-Migrate

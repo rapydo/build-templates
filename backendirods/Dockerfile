@@ -1,14 +1,8 @@
 
 ###################
-FROM ubuntu:17.10
-# FROM krallin/ubuntu-tini:
-# FROM ubuntu:17.04
-LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
+FROM ubuntu:16.04
 
-# TODO: check if possible switching to alpine, make better use of UWSGI:
-# http://j.mp/2rxvp3r
-# FROM python:3.6-alpine
-# or https://revsys.com/tidbits/optimized-python/
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
 ARG RAPYDO_VERSION
@@ -19,31 +13,15 @@ RUN test -n "$CURRENT_UID"
 
 ###################
 
-# ubuntu 17.10 is no longer support (reached EOL)
-# repositores are unmaintained and moved to
-# http://old-releases.ubuntu.com
-# Workaround found here:
-# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
-
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
-
-# APT
-
-# ubuntu 17.10 is no longer support (reached EOL)
-# repositores are unmaintained and moved to
-# http://old-releases.ubuntu.com
-# Workaround found here:
-# https://askubuntu.com/questions/91815/how-to-install-software-or-upgrade-from-an-old-unsupported-release
-
-RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+ENV MYPYTHON_VERSION 3.5
 
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet git jq \
-    python3.6 build-essential libkrb5-dev python3.6-dev \
+    python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -s python3.6 python && ln -s python3.6 python3 \
+    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python && ln -s python${MYPYTHON_VERSION} python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################
@@ -58,16 +36,12 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
 
-# RUN for package in `cat requirements.txt`; do \
-#    echo "adding: $package"; pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir $package; done
+RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
-
-# Temporary BUG fix, waiting for the upgrade to Flask 1.0.3
-RUN pip3 install --upgrade --no-cache-dir flask==1.0.2 oauthlib==2.1.0 PyYAML==3.13
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -96,7 +70,8 @@ RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
-RUN chmod +x /usr/local/bin/myuwsgi
+COPY flask_migrate /usr/local/bin/flask_migrate 
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
 # RUN rm -rf /etc/nginx/sites-enabled
@@ -134,12 +109,11 @@ RUN echo "Developer" && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################
-# dumb init
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb \
-    && dpkg -i dumb-init_*.deb \
-    && rm *.deb
 
-###################
+#### Make the terminal prettier ####
+# generated with http://bashrcgenerator.com/
+RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\]@\\h:\\[$(tput sgr0)\\]\\[\\033[38;5;6m\\][\\w]:\\[$(tput sgr0)\\]\\[\\033[38;5;15m\\] \\[$(tput sgr0)\\]"' >> /etc/bash.bashrc
+
 # closing entrypoint
 
 RUN mkdir $CODE_DIR
@@ -148,7 +122,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
 # TODO: verify if better using tini for entrypoint
