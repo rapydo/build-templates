@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:12.10.0-buster
 
 WORKDIR /opt
 
