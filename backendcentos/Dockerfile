@@ -17,7 +17,7 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 RUN yum install -y \
-    bash less vim curl wget telnet git gcc gcc-c++ make epel-release
+    bash less vim curl wget telnet iputils git gcc gcc-c++ make epel-release
 
 # Once enabled epel repository we can install any Python 3.x and nginx
 RUN yum install -y nginx rh-python36 python36-devel python36-pip \

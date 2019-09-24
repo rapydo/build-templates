@@ -21,7 +21,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet git jq \
+    bash less vim curl wget telnet iputils-ping git jq \
     build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
