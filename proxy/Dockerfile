@@ -20,11 +20,12 @@ RUN apk update && \
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
-ENV ACMEV "2.7.6"
+ENV ACMEV "2.8.2"
 RUN echo acme && \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
+    && ./acme.sh --register-account \
     && cd .. && rm -rf *$ACMEV
 
 #######################
