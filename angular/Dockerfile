@@ -4,7 +4,9 @@ WORKDIR /app/
 
 ENV NODE_PATH /opt/node_modules
 
-RUN npm --prefix /opt install -g @angular/cli@8.3.5 dotenv@8.1.0 package-merge@0.1.2 
+RUN npm install -g @angular/cli@8.3.5
+
+RUN npm install dotenv@8.1.0 package-merge@0.1.2 
 
 EXPOSE 80
 
