@@ -6,8 +6,6 @@ RUN npm install -g @angular/cli@8.3.5
 
 RUN npm install package-merge dotenv
 
-ENV NODE_PATH /opt/node_modules
-
 WORKDIR /app/
 
 EXPOSE 80

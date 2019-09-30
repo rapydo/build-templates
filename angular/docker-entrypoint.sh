@@ -18,12 +18,9 @@ node /rapydo/utility/config-env.ts
 node /rapydo/utility/merge.js
 
 # --production to install only dependencies e not devDependencies
-npm --prefix $MODULE_PATH install
+npm install
 
 # npm cache clean
-
-export PATH=$PATH:$MODULE_PATH/node_modules/.bin
-export NODE_PATH=$MODULE_PATH/node_modules
 
 if [ "$APP_MODE" == 'production' ]; then
 
