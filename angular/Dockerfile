@@ -2,9 +2,7 @@ FROM node:12.10.0-buster
 
 WORKDIR /app/
 
-RUN npm install -g @angular/cli@8.3.5
-
-RUN npm install package-merge dotenv
+RUN npm install -g @angular/cli@8.3.5 package-merge dotenv
 
 EXPOSE 80
 
