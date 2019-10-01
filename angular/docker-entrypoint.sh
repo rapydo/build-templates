@@ -13,9 +13,9 @@ if [ -z APP_MODE ]; then
 fi
 
 env > /tmp/.env
-node /rapydo/utility/config-env.ts
+node /rapydo/config-env.ts
 
-node /rapydo/utility/merge.js
+node /rapydo/merge.js
 
 # --production to install only dependencies e not devDependencies
 npm install
