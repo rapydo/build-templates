@@ -34,6 +34,11 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 	exec npm start
 
+
+elif [ "$APP_MODE" == 'cypress' ]; then
+
+	exec npm start-cypress
+
 else
 	echo "Unknown APP_MODE: [${APP_MODE}]"
 fi
