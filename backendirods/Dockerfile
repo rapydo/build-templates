@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python && ln -s python${MYPYTHON_VERSION} python3 \
+    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################
