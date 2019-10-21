@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y software-properties-common python-softw
 ENV MYPYTHON_VERSION 3.6
 
 RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet git jq \
+    bash less vim curl wget telnet iputils-ping git jq \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
