@@ -10,7 +10,7 @@ set -e
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user $APIUSER uid from $DEVID to $CURRENT_UID..."
-    # usermod -u $CURRENT_UID $APIUSER
+    usermod -u $CURRENT_UID $APIUSER
 fi
 
 # # check environment variables
