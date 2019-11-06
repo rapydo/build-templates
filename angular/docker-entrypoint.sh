@@ -24,11 +24,7 @@ npm install
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	if [ "$ENABLE_AOT" == 'True' ]; then
-		exec npm run build-aot
-	else
-		exec npm run build
-	fi
+	exec npm run build
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
