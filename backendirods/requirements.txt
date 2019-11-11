@@ -12,6 +12,7 @@ celery-redbeat==0.13.0
 redis
 elasticsearch
 Flask-Migrate
+gripcontrol==3.3.1
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
 gssapi==1.5.1
