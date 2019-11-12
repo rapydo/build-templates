@@ -1,6 +1,33 @@
 #!/bin/bash
 set -e
 
+CONF_DIR="/etc/nginx/sites-enabled"
+TEMPLATE_DIR="/etc/nginx/sites-enabled-templates"
+
+mkdir -p ${CONF_DIR}
+
+CONF_TEMPLATE="${TEMPLATE_DIR}/production"
+HEADERS_TEMPLATE="${TEMPLATE_DIR}/production-headers"
+
+CONF_FILE="${CONF_DIR}/production"
+HEADERS_FILE="${CONF_DIR}/production-headers"
+
+if [[ -f "$CONF_TEMPLATE" ]]; then
+    echo "Converting ${CONF_TEMPLATE} into ${CONF_FILE} by replacing env"
+    # We pass to envsubst the list of env variables, to only replace existing variables
+    envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')" < $CONF_TEMPLATE > $CONF_FILE
+else
+    echo "${CONF_TEMPLATE} not found"
+fi
+
+if [[ -f "$HEADERS_TEMPLATE" ]]; then
+    echo "Converting ${HEADERS_TEMPLATE} into ${HEADERS_FILE} by replacing env"
+    # We pass to envsubst the list of env variables, to only replace existing variables
+    envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')"< $HEADERS_TEMPLATE > $HEADERS_FILE
+else
+    echo "${HEADERS_TEMPLATE} not found"
+fi
+
 
 if [ "$1" == 'updatecertificates' ]; then
     if pgrep "nginx" > /dev/null
