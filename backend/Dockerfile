@@ -87,7 +87,7 @@ COPY tests.sh /usr/local/bin/pyunittests
 # variables
 ENV PAGER less
 ENV PYTHONIOENCODING="utf-8"
-ENV FLASK_PORT 5000
+ENV FLASK_PORT 8080
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates
