@@ -13,10 +13,6 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     usermod -u $CURRENT_UID node
 fi
 
-id
-su - node
-id
-
 # Defaults
 if [ -z APP_MODE ]; then
     APP_MODE="debug"
