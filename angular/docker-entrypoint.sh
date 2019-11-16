@@ -7,6 +7,16 @@ set -e
 #                                     #
 #######################################
 
+DEVID=$(id -u node)
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing user node uid from $DEVID to $CURRENT_UID..."
+    usermod -u $CURRENT_UID $APIUSER
+fi
+
+id
+su - node
+id
+
 # Defaults
 if [ -z APP_MODE ]; then
     APP_MODE="debug"
