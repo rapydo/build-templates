@@ -17,19 +17,15 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
-id
-su - $APIUSER
-id
-
 echo "waiting for services"
-eval 'restapi wait'
+exec gosu $APIUSER 'restapi wait'
 
 echo "Requested command: $@"
 
 # $@
 # exit 0
 
-$@ &
+exec gosu $APIUSER $@ &
 pid="$!"
 # no success with wait...
 # trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && wait {$pid}" INT TERM

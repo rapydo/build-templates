@@ -22,28 +22,28 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-env > /tmp/.env
-node /rapydo/config-env.ts
+exec gosu node env > /tmp/.env
+exec gosu node node /rapydo/config-env.ts
 
-node /rapydo/merge.js
+exec gosu node node /rapydo/merge.js
 
 # --production to install only dependencies e not devDependencies
-npm install
+exec gosu node npm install
 
 # npm cache clean
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	exec npm run build
+	exec gosu node npm run build
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-	exec npm start
+	exec gosu node npm start
 
 
 elif [ "$APP_MODE" == 'cypress' ]; then
 
-	exec npm run start-cypress
+	exec gosu node npm run start-cypress
 
 else
 	echo "Unknown APP_MODE: [${APP_MODE}]"
