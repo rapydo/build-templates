@@ -11,6 +11,7 @@ DEVID=$(id -u node)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user node uid from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID node
+    id node
 fi
 
 # Defaults
@@ -18,6 +19,7 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
+echo "Running with user node"
 exec gosu node env > /tmp/.env
 exec gosu node node /rapydo/config-env.ts
 
