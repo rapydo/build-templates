@@ -17,6 +17,10 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
+id
+su - $APIUSER
+id
+
 echo "waiting for services"
 eval 'restapi wait'
 
