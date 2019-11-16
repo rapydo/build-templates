@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     python${MYPYTHON_VERSION}-dev \
     python3-pip \
     python3-distutils \
+    gosu \
     && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
     && apt-get autoremove && apt-get clean \
     && echo "setup installed"
