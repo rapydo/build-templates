@@ -10,7 +10,7 @@ set -e
 DEVID=$(id -u node)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user node uid from $DEVID to $CURRENT_UID..."
-    usermod -u $CURRENT_UID $APIUSER
+    usermod -u $CURRENT_UID node
 fi
 
 id
