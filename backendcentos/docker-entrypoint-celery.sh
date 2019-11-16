@@ -18,7 +18,7 @@ if [ -d "/pids" ]; then
 fi
 
 echo "waiting for services"
-exec gosu $APIUSER eval 'restapi wait'
+eval "$DEV_SU -c 'restapi wait'"
 
 echo "Requested command: $@"
 

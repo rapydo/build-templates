@@ -19,7 +19,7 @@ fi
 
 echo "waiting for services"
 # eval 'restapi wait'
-exec gosu $APIUSER eval 'restapi wait'
+eval "$DEV_SU -c 'restapi wait'"
 
 echo "Requested command: $@"
 
