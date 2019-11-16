@@ -6,7 +6,7 @@ RUN test -n "$CURRENT_UID"
 
 WORKDIR /opt/
 
-RUN apt-get update && apt-get install -y chromium gosu
+RUN apt-get update && apt-get install -y chromium
 
 ENV CHROME_BIN chromium
 
