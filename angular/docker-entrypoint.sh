@@ -45,7 +45,7 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm test --single-run'
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm single-test'
 
 elif [ "$APP_MODE" == 'cypress' ]; then
 
