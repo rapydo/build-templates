@@ -17,7 +17,7 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 RUN yum install -y \
-    bash less vim curl wget telnet git gcc gcc-c++ make epel-release
+    bash less vim curl wget telnet iputils git gcc gcc-c++ make epel-release gosu
 
 # Once enabled epel repository we can install any Python 3.x and nginx
 RUN yum install -y nginx rh-python36 python36-devel python36-pip \
@@ -78,7 +78,7 @@ COPY tests.sh /usr/local/bin/pyunittests
 # variables
 ENV PAGER less
 ENV PYTHONIOENCODING="utf-8"
-ENV FLASK_PORT 5000
+ENV FLASK_PORT 8080
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates

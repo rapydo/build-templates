@@ -8,6 +8,8 @@ websocket-client
 celery
 flower==0.9.3
 git+https://github.com/zmap/celerybeat-mongo.git@master
+celery-redbeat==0.13.0
 redis
 elasticsearch
 Flask-Migrate
+gripcontrol==3.3.1

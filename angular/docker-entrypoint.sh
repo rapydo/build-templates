@@ -7,32 +7,49 @@ set -e
 #                                     #
 #######################################
 
+NODE_USER="node"
+NODE_GROUP="node"
+NODE_HOME=$(eval echo ~$NODE_USER)
+
+DEVID=$(id -u ${NODE_USER})
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing user ${NODE_USER} uid from $DEVID to $CURRENT_UID..."
+    usermod -u $CURRENT_UID ${NODE_USER}
+fi
+
+echo "Running as ${NODE_USER} (uid $(id -u ${NODE_USER}))"
+
+chown -R ${NODE_USER} /app
+
 # Defaults
 if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-node /rapydo/utility/merge.js
+#su -p ${NODE_USER} -c 'mycommand'
+HOME=$NODE_HOME su -p ${NODE_USER} -c 'env > /tmp/.env'
+HOME=$NODE_HOME su -p ${NODE_USER} -c 'node /rapydo/config-env.ts'
+
+HOME=$NODE_HOME su -p ${NODE_USER} -c 'node /rapydo/merge.js'
 
 # --production to install only dependencies e not devDependencies
-npm --prefix $MODULE_PATH install
-
-# npm cache clean
-
-export PATH=$PATH:$MODULE_PATH/node_modules/.bin
-export NODE_PATH=$MODULE_PATH/node_modules
+HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm install'
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	if [ "$ENABLE_AOT" == 'True' ]; then
-		exec npm run build-aot
-	else
-		exec npm run build
-	fi
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run build'
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-	exec npm start
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm start'
+
+elif [ "$APP_MODE" == 'test' ]; then
+
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run single-test'
+
+elif [ "$APP_MODE" == 'cypress' ]; then
+
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run start-cypress'
 
 else
 	echo "Unknown APP_MODE: [${APP_MODE}]"

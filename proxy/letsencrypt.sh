@@ -35,6 +35,7 @@ if [ "$?" == "0" ]; then
     echo "Completed. Check:"
     ./acme.sh --list
 
+    # Could be executed with acme.sh by using --reloadcmd 'nginx -s reload'
     nginx -s reload
 
     cd ${CERTDIR}

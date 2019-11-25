@@ -4,16 +4,16 @@ dist: xenial
 python:
 - 3.7.1
 env:
-- SERVICE=dind
+- SERVICE=proxy
 - SERVICE=backend
 - SERVICE=backendirods
-- SERVICE=backendcentos
-- SERVICE=icat
-- SERVICE=restclient
-- SERVICE=proxy
-- SERVICE=ftp
 - SERVICE=angular
+- SERVICE=icat
 - SERVICE=react
+- SERVICE=dind
+- SERVICE=ftp
+# - SERVICE=backendcentos
+# - SERVICE=restclient
 services:
 - docker
 install:
@@ -22,7 +22,7 @@ script:
 - docker --version
 - docker-compose --version
 - echo "Building service ${SERVICE}"
-- export RAPYDO_VERSION=0.6.7
+- export RAPYDO_VERSION=0.7.0
 - docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990
   ${SERVICE}
 - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}

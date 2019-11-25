@@ -12,16 +12,20 @@ ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
 ###################
+# Install repository for python3.6
 
-ENV MYPYTHON_VERSION 3.5
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:jonathonf/python-3.6
+
+ENV MYPYTHON_VERSION 3.6
 
 RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet git jq \
+    bash less vim curl wget telnet iputils-ping git jq \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
+    gosu \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python && ln -s python${MYPYTHON_VERSION} python3 \
+    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
     && apt-get autoremove && apt-get clean \
     && echo "done"
 ###################
@@ -88,7 +92,7 @@ ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV PYTHONIOENCODING="utf-8"
-ENV FLASK_PORT 5000
+ENV FLASK_PORT 8080
 ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates

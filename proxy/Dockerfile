@@ -1,6 +1,6 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.17.0-alpine
+FROM nginx:1.17.4-alpine
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
@@ -20,11 +20,14 @@ RUN apk update && \
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
-ENV ACMEV "2.7.6"
+# You can also upgrade live with /acme/acme.sh --upgrade --home /acme
+# Then register the client /acme/acme.sh --register-account
+ENV ACMEV "2.8.2"
 RUN echo acme && \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
+    && ./acme.sh --register-account \
     && cd .. && rm -rf *$ACMEV
 
 #######################

@@ -18,14 +18,14 @@ if [ -d "/pids" ]; then
 fi
 
 echo "waiting for services"
-eval 'restapi wait'
+eval "$DEV_SU -c 'restapi wait'"
 
 echo "Requested command: $@"
 
 # $@
 # exit 0
 
-$@ &
+exec gosu $APIUSER $@ &
 pid="$!"
 # no success with wait...
 # trap "echo Sending SIGTERM to process ${pid} && kill -SIGTERM ${pid} && wait {$pid}" INT TERM
