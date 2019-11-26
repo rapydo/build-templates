@@ -20,6 +20,4 @@ RUN apk add python3-dev libc-dev libffi-dev openssl-dev gcc make
 
 RUN pip3 install --upgrade pip
 
-RUN pip3 install --upgrade --no-cache-dir "git+https://github.com/rapydo/utils.git@${RAPYDO_VERSION}"
-
 RUN pip3 install --upgrade --no-cache-dir "git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}"

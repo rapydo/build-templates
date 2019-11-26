@@ -17,11 +17,7 @@ RUN apk update && apk upgrade && apk add \
     && rm -rf /var/cache/apk/*
 
 # Install python packages
-RUN pip --no-cache-dir install --upgrade \
-    pip httpie http-prompt pyyaml \
-    #https://github.com/json-transformations/jsoncut
-    pygments jsoncut \
-    git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
+RUN pip --no-cache-dir install --upgrade pip httpie http-prompt pyyaml pygments jsoncut
 
 # Install jqt/yq
 # https://fadado.github.io/jqt/
