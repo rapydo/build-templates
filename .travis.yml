@@ -22,7 +22,7 @@ script:
 - docker --version
 - docker-compose --version
 - echo "Building service ${SERVICE}"
-- export RAPYDO_VERSION=0.7.0
+- export RAPYDO_VERSION=0.7.1
 - docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990
   ${SERVICE}
 - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}
