@@ -23,7 +23,8 @@ script:
 - docker-compose --version
 - echo "Building service ${SERVICE}"
 - export RAPYDO_VERSION=0.7.1
-- docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990 --build-arg CURRENT_GID=990
+- GROUPID=$(id -g $APIUSER)
+- docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990 --build-arg CURRENT_GID=${GROUPID}
   ${SERVICE}
 - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}
 - docker login --username "${DOCKER_USERNAME}" --password "${DOCKER_PASSWORD}"
