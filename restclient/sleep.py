@@ -8,7 +8,7 @@ import time
 
 
 def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
-    print("got %s" % name)
+    print("got {}".format(name))
     sys.exit(0)
 
 
