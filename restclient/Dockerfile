@@ -7,6 +7,9 @@ RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
+
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################################

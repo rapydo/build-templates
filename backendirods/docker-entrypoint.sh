@@ -13,6 +13,12 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     usermod -u $CURRENT_UID $APIUSER
 fi
 
+GROUPID=$(id -g $APIUSER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
+    usermod -g $CURRENT_GID $APIUSER
+fi
+
 # # check environment variables
 if [ -z "$VANILLA_PACKAGE" -a -z "$IRODS_HOST" -a -z "ALCHEMY_HOST" ];
 then

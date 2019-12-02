@@ -8,7 +8,6 @@ set -e
 #######################################
 
 NODE_USER="node"
-NODE_GROUP="node"
 NODE_HOME=$(eval echo ~$NODE_USER)
 
 DEVID=$(id -u ${NODE_USER})
@@ -16,6 +15,13 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing user ${NODE_USER} uid from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID ${NODE_USER}
 fi
+
+GROUPID=$(id -g $NODE_USER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing user $NODE_USER gid from $GROUPID to $CURRENT_GID..."
+    usermod -g $CURRENT_GID $NODE_USER
+fi
+
 
 echo "Running as ${NODE_USER} (uid $(id -u ${NODE_USER}))"
 

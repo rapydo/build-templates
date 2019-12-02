@@ -7,7 +7,8 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
-
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 ###################
 
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
@@ -45,8 +46,9 @@ ENV APIUSER developer
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
-    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
+    --uid $APIUID --gid $CURRENT_GID $APIUSER \
+    && mkdir -p /home/$APIUSER \
+    && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
 RUN if [ ! -f /home/$APIUSER/.bashrc ]; then cp /root/.bashrc /home/$APIUSER/.bashrc ; fi
 
@@ -57,7 +59,6 @@ ENV UWSGI_RUN /var/run/uwsgi
 ENV MYUWSGI_HOME /tmp/uwsgi
 RUN mkdir -p $UWSGI_LOGS
 RUN mkdir -p $UWSGI_RUN
-# RUN chown -R nobody:nobody $UWSGI_LOGS $UWSGI_RUN
 
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}

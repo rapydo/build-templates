@@ -11,7 +11,8 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
-
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 ###################
 # ENV MYPYTHON_VERSION 3.8
 # NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
@@ -55,10 +56,9 @@ ENV APIUSER developer
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
-    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
-# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+    --uid $APIUID --gid $CURRENT_GID APIUSER \
+    && mkdir -p /home/$APIUSER \
+    && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI

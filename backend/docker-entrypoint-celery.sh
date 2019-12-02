@@ -7,6 +7,12 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     usermod -u $CURRENT_UID $APIUSER
 fi
 
+GROUPID=$(id -g $APIUSER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
+    usermod -g $CURRENT_GID $APIUSER
+fi
+
 # fix permissions of flower db dir
 if [ -d "$CELERYUI_DBDIR" ]; then
     chown -R $APIUSER $CELERYUI_DBDIR

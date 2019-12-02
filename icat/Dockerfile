@@ -6,6 +6,8 @@ LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 ##############
 
 ### HOW TO ###
@@ -51,8 +53,9 @@ ENV IRODS_UNAME irods
 ENV IRODS_UID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
-    --uid $IRODS_UID $IRODS_UNAME \
-    && mkdir -p /home/$IRODS_UNAME && chown $IRODS_UID /home/$IRODS_UNAME
+    --uid $IRODS_UID --gid $CURRENT_GID $IRODS_UNAME \
+    && mkdir -p /home/$IRODS_UNAME \
+    && chown $IRODS_UID:$CURRENT_GID /home/$IRODS_UNAME
 
 ###################
 # GSI and certificates

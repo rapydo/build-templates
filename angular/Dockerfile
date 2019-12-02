@@ -3,6 +3,8 @@ FROM node:12.10.0-buster
 ###################
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
@@ -25,7 +27,7 @@ EXPOSE 9876
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-RUN usermod -u $CURRENT_UID node
+RUN usermod -u $CURRENT_UID -g $CURRENT_GID node
 
 # ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint"]

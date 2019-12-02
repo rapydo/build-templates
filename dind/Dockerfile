@@ -6,6 +6,8 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 
 RUN apk add git python3 
 
