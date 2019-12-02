@@ -56,7 +56,7 @@ ENV APIUSER developer
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID APIUSER \
+    --uid $APIUID $APIUSER \
     && groupmod -g $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
     && chown $APIUID:$CURRENT_GID /home/$APIUSER
