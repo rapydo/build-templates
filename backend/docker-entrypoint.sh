@@ -111,5 +111,5 @@ else
         echo "Debug mode"
     fi
 
-    exec pysleeper
+    eval "$DEV_SU -c 'pysleeper'"
 fi
