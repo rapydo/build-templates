@@ -15,7 +15,7 @@ fi
 GROUPID=$(id -g developer)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
     echo "Fixing developer gid from $GROUPID to $CURRENT_GID..."
-    usermod -g $CURRENT_GID developer
+    groupmod -g $CURRENT_GID developer
 fi
 
 if [ "$API_PORT" == "" ]; then

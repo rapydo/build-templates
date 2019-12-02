@@ -19,7 +19,7 @@ fi
 GROUPID=$(id -g $NODE_USER)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
     echo "Fixing user $NODE_USER gid from $GROUPID to $CURRENT_GID..."
-    usermod -g $CURRENT_GID $NODE_USER
+    groupmod -g $CURRENT_GID $NODE_USER
 fi
 
 
