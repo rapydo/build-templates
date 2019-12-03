@@ -1,10 +1,6 @@
 # !/bin/bash
 set -e
 
-# DOMAIN="b2stage-test.cineca.it"
-# MODE="--staging"
-# MODE=""
-
 # Renewall script
 echo "Mode: *$MODE*"
 echo "Domain: $DOMAIN"
