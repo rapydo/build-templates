@@ -77,7 +77,6 @@ COPY flask_migrate /usr/local/bin/flask_migrate
 RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
-# RUN rm -rf /etc/nginx/sites-enabled
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
