@@ -24,18 +24,18 @@ function convert_conf {
 # confs with no extension are loaded from service conf
 
 convert_conf ${TEMPLATE_DIR}/production.conf ${CONF_DIR}/production.conf
-convert_conf ${TEMPLATE_DIR}/backend.conf ${CONF_DIR}/backend.service
+convert_conf ${TEMPLATE_DIR}/service_confs/backend.conf ${CONF_DIR}/backend.service
 
 # Frontend configuration
 if [[ -f "$TEMPLATE_DIR/${FRONTEND}.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
+    convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
 fi
 
 # Custom Frontend header configuration, if any
 if [[ -f "$TEMPLATE_DIR/production-${FRONTEND}-headers.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/production-${FRONTEND}-headers.conf ${CONF_DIR}/production-headers
+    convert_conf ${TEMPLATE_DIR}/headers_confs/production-${FRONTEND}-headers.conf ${CONF_DIR}/production-headers
 else
-    convert_conf ${TEMPLATE_DIR}/production-headers.conf ${CONF_DIR}/production-headers
+    convert_conf ${TEMPLATE_DIR}/headers_confs/production-headers.conf ${CONF_DIR}/production-headers
 fi
 
 # Extra services....
