@@ -32,7 +32,7 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-# IF INIT is necessary
+# INIT if necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
 check_volumes=$([ "$(ls -A $CODE_DIR)" ] && echo "yes" || echo "no")
 
