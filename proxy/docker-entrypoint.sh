@@ -27,12 +27,12 @@ convert_conf ${TEMPLATE_DIR}/production.conf ${CONF_DIR}/production.conf
 convert_conf ${TEMPLATE_DIR}/service_confs/backend.conf ${CONF_DIR}/backend.service
 
 # Frontend configuration
-if [[ -f "$TEMPLATE_DIR/${FRONTEND}.conf" ]]; then
+if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
     convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
 fi
 
 # Custom Frontend header configuration, if any
-if [[ -f "$TEMPLATE_DIR/production-${FRONTEND}-headers.conf" ]]; then
+if [[ -f "$TEMPLATE_DIR/headers_confs/production-${FRONTEND}-headers.conf" ]]; then
     convert_conf ${TEMPLATE_DIR}/headers_confs/production-${FRONTEND}-headers.conf ${CONF_DIR}/production-headers
 else
     convert_conf ${TEMPLATE_DIR}/headers_confs/production-headers.conf ${CONF_DIR}/production-headers
