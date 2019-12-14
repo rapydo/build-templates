@@ -16,7 +16,7 @@ RUN test -n "$CURRENT_GID"
 ###################
 # Install repository for python3.6
 
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:jonathonf/python-3.6
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:deadsnakes/ppa
 
 ENV MYPYTHON_VERSION 3.6
 
