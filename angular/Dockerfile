@@ -16,7 +16,7 @@ ENV NODE_PATH /opt/node_modules
 
 RUN npm install -g @angular/cli@8.3.20
 
-RUN npm install dotenv@8.2.0 package-merge@0.1.2 
+RUN npm install dotenv@8.2.0 package-merge@0.1.2 deepmerge@4.2.2
 
 WORKDIR /app/
 
