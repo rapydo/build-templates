@@ -4,7 +4,6 @@
 import signal
 import sys
 import time
-from restapi.utilities.logs import log
 
 
 def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
@@ -18,7 +17,7 @@ signal.signal(signal.SIGTERM, signal_term_handler)
 low_infinity = sys.maxsize / 10000000000
 
 try:
-    log.info("python sleeping")
+    print("python sleeping")
     time.sleep(low_infinity)
 except KeyboardInterrupt:
     signal_term_handler(name='keyboard interrupt')
