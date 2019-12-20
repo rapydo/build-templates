@@ -40,14 +40,13 @@ WORKDIR /tmp
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir pip dumb-init && \
+RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
-    cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir && \
+RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-    pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION && \
-
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
     # This is needed to make FlaskInjector work with python 3.7
-    pip3 uninstall typing
+    && pip3 uninstall typing
 
 ###################
 # # Adding gsi as gssapi available mechanism for PRC
