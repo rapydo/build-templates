@@ -30,8 +30,9 @@ RUN apt-get update \
     python3-distutils \
     gosu \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    # Temporary fix to make add-apt-repository work with python 3.7
+    # Two temporary fixes to make add-apt-repository work with python 3.7
     && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
+    && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
     && apt-get autoremove && apt-get clean \
     && echo "setup installed"
 
