@@ -21,13 +21,17 @@ ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update \
+    # Needed to fix problems with python upgrade, otherwise add-apt-repository can fail with error: ModuleNotFoundError: No module named 'apt_pkg'
+    && apt-get remove --purge --yes python3-apt \
+    && apt-get install -y \
     bash less vim curl wget telnet iputils-ping git jq \
     build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python3-pip \
     python3-distutils \
+    python3-apt \
     gosu \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
     && apt-get autoremove && apt-get clean \
