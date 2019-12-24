@@ -13,3 +13,4 @@ redis
 elasticsearch
 Flask-Migrate
 gripcontrol==3.3.1
+sentry-sdk[flask]==0.7.8
