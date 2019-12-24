@@ -23,17 +23,17 @@ ENV LANG C.UTF-8
 
 RUN apt-get update \
     && apt-get install --yes \
-    bash less vim curl wget telnet iputils-ping git jq \
-    build-essential nginx \
+    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python3-pip \
     python3-distutils \
     gosu \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    # Needed to fix problems with python upgrade, otherwise add-apt-repository can fail with error: ModuleNotFoundError: No module named 'apt_pkg'
-    && apt-get remove --purge --yes python3-apt \
-    && apt-get install --yes python3-apt \
+    #
+    # Temporary fix to make add-apt-repository work with python 3.7
+    #
+    && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so
     && apt-get autoremove && apt-get clean \
     && echo "setup installed"
 
