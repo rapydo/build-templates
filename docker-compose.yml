@@ -2,6 +2,9 @@
 # USED ONLY FOR AUTOMATIC UNIT TESTS #
 # ####################################
 
+proxy:
+  build: proxy
+
 backend:
   build: backend
 
@@ -17,9 +20,6 @@ angular:
 react:
   build: react
 
-# celery:
-#   build: celery
-
 icat:
   # image: b2safe/server:icat
   build: icat
@@ -28,14 +28,14 @@ icat:
 #   # NOTE: this depends on icat
 #   build: b2safe
 
-restclient:
-  build: restclient
+# restclient:
+#   build: restclient
 
 ftp:
   build: ftp
 
-proxy:
-  build: proxy
+rabbitmq:
+  build: rabbitmq
 
 dind:
   build: dind
