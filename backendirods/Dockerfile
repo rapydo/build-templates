@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     globus-proxy-utils \
     nginx \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    && apt-get autoremove && apt-get clean \
+    && apt-get autoremove --yes && apt-get clean \
     && echo "done"
 ###################
 # PIP
