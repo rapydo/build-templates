@@ -126,6 +126,8 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
+VOLUME /home/$APIUSER/.bash_history
+
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
