@@ -26,6 +26,7 @@ RUN apt-get update \
     bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION}-gdbm \
     python3-pip \
     python3-distutils \
     gosu \
