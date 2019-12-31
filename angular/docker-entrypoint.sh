@@ -43,7 +43,9 @@ HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm install'
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run build'
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run courtesy'
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false'
+	HOME=$NODE_HOME su -p ${NODE_USER} -c 'npm run gzip'
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
