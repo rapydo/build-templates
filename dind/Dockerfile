@@ -6,6 +6,8 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 
 RUN apk add git python3 
 
@@ -19,7 +21,5 @@ RUN apk add git python3
 RUN apk add python3-dev libc-dev libffi-dev openssl-dev gcc make 
 
 RUN pip3 install --upgrade pip
-
-RUN pip3 install --upgrade --no-cache-dir "git+https://github.com/rapydo/utils.git@${RAPYDO_VERSION}"
 
 RUN pip3 install --upgrade --no-cache-dir "git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}"

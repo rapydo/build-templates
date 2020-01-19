@@ -8,6 +8,12 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     usermod -u $CURRENT_UID $IRODS_UNAME
 fi
 
+GROUPID=$(id -g $IRODS_UNAME)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing user $IRODS_UNAME gid from $GROUPID to $CURRENT_GID..."
+    groupmod -g $CURRENT_GID $IRODS_UNAME
+fi
+
 # set the current password for 'system' user "irods"
 yes $IRODS_PASSWORD | passwd $IRODS_USER
 

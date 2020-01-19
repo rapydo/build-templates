@@ -11,7 +11,8 @@ ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
-
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 ###################
 # ENV MYPYTHON_VERSION 3.8
 # NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
@@ -20,16 +21,20 @@ ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet iputils-ping git jq \
-    build-essential nginx \
+RUN apt-get update \
+    && apt-get install --yes \
+    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION}-gdbm \
     python3-pip \
     python3-distutils \
     gosu \
-    && cd /usr/bin && ln -s python${MYPYTHON_VERSION} python \
-    && apt-get autoremove && apt-get clean \
+    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
+    # Two temporary fixes to make add-apt-repository work with python 3.7
+    && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
+    && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
+    && apt-get autoremove --yes && apt-get clean \
     && echo "setup installed"
 
 ###################
@@ -43,8 +48,9 @@ RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
+    # This is needed to make FlaskInjector work with python 3.7
+    && pip3 uninstall --yes typing
 
 ###################
 # # Adding gsi as gssapi available mechanism for PRC
@@ -57,9 +63,9 @@ ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
-    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
-# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+    && groupmod -g $CURRENT_GID $APIUSER \
+    && mkdir -p /home/$APIUSER \
+    && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI
@@ -77,7 +83,6 @@ COPY flask_migrate /usr/local/bin/flask_migrate
 RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 # # remove nginx defaults
-# RUN rm -rf /etc/nginx/sites-enabled
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 

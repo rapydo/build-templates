@@ -6,10 +6,16 @@ set -e
 # Entrypoint!
 #
 ######################################
-DEVID=$(id -u developer)
-if [ "$DEVID" != "$CURRENT_UID" ]; then
-    echo "Fixing developer uid from $DEVID to $CURRENT_UID..."
+USERID=$(id -u developer)
+if [ "$USERID" != "$CURRENT_UID" ]; then
+    echo "Fixing developer uid from $USERID to $CURRENT_UID..."
     usermod -u $CURRENT_UID developer
+fi
+
+GROUPID=$(id -g developer)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing developer gid from $GROUPID to $CURRENT_GID..."
+    groupmod -g $CURRENT_GID developer
 fi
 
 if [ "$API_PORT" == "" ]; then

@@ -13,6 +13,12 @@ if [ "$DEVID" != "$CURRENT_UID" ]; then
     usermod -u $CURRENT_UID $APIUSER
 fi
 
+GROUPID=$(id -g $APIUSER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
+    groupmod -g $CURRENT_GID $APIUSER
+fi
+
 # # check environment variables
 if [ -z "$VANILLA_PACKAGE" -a -z "$IRODS_HOST" -a -z "ALCHEMY_HOST" ];
 then
@@ -26,7 +32,7 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-# IF INIT is necessary
+# INIT if necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
 check_volumes=$([ "$(ls -A $CODE_DIR)" ] && echo "yes" || echo "no")
 
@@ -116,5 +122,5 @@ else
         echo "Debug mode"
     fi
 
-    exec pysleeper
+    eval "$DEV_SU -c 'pysleeper'"
 fi

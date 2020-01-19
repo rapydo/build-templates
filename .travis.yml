@@ -12,8 +12,8 @@ env:
 - SERVICE=react
 - SERVICE=dind
 - SERVICE=ftp
+- SERVICE=rabbitmq
 # - SERVICE=backendcentos
-# - SERVICE=restclient
 services:
 - docker
 install:
@@ -22,8 +22,8 @@ script:
 - docker --version
 - docker-compose --version
 - echo "Building service ${SERVICE}"
-- export RAPYDO_VERSION=0.7.0
-- docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990
+- export RAPYDO_VERSION=0.7.1
+- docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=990 --build-arg CURRENT_GID=990
   ${SERVICE}
 - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}
 - docker login --username "${DOCKER_USERNAME}" --password "${DOCKER_PASSWORD}"

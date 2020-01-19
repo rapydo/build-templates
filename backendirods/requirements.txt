@@ -16,3 +16,4 @@ gripcontrol==3.3.1
 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master
 git+https://github.com/irods/python-irodsclient.git@master
 gssapi==1.5.1
+sentry-sdk[flask]==0.7.8

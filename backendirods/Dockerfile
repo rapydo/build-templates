@@ -11,22 +11,25 @@ RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
 ###################
-# Install repository for python3.6
+# Install repository for python3.6+
 
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:jonathonf/python-3.6
+RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:deadsnakes/ppa
 
 ENV MYPYTHON_VERSION 3.6
 
 RUN apt-get update && apt-get install -y \
     bash less vim curl wget telnet iputils-ping git jq \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
+    python${MYPYTHON_VERSION}-gdbm \
     gosu \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    && apt-get autoremove && apt-get clean \
+    && apt-get autoremove --yes && apt-get clean \
     && echo "done"
 ###################
 # PIP
@@ -44,7 +47,6 @@ RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
@@ -58,9 +60,9 @@ ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
-    && mkdir -p /home/$APIUSER && chown $APIUID /home/$APIUSER
-# RUN useradd -r -M -d /home/$APIUSER -s /bin/bash -p ! $APIUSER
-# RUN mkdir -p /home/$APIUSER && chown $APIUSER:$APIUSER /home/$APIUSER
+    && groupmod -g $CURRENT_GID $APIUSER \
+    && mkdir -p /home/$APIUSER \
+    && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI
@@ -77,8 +79,6 @@ COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 COPY flask_migrate /usr/local/bin/flask_migrate 
 RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
-# # remove nginx defaults
-# RUN rm -rf /etc/nginx/sites-enabled
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 

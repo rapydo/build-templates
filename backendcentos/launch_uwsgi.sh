@@ -23,8 +23,6 @@ fi
 
 ####################################
 if [ -n "$NGINX_ACTIVE" ]; then
-    # remove defaults
-    # rm -rf /etc/nginx/sites-enabled
     echo "Starting nginx"
     # service nginx start
     nginx

@@ -7,6 +7,9 @@ RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 
+ARG CURRENT_GID
+RUN test -n "$CURRENT_GID"
+
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################################
@@ -17,11 +20,7 @@ RUN apk update && apk upgrade && apk add \
     && rm -rf /var/cache/apk/*
 
 # Install python packages
-RUN pip --no-cache-dir install --upgrade \
-    pip httpie http-prompt pyyaml \
-    #https://github.com/json-transformations/jsoncut
-    pygments jsoncut \
-    git+https://github.com/rapydo/utils.git@$RAPYDO_VERSION
+RUN pip --no-cache-dir install --upgrade pip httpie http-prompt pyyaml pygments jsoncut
 
 # Install jqt/yq
 # https://fadado.github.io/jqt/
