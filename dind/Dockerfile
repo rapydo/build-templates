@@ -9,7 +9,7 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-RUN apk add git python3 
+RUN apk --no-cache add git python3 
 
 # These are needed to install cffi
 # cffi is a dependency of bcrypt

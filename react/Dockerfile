@@ -3,11 +3,10 @@ FROM node:10.12.0-alpine
 LABEL maintainer="Paolo <paolo@proofmedia.io>"
 
 RUN apk --no-cache update && \
-    apk --no-cache upgrade && apk add \
+    apk --no-cache upgrade && apk --no-cache add \
     bash less vim git \
     dumb-init \
-    g++ make bash zlib-dev libpng-dev \
-    && rm -rf /var/cache/apk/*
+    g++ make bash zlib-dev libpng-dev
 # about npm packages problem in alpine: http://j.mp/2ubNUcd
 
 # NOTE: yarn will be at the maximum possible release

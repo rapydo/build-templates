@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     globus-proxy-utils \
     nginx \
     && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    && apt-get autoremove --yes && apt-get clean \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && echo "done"
 ###################
 # PIP

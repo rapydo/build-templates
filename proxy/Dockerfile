@@ -15,11 +15,8 @@ ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
 ###################
-RUN apk update && \
-    apk add vim wget git bash \
-    openssl curl netcat-openbsd \
-    tini \
-    && rm -rf /var/cache/apk/*
+RUN apk --no-cache update && \
+    apk --no-cache add vim wget git bash openssl curl netcat-openbsd tini
 
 WORKDIR /tmp
 ENV ACMEDIR /acme

@@ -34,7 +34,7 @@ RUN apt-get update \
     # Two temporary fixes to make add-apt-repository work with python 3.7
     && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
     && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
-    && apt-get autoremove --yes && apt-get clean \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && echo "setup installed"
 
 ###################
