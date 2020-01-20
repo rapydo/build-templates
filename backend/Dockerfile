@@ -1,19 +1,16 @@
-
-###################
 FROM ubuntu:18.04
 # ubuntu LTS
 # TODO: check if alpine is the way?
 # switching make better use of UWSGI: http://j.mp/2rxvp3r
 LABEL maintainer="Paolo D'Onorio De Meo"
 
-###################
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
-###################
+
 ENV MYPYTHON_VERSION 3.8
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
@@ -21,21 +18,15 @@ ENV LANG C.UTF-8
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
+    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx gosu \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools \
     python3-pip \
     python3-distutils \
-    gosu \
     && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
-
-    # Two temporary fixes to make add-apt-repository work with python 3.7
-    # && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
-    # && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
-    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    && echo "setup installed"
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ###################
 COPY requirements.txt /tmp/
@@ -47,16 +38,9 @@ RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN xargs -a /tmp/requirements.txt -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION 
-    # This is needed to make FlaskInjector work with python 3.7
-    # && pip3 uninstall --yes typing
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
-###################
-# # Adding gsi as gssapi available mechanism for PRC
-# COPY gsi.conf /etc/gss/mech.d/
-# main user for launching the apis
 ENV APIUSER developer
-# Emulating irods user creation. See http://j.mp/2lGPqlq
 
 ENV APIUID $CURRENT_UID
 RUN useradd \
