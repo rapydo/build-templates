@@ -29,14 +29,13 @@ RUN yum install -y nginx rh-python36 python36-devel python36-pip \
 
 ###################
 COPY requirements.txt /tmp/
-WORKDIR /tmp
 
 RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
+RUN cat /tmp/requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 

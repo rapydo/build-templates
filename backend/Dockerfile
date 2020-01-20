@@ -31,7 +31,7 @@ RUN apt-get update \
     python3-pip \
     python3-distutils \
     gosu \
-    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
+    ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/ && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     # Two temporary fixes to make add-apt-repository work with python 3.7
     && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
     && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
@@ -40,14 +40,13 @@ RUN apt-get update \
 
 ###################
 COPY requirements.txt /tmp/
-WORKDIR /tmp
 
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
 RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
-RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
+RUN cat /tmp/requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
     # This is needed to make FlaskInjector work with python 3.7

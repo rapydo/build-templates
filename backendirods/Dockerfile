@@ -29,14 +29,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
+    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && echo "done"
 ###################
 # PIP
 
 COPY requirements.txt /tmp/
-WORKDIR /tmp
 
 RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
@@ -46,7 +45,7 @@ RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
 
 RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
-RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
+RUN cat /tmp/requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
 RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 

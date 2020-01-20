@@ -25,10 +25,10 @@ ENV ACMEDIR /acme
 ENV ACMEV "2.8.3"
 RUN echo acme && \
     wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
-    && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
-    && ./acme.sh --install --home $ACMEDIR \
-    && ./acme.sh --register-account \
-    && cd .. && rm -rf *$ACMEV
+    && unzip ${ACMEV}.zip \
+    && acme.sh-${ACMEV}/acme.sh --install --home $ACMEDIR \
+    && acme.sh-${ACMEV}/acme.sh --register-account \
+    && rm -rf *$ACMEV
 
 #######################
 RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge

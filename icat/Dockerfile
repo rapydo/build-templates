@@ -118,7 +118,6 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.
     && rm *.deb
 
 ###################
-# WORKDIR /tmp
 EXPOSE 1247
 
 # ENTRYPOINT ["docker-entrypoint"]
