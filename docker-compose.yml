@@ -28,9 +28,6 @@ icat:
 #   # NOTE: this depends on icat
 #   build: b2safe
 
-# restclient:
-#   build: restclient
-
 ftp:
   build: ftp
 

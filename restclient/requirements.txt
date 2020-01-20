@@ -1,6 +1,0 @@
-pip
-httpie
-http-prompt
-pyyaml
-pygments
-jsoncut
