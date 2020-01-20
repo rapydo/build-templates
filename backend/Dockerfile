@@ -27,6 +27,7 @@ RUN apt-get update \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
+    python3-setuptools \
     python3-pip \
     python3-distutils \
     gosu \

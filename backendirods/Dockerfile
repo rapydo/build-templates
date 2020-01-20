@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bash less vim curl wget telnet iputils-ping git jq \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
+    python3-setuptools \
     gosu \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
