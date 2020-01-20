@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools \
     python3-pip \
-    python3-distutils \
+    python3-distutils-extra \
     gosu \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
