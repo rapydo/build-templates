@@ -16,11 +16,13 @@ RUN test -n "$CURRENT_GID"
 ###################
 # Install repository for python3.6+
 
-RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common python-software-properties && add-apt-repository -y ppa:deadsnakes/ppa
-
 ENV MYPYTHON_VERSION 3.6
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common python-software-properties \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
     bash less vim curl wget telnet iputils-ping git jq gosu \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
@@ -29,8 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     globus-proxy-utils \
     nginx \
     && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
-    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    && echo "done"
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 ###################
 # PIP
 
