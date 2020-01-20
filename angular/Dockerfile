@@ -29,5 +29,4 @@ COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN groupmod -g $CURRENT_GID node && usermod -u $CURRENT_UID node
 
-# ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint"]

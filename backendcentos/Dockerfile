@@ -30,8 +30,6 @@ RUN yum install -y nginx rh-python36 python36-devel python36-pip \
 ###################
 COPY requirements.txt /tmp/
 
-RUN pip3 install --upgrade --no-cache-dir pip dumb-init
-
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 

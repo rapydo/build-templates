@@ -1,3 +1,4 @@
+dumb-init
 pytest-flask
 pytest-cov
 uWSGI
