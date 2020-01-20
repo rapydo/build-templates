@@ -21,12 +21,7 @@ react:
   build: react
 
 icat:
-  # image: b2safe/server:icat
   build: icat
-
-# b2safe:
-#   # NOTE: this depends on icat
-#   build: b2safe
 
 ftp:
   build: ftp
