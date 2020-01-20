@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools \
+    python3-pip \
+    python3-distutils \
     gosu \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
@@ -37,7 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt /tmp/
 
-RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
+# RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
     && python get-pip.py && rm *.py
 
 # # DEBUG CONFLICTS:
