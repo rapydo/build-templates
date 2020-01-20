@@ -8,7 +8,7 @@ RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
-RUN apt-get update && apt-get install -y chromium vim
+RUN apt-get update && apt-get install --yes --no-install-recommends chromium vim
 
 ENV CHROME_BIN chromium
 

@@ -16,12 +16,6 @@ RUN test -n "$CURRENT_GID"
 # iadmin mkuser paolo rodsuser
 # iadmin moduser paolo password tester
 
-## CLOCK SYNC ISSUES
-# apt-get install -y tzdata
-# unlink /etc/localtime
-# ln -s /usr/share/zoneinfo/Etc/GMT+6 /etc/localtime
-
-###################
 # Preparation
 WORKDIR /tmp
 

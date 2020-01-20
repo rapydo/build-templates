@@ -22,7 +22,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 RUN apt-get update \
-    && apt-get install --yes \
+    && apt-get install --yes --no-install-recommends \
     bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
