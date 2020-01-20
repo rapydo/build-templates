@@ -14,9 +14,7 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 ###################
-# ENV MYPYTHON_VERSION 3.8
-# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.7
+ENV MYPYTHON_VERSION 3.8
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -32,9 +30,10 @@ RUN apt-get update \
     python3-distutils \
     gosu \
     ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/ && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
+
     # Two temporary fixes to make add-apt-repository work with python 3.7
-    && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
-    && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
+    # && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
+    # && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && echo "setup installed"
 
@@ -48,9 +47,9 @@ RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN cat /tmp/requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION 
     # This is needed to make FlaskInjector work with python 3.7
-    && pip3 uninstall --yes typing
+    # && pip3 uninstall --yes typing
 
 ###################
 # # Adding gsi as gssapi available mechanism for PRC
