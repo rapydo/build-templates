@@ -25,7 +25,7 @@ ENV ACMEDIR /acme
 ENV ACMEV "2.8.3"
 RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
-    && /acme.sh --install --home $ACMEDIR \
+    && ./acme.sh --install --home $ACMEDIR \
     && ./acme.sh --register-account \
     && cd .. && rm -rf *$ACMEV
 
