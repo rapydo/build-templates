@@ -29,7 +29,7 @@ RUN apt-get update \
     python3-pip \
     python3-distutils \
     gosu \
-    ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/ && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
+    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/ && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
 
     # Two temporary fixes to make add-apt-repository work with python 3.7
     # && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
