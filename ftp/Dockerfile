@@ -1,4 +1,4 @@
-FROM stilliard/pure-ftpd
+FROM stilliard/pure-ftpd:latest
 
 
 COPY ./ftp_utilities.sh /usr/local/bin/myftp
