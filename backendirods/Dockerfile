@@ -18,7 +18,7 @@ RUN test -n "$CURRENT_GID"
 
 RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common python-software-properties && add-apt-repository -y ppa:deadsnakes/ppa
 
-ENV MYPYTHON_VERSION 3.8
+ENV MYPYTHON_VERSION 3.6
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash less vim curl wget telnet iputils-ping git jq \
