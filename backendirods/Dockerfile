@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /tmp/
 
 # RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
-    && python get-pip.py && rm *.py
+#    && python get-pip.py && rm *.py
 
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
