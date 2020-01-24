@@ -55,6 +55,7 @@ else
         nginx -s reload
 
         cd ${CERTDIR}
+        chmod +r ${CERTCHAINFILE} ${CERTKEYFILE}
         rm -f neo4j.cert neo4j.key
         ln -sfn ${CERTCHAINFILE} neo4j.cert
         ln -sfn ${CERTKEYFILE} neo4j.key
