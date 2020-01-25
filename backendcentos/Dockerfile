@@ -31,7 +31,7 @@ RUN yum install -y nginx rh-python36 python36-devel python36-pip \
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init pytest-flask pytest-cov uwsgitop git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 # main user for launching the apis
 ENV APIUSER developer
