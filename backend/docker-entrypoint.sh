@@ -16,7 +16,7 @@ fi
 GROUPID=$(id -g $APIUSER)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
     echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
-    groupmod -g $CURRENT_GID $APIUSER
+    groupmod -og $CURRENT_GID $APIUSER
 fi
 
 # # check environment variables

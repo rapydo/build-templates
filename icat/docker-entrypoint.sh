@@ -11,7 +11,7 @@ fi
 GROUPID=$(id -g $IRODS_UNAME)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
     echo "Fixing user $IRODS_UNAME gid from $GROUPID to $CURRENT_GID..."
-    groupmod -g $CURRENT_GID $IRODS_UNAME
+    groupmod -og $CURRENT_GID $IRODS_UNAME
 fi
 
 # set the current password for 'system' user "irods"

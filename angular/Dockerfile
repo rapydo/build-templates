@@ -27,6 +27,6 @@ EXPOSE 9876
 RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-RUN groupmod -g $CURRENT_GID node && usermod -u $CURRENT_UID node
+RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 CMD ["docker-entrypoint"]
