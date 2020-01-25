@@ -35,19 +35,12 @@ RUN apt-get update \
 ###################
 # PIP
 
-COPY requirements.txt /tmp/
-
-# RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
-#    && python get-pip.py && rm *.py
-
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
 
-RUN xargs -a /tmp/requirements.txt -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init pytest-flask pytest-cov uwsgitop git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION 
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

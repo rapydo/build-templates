@@ -29,14 +29,10 @@ RUN apt-get update \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ###################
-COPY requirements.txt /tmp/
-
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN xargs -a /tmp/requirements.txt -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init pytest-flask pytest-cov uwsgitop git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 

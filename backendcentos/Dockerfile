@@ -28,14 +28,10 @@ RUN yum install -y nginx rh-python36 python36-devel python36-pip \
 #    ln -s /usr/bin/python3.6 /usr/bin/python3
 
 ###################
-COPY requirements.txt /tmp/
-
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN xargs -a /tmp/requirements.txt -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init pytest-flask pytest-cov uwsgitop git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 # main user for launching the apis
 ENV APIUSER developer
