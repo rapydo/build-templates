@@ -11,9 +11,6 @@ backend:
 backendirods:
   build: backendirods
 
-backendcentos:
-  build: backendcentos
-
 angular:
   build: angular
 

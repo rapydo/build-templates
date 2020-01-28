@@ -13,7 +13,6 @@ env:
 - SERVICE=dind
 - SERVICE=ftp
 - SERVICE=rabbitmq
-# - SERVICE=backendcentos
 # - SERVICE=react
 services:
 - docker
