@@ -59,9 +59,9 @@ if [ "$checkirods" == "" ]; then
     #############################
 
     MYDATA="/tmp/answers"
-    sudo -E prepare_answers $MYDATA
+    prepare_answers $MYDATA
     # Launch the installation
-    sudo python /var/lib/irods/scripts/setup_irods.py < $MYDATA
+    python /var/lib/irods/scripts/setup_irods.py < $MYDATA
     # Verify how it went
     if [ "$?" == "0" ]; then
         rm $MYDATA
