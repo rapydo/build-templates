@@ -1,4 +1,4 @@
-FROM stilliard/pure-ftpd:latest
+FROM stilliard/pure-ftpd:stretch-latest
 
 
 COPY ./ftp_utilities.sh /usr/local/bin/myftp
