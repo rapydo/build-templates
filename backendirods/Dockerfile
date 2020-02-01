@@ -100,8 +100,7 @@ EXPOSE $FLASK_PORT
 ######################
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "Entrylevel" && \
-    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
+RUN echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
 ###### BACKEND COMMANDS
 ENV APIRC /home/$APIUSER/.bashrc
