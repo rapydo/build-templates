@@ -45,7 +45,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 # Version 1.2.0 depends on OAuthlib 3.0.0 and above
 # It does not support versions of OAuthlib before 3.0.0
 # But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
