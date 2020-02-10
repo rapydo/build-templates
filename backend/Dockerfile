@@ -26,7 +26,9 @@ RUN apt-get update \
     python3-pip \
     python3-distutils \
     && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
-    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    # Fix to make add-apt-repository work on python 3.8
+    && sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
 
 ###################
 # # DEBUG CONFLICTS:
