@@ -43,6 +43,8 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
 
+RUN pip3 install --upgrade https://github.com/zmap/celerybeat-mongo.git@master
+
 # Latest requests-oauthlib [1.2.0] (required by Flask-OAuthlib)
 # requires oauthlib<3.0.0,>=2.1.0
 # Version 1.2.0 depends on OAuthlib 3.0.0 and above
