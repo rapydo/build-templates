@@ -23,9 +23,12 @@ RUN apt-get update \
     && add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping git jq gosu \
-    python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
+    bash less vim curl wget telnet iputils-ping git jq gosu build-essential \
+    libkrb5-dev \
+    python${MYPYTHON_VERSION} \
+    python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
+    python${MYPYTHON_VERSION}-distutils \
     python3-setuptools \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
