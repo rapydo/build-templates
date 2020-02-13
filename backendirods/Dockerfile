@@ -16,7 +16,7 @@ RUN test -n "$CURRENT_GID"
 ###################
 # Install repository for python3.6+
 
-ENV MYPYTHON_VERSION 3.6
+ENV MYPYTHON_VERSION 3.8
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends software-properties-common python-software-properties \
