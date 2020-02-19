@@ -34,7 +34,7 @@ RUN apt-get update \
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION idna==2.8
 
 ENV APIUSER developer
 
