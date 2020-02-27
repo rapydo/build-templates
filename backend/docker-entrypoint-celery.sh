@@ -23,6 +23,9 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
+export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
+export CELERY_HOST=1
+
 echo "waiting for services"
 # eval 'restapi wait'
 eval "$DEV_SU -c 'restapi wait'"

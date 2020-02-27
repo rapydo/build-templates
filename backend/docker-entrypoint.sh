@@ -86,6 +86,10 @@ if [ -d "$CERTDIR" ]; then
 fi
 
 #####################
+
+export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
+export CELERY_HOST=0
+
 # Completed
 
 if [ "$1" != 'rest' ]; then
