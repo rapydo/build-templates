@@ -2,8 +2,6 @@
 set -e
 
 # Renewall script
-echo "Mode: *$MODE*"
-echo "Domain: $DOMAIN"
 
 if [ "$SMTP_ADMIN" != "" ]; then
     echo "Reference email: $SMTP_ADMIN"
@@ -17,10 +15,25 @@ if [ "$SMTP_ADMIN" != "" ]; then
     fi
 fi
 
+hostname=""
 force=""
 if [[ "$1" == "--force" ]]; then
-        force="--force"
+    force="--force"
+    hostname=$2
+else
+    hostname=$1
 fi
+
+if [[ "$hostname" != "$DOMAIN" ]]; then
+    echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
+    echo ""
+    echo "Please re-created the proxy container with the correct configuration"
+    echo ""
+    exit 1
+fi
+
+echo "Mode: *$MODE*"
+echo "Domain: $DOMAIN"
 
 
 if [[ "$DOMAIN" == "localhost" ]]; then
