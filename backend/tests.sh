@@ -22,7 +22,7 @@ echo "Package: $CURRENT_PACKAGE"
 sleep 1
 
 if [ -z "$2" ]; then
-	py.test --confcutdir=tests -x -s $COV tests
+	py.test --confcutdir=tests -x -s --cov-report=xml $COV tests
 else
-	py.test --confcutdir=tests -x -s $COV tests/$2
+	py.test --confcutdir=tests -x -s --cov-report=xml $COV tests/$2
 fi

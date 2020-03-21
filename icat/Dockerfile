@@ -16,12 +16,6 @@ RUN test -n "$CURRENT_GID"
 # iadmin mkuser paolo rodsuser
 # iadmin moduser paolo password tester
 
-## CLOCK SYNC ISSUES
-# apt-get install -y tzdata
-# unlink /etc/localtime
-# ln -s /usr/share/zoneinfo/Etc/GMT+6 /etc/localtime
-
-###################
 # Preparation
 WORKDIR /tmp
 
@@ -54,7 +48,7 @@ ENV IRODS_UID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$IRODS_UNAME -s /bin/bash -p ! \
     --uid $IRODS_UID $IRODS_UNAME \
-    && groupmod -g $CURRENT_GID $IRODS_UNAME \
+    && groupmod -og $CURRENT_GID $IRODS_UNAME \
     && mkdir -p /home/$IRODS_UNAME \
     && chown $IRODS_UID:$CURRENT_GID /home/$IRODS_UNAME
 
@@ -124,7 +118,6 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.
     && rm *.deb
 
 ###################
-# WORKDIR /tmp
 EXPOSE 1247
 
 # ENTRYPOINT ["docker-entrypoint"]

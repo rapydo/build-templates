@@ -1,69 +1,48 @@
-
-###################
 FROM ubuntu:18.04
 # ubuntu LTS
 # TODO: check if alpine is the way?
 # switching make better use of UWSGI: http://j.mp/2rxvp3r
 LABEL maintainer="Paolo D'Onorio De Meo"
 
-###################
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
-###################
-# ENV MYPYTHON_VERSION 3.8
-# NOTE 3.8.0a4 at 06/05/2019 is the latest, let's wait a bit
-ENV MYPYTHON_VERSION 3.7
+
+ENV MYPYTHON_VERSION 3.8
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
 RUN apt-get update \
-    && apt-get install --yes \
-    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx \
+    && apt-get install --yes --no-install-recommends \
+    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx gosu \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
+    python3-setuptools \
     python3-pip \
     python3-distutils \
-    gosu \
-    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    # Two temporary fixes to make add-apt-repository work with python 3.7
-    && ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so \
-    && ln -sf /usr/lib/python3/dist-packages/gi/_gi.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/gi/_gi.cpython-37m-x86_64-linux-gnu.so \
-    && apt-get autoremove --yes && apt-get clean \
-    && echo "setup installed"
+    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    # Fix to make add-apt-repository work on python 3.8
+    && sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
 
 ###################
-COPY requirements.txt /tmp/
-WORKDIR /tmp
-
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir pip dumb-init
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION idna==2.8
 
-RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
-    # This is needed to make FlaskInjector work with python 3.7
-    && pip3 uninstall --yes typing
-
-###################
-# # Adding gsi as gssapi available mechanism for PRC
-# COPY gsi.conf /etc/gss/mech.d/
-# main user for launching the apis
 ENV APIUSER developer
-# Emulating irods user creation. See http://j.mp/2lGPqlq
 
 ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
-    && groupmod -g $CURRENT_GID $APIUSER \
+    && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
     && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
@@ -103,14 +82,12 @@ EXPOSE $FLASK_PORT
 ######################
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "Entrylevel" && \
-    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
+RUN echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
 ###### BACKEND COMMANDS
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
-RUN echo "Developer" && \
-    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
+RUN echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################

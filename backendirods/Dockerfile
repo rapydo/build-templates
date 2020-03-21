@@ -16,38 +16,40 @@ RUN test -n "$CURRENT_GID"
 ###################
 # Install repository for python3.6+
 
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties && add-apt-repository -y ppa:deadsnakes/ppa
+ENV MYPYTHON_VERSION 3.8
 
-ENV MYPYTHON_VERSION 3.6
-
-RUN apt-get update && apt-get install -y \
-    bash less vim curl wget telnet iputils-ping git jq \
-    python${MYPYTHON_VERSION} build-essential libkrb5-dev python${MYPYTHON_VERSION}-dev \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common python-software-properties \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+    bash less vim curl wget telnet iputils-ping git jq gosu build-essential \
+    libkrb5-dev \
+    python${MYPYTHON_VERSION} \
+    python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
-    gosu \
+    python${MYPYTHON_VERSION}-distutils \
+    python3-setuptools \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
     nginx \
-    && cd /usr/bin && ln -sf python${MYPYTHON_VERSION} python && ln -sf python${MYPYTHON_VERSION} python3 \
-    && apt-get autoremove --yes && apt-get clean \
-    && echo "done"
+    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 ###################
 # PIP
 
-COPY requirements.txt /tmp/
-WORKDIR /tmp
-
-RUN wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py \
-    && python get-pip.py && rm *.py
+RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
 # # DEBUG CONFLICTS:
 # RUN pip install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir pip dumb-init
-
-RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+# Latest requests-oauthlib [1.2.0] (required by Flask-OAuthlib)
+# requires oauthlib<3.0.0,>=2.1.0
+# Version 1.2.0 depends on OAuthlib 3.0.0 and above
+# It does not support versions of OAuthlib before 3.0.0
+# But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
+# gdapi-python == Python client for Rancher APIs
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -60,7 +62,7 @@ ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
     --uid $APIUID $APIUSER \
-    && groupmod -g $CURRENT_GID $APIUSER \
+    && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
     && chown $APIUID:$CURRENT_GID /home/$APIUSER
 
@@ -102,14 +104,12 @@ EXPOSE $FLASK_PORT
 ######################
 ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
 RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "Entrylevel" && \
-    echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
+RUN echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
 
 ###### BACKEND COMMANDS
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
-RUN echo "Developer" && \
-    echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
+RUN echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
 
 ###################

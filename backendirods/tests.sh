@@ -21,4 +21,4 @@ echo "Launching unittests with coverage"
 echo "Package: $CURRENT_PACKAGE"
 sleep 1
 
-py.test --confcutdir=tests -x -s $COV tests
+py.test --confcutdir=tests -x -s --cov-report=xml $COV tests

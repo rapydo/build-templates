@@ -16,7 +16,7 @@ fi
 GROUPID=$(id -g $APIUSER)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
     echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
-    groupmod -g $CURRENT_GID $APIUSER
+    groupmod -og $CURRENT_GID $APIUSER
 fi
 
 # # check environment variables
@@ -92,6 +92,10 @@ if [ -d "$UPLOAD_DIR" ]; then
 fi
 
 #####################
+
+export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
+export CELERY_HOST=0
+
 # Completed
 
 if [ "$1" != 'rest' ]; then

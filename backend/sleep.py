@@ -6,7 +6,7 @@ import sys
 import time
 
 
-def signal_term_handler(signal=None, frame=None, name='SIGTERM'):
+def signal_term_handler(name='SIGTERM'):
     print("got {}".format(name))
     sys.exit(0)
 
