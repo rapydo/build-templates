@@ -9,13 +9,13 @@ set -e
 
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
-    echo "Fixing user $APIUSER uid from $DEVID to $CURRENT_UID..."
+    echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID $APIUSER
 fi
 
 GROUPID=$(id -g $APIUSER)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
-    echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
+    echo "Fixing gid user $APIUSER from $GROUPID to $CURRENT_GID..."
     groupmod -og $CURRENT_GID $APIUSER
 fi
 
