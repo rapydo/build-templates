@@ -88,7 +88,7 @@ fi
 #####################
 
 export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export CELERY_HOST=0
+export IS_CELERY_CONTAINER=0
 
 # Completed
 
