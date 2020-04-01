@@ -3,7 +3,6 @@ set -e
 
 if [ ! -d "tests" ]; then
     echo "Missing 'tests' directory"
-    echo "Did you use the '--development' option when starting?"
     exit 1
 fi
 
