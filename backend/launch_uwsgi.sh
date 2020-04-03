@@ -45,7 +45,7 @@ if [ "$LOGS" != "" ]; then
     # fi
 
     echo ${LOGS}
-    tail -f $LOGS | grep -vE "^\[pid: .*|app: .*:req: .*\] 
+    tail -f $LOGS | grep -vE "^\[pid: .*|app: .*:req: .*\]"
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity
 fi
