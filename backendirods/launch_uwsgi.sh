@@ -13,7 +13,7 @@ if [ -n "$UWSGI_MASTER" ]; then
     uwsgi --ini $UWSGI_MASTER
 
     echo ""
-    LOGS="/var/log/uwsgi/*log $LOGS"
+    LOGS="/var/log/uwsgi/*.log $LOGS"
 
 elif [ -n "$UWSGI_EMPEROR" ]; then
     echo "Starting uwsgi in emperor/vassals mode"
@@ -45,7 +45,7 @@ if [ "$LOGS" != "" ]; then
     # fi
 
     echo ${LOGS}
-    tail -f $LOGS
+    tail -f $LOGS | grep -vE "^\[pid: .*|app: .*:req: .*\] 
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity
 fi
