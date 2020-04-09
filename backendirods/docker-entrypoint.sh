@@ -19,14 +19,6 @@ if [ "$GROUPID" != "$CURRENT_GID" ]; then
     groupmod -og $CURRENT_GID $APIUSER
 fi
 
-# # check environment variables
-if [ -z "$VANILLA_PACKAGE" -a -z "$IRODS_HOST" -a -z "ALCHEMY_HOST" ];
-then
-    echo "Cannot launch API server without base environment variables"
-    echo "Please review your '.env' file"
-    exit 1
-fi
-
 # Defaults
 if [ -z APP_MODE ]; then
     APP_MODE="debug"
@@ -34,34 +26,27 @@ fi
 
 # INIT if necessary
 secret_file="$JWT_APP_SECRETS/secret.key"
-check_volumes=$([ "$(ls -A $CODE_DIR)" ] && echo "yes" || echo "no")
+init_file="${JWT_APP_SECRETS}/initialized"
 
 if [ ! -f "$secret_file" ]; then
-    if [ "$check_volumes" == 'yes' ]; then
-        echo "First time access"
 
-        # Create the secret to enable security on JWT tokens
-        mkdir -p $JWT_APP_SECRETS
-        head -c 24 /dev/urandom > $secret_file
-        chown -R $APIUSER $JWT_APP_SECRETS $UPLOAD_PATH
+    # Create the secret to enable security on JWT tokens
+    mkdir -p $JWT_APP_SECRETS
+    head -c 24 /dev/urandom > $secret_file
 
-        # certificates chains for external oauth services (e.g. B2ACCESS)
-        update-ca-certificates
+    # certificates chains for external oauth services (e.g. B2ACCESS)
+    update-ca-certificates
+fi
 
-        echo "Init flask app"
-        eval "$DEV_SU -c 'restapi init --wait'"
-        if [ "$?" == "0" ]; then
-            echo
-        else
-            echo "Failed to startup flask!"
-            exit 1
-        fi
-    fi
-else
-    #####################
-    # Sync after init with compose call from outside
-    if [ "$check_volumes" == 'yes' ]; then
+if [ ! -f "$init_file" ]; then
+    echo "Init flask app"
+    eval "$DEV_SU -c 'restapi init --wait'"
+    if [ "$?" == "0" ]; then
+        # Sync after init with compose call from outside
         touch /${JWT_APP_SECRETS}/initialized
+    else
+        echo "Failed to startup flask!"
+        exit 1
     fi
 fi
 
@@ -84,11 +69,6 @@ done
 
 if [ -d "$CERTDIR" ]; then
     chown -R $APIUSER $CERTDIR
-fi
-
-UPLOAD_DIR="/uploads"
-if [ -d "$UPLOAD_DIR" ]; then
-    chown -R $APIUSER $UPLOAD_DIR
 fi
 
 #####################
