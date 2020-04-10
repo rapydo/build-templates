@@ -27,7 +27,7 @@ export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=1
 
 echo "waiting for services"
-eval "$DEV_SU -c 'restapi wait'"
+HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
 echo "Requested command: $@"
 

@@ -40,7 +40,7 @@ fi
 
 if [ ! -f "$init_file" ]; then
     echo "Init flask app"
-    eval "$DEV_SU -c 'restapi init --wait'"
+    HOME=$CODE_DIR su -p $APIUSER -c 'restapi init --wait'
     if [ "$?" == "0" ]; then
         # Sync after init with compose call from outside
         touch /${JWT_APP_SECRETS}/initialized
@@ -92,7 +92,7 @@ else
         ############################
         # TODO: to be tested, at least in DEBUG mode
         echo "waiting for services"
-        eval "$DEV_SU -c 'restapi wait'"
+        HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
         ############################
         echo "ready to launch production proxy+wsgi"
         myuwsgi
@@ -100,11 +100,11 @@ else
     elif [ "$APP_MODE" == 'development' ]; then
 
         echo "launching flask"
-        eval "$DEV_SU -c 'restapi launch'"
+        HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
 
     else
         echo "Debug mode"
     fi
 
-    eval "$DEV_SU -c 'pysleeper'"
+    sleep infinity
 fi

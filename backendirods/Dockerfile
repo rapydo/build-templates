@@ -84,11 +84,6 @@ RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
-COPY sleep.py /usr/local/bin/pysleeper
-COPY tests.sh /usr/local/bin/pyunittests
-
-###################
-# variables
 ENV PAGER less
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
@@ -101,18 +96,10 @@ ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
 
-######################
-ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
-RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
-
-###### BACKEND COMMANDS
 ENV APIRC /home/$APIUSER/.bashrc
 ENV FLASK_CMD "restapi launch"
 RUN echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
     echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
-
-###################
 
 #### Make the terminal prettier ####
 # generated with http://bashrcgenerator.com/
