@@ -27,7 +27,7 @@ RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
     && ./acme.sh --register-account \
-    && cd .. && rm -rf *$ACMEV
+    && cd .. && rm -rf ./*$ACMEV
 
 #######################
 RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
