@@ -31,7 +31,6 @@ fi
 
 ####################################
 if [ "$LOGS" != "" ]; then
-    sleep 2
 
     # # NOTE: a possibility to debug failure
     # # grep failed logs: 'no app loaded'
@@ -45,7 +44,7 @@ if [ "$LOGS" != "" ]; then
     # fi
 
     echo ${LOGS}
-    tail -f $LOGS
+    tail -n 1000 -f $LOGS
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity
 fi
