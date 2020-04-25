@@ -89,11 +89,9 @@ else
 
     if [ "$APP_MODE" == 'production' ]; then
 
-        ############################
-        # TODO: to be tested, at least in DEBUG mode
         echo "waiting for services"
         HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
-        ############################
+
         echo "ready to launch production proxy+wsgi"
         myuwsgi
 
