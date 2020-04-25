@@ -38,25 +38,25 @@ HOME="$NODE_HOME" su -p "$NODE_USER" -c 'node /rapydo/config-env.ts'
 HOME="$NODE_HOME" su -p "$NODE_USER" -c 'node /rapydo/merge.js'
 
 # --production to install only dependencies e not devDependencies
-HOME="NODE_HOME" su -p "$NODE_USER" -c 'npm install'
+HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npm run courtesy'
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npm run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false'
-	HOME="$NODE_HOM"E su -p "$NODE_USER" -c 'npm run gzip'
+	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run courtesy'
+	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false'
+	HOME="$NODE_HOM"E su -p "$NODE_USER" -c 'yarn run gzip'
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npm start'
+	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn start'
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npm run single-test'
+	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run single-test'
 
 elif [ "$APP_MODE" == 'cypress' ]; then
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npm run start-cypress'
+	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run start-cypress'
 
 else
 	echo "Unknown APP_MODE: [${APP_MODE}]"
