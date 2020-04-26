@@ -19,7 +19,7 @@ RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
 RUN yarn global add @angular/cli@9.1.0
 
-RUN yarn add dotenv@8.2.0 package-merge@0.1.2 deepmerge@4.2.2
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
 WORKDIR /app/
 
