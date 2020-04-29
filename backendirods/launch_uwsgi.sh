@@ -44,7 +44,11 @@ if [ "$LOGS" != "" ]; then
     # fi
 
     echo ${LOGS}
-    tail -n 1000 -f $LOGS
+    # Cut out uswgi logs from the output.
+    # These logs are redundant if coupled with normal outputs from flask
+    # To make correctly work tail -f with pipe the stdbuf -o0 is needed
+    # stdbuf -o0 disables buffering of the output stream and data is output immediately
+    tail -n 1000 -f $LOGS | stdbuf -o0 grep -v "^\[pid: [0-9]\+|app: [0-9]\+|req: "
     echo "Main WSGI/PROXY logging interrupted!"
     sleep infinity
 fi
