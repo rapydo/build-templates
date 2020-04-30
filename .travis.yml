@@ -4,16 +4,15 @@ language: python
 python:
 - 3.8
 env:
-- SERVICE=proxy
 - SERVICE=backend
 - SERVICE=backendirods
 - SERVICE=angular
-- SERVICE=icat
-- SERVICE=react
-- SERVICE=dind
-- SERVICE=ftp
+- SERVICE=proxy
 - SERVICE=rabbitmq
-# - SERVICE=react
+- SERVICE=icat
+- SERVICE=ftp
+- SERVICE=dind
+- SERVICE=react
 services:
 - docker
 install:
