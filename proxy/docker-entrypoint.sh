@@ -44,6 +44,11 @@ fi
 # Extra services....
 # Not implemented
 
+if [ ! -f "$DHPARAM" ]; then
+    echo "DHParam is missing, creating a new $DHPARAM with length = ${DEFAULT_DHLEN}"
+    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
+fi
+
 if [ "$1" == 'updatecertificates' ]; then
     if pgrep "nginx" > /dev/null
         then
@@ -79,11 +84,6 @@ if [ "$DOMAIN" != "" ]; then
         echo "First time access"
         /bin/bash updatecertificates
     fi
-fi
-
-if [ ! -f "$DHPARAM" ]; then
-    echo "DHParam is missing, creating a new $DHPARAM with length = ${DEFAULT_DHLEN}"
-    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
 fi
 
 #####################
