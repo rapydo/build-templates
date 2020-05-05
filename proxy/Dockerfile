@@ -57,8 +57,7 @@ VOLUME /etc/nginx/ssl
 # Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY letsencrypt.sh /usr/local/bin/updatecertificates
-COPY create_self_signed_ssl.sh /usr/local/bin/selfsign
+COPY create_ssl_certificate.sh /usr/local/bin/updatecertificates
 COPY 404.html /usr/share/nginx/html/custom_404.html
 COPY 502.html /usr/share/nginx/html/custom_502.html
 COPY 504.html /usr/share/nginx/html/custom_504.html
