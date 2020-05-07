@@ -67,7 +67,7 @@ COPY errors.css /usr/share/nginx/html/errors.css
 # closing entrypoint
 RUN mkdir /docker-entrypoint.d
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY ./docker-entrypoint-maintena.sh /usr/local/bin/docker-entrypoint-maintenanance
+COPY ./docker-entrypoint-maintenanance.sh /usr/local/bin/docker-entrypoint-maintenanance
 ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
 # ENTRYPOINT ["docker-entrypoint"]
 CMD ["proxy"]
