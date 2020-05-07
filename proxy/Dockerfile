@@ -58,16 +58,19 @@ VOLUME /etc/nginx/ssl
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY create_ssl_certificate.sh /usr/local/bin/updatecertificates
+COPY maintenance.html /usr/share/nginx/html/maintenance.html
 COPY 404.html /usr/share/nginx/html/custom_404.html
 COPY 502.html /usr/share/nginx/html/custom_502.html
 COPY 504.html /usr/share/nginx/html/custom_504.html
 COPY errors.css /usr/share/nginx/html/errors.css
+RUN chmod +r /usr/share/nginx/html/*
 
 ###################
 # closing entrypoint
 RUN mkdir /docker-entrypoint.d
+
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
+
 ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
-# ENTRYPOINT ["docker-entrypoint"]
 CMD ["proxy"]
