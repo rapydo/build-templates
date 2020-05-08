@@ -22,9 +22,7 @@ RUN apt-get update \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
-    python3-setuptools \
-    python3-pip \
-    python3-distutils \
+    python3-setuptools python3-pip python3-distutils \
     && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     # Fix to make add-apt-repository work on python 3.8
