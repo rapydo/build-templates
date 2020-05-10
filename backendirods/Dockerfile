@@ -71,8 +71,7 @@ RUN useradd \
 ENV UWSGI_LOGS /var/log/uwsgi
 ENV UWSGI_RUN /var/run/uwsgi
 ENV MYUWSGI_HOME /tmp/uwsgi
-RUN mkdir -p $UWSGI_LOGS
-RUN mkdir -p $UWSGI_RUN
+RUN mkdir -p $UWSGI_LOGS $UWSGI_RUN
 RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
 
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
@@ -103,12 +102,11 @@ RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m
 
 # closing entrypoint
 
-RUN mkdir $CODE_DIR
-WORKDIR $CODE_DIR
-RUN mkdir /docker-entrypoint.d/
+RUN mkdir $CODE_DIR /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
+WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 
