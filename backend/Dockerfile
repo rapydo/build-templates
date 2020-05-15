@@ -18,7 +18,7 @@ ENV LANG C.UTF-8
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping git jq software-properties-common build-essential nginx gosu \
+    bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
