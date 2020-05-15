@@ -23,7 +23,7 @@ RUN apt-get update \
     && add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping git jq gosu build-essential \
+    bash less vim curl wget telnet iputils-ping file git jq gosu build-essential \
     libkrb5-dev \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
@@ -49,7 +49,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 # It does not support versions of OAuthlib before 3.0.0
 # But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
 # gdapi-python == Python client for Rancher APIs
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 Werkzeug==0.16.1 pytest-flask==0.15.0 pytest-cov==2.8.1 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -71,8 +71,7 @@ RUN useradd \
 ENV UWSGI_LOGS /var/log/uwsgi
 ENV UWSGI_RUN /var/run/uwsgi
 ENV MYUWSGI_HOME /tmp/uwsgi
-RUN mkdir -p $UWSGI_LOGS
-RUN mkdir -p $UWSGI_RUN
+RUN mkdir -p $UWSGI_LOGS $UWSGI_RUN
 RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
 
 ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
@@ -84,11 +83,6 @@ RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
-COPY sleep.py /usr/local/bin/pysleeper
-COPY tests.sh /usr/local/bin/pyunittests
-
-###################
-# variables
 ENV PAGER less
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
@@ -101,18 +95,6 @@ ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
 
-######################
-ENV DEV_SU "HOME=$CODE_DIR su -p \$APIUSER"
-RUN echo "alias dev='$DEV_SU'" >> /root/.bash_aliases
-RUN echo "echo\necho \"Warning: you are now the admin user.\nBecome the '\$APIUSER' user instead with the command:\n# dev\n\n\"" >> /root/.bashrc
-
-###### BACKEND COMMANDS
-ENV APIRC /home/$APIUSER/.bashrc
-ENV FLASK_CMD "restapi launch"
-RUN echo "echo\necho 'Launch the REST HTTP-API server with the command:'\necho '# $FLASK_CMD'" >> $APIRC && \
-    echo "echo\necho 'Run unittests with:\n# restapi tests\n'\n" >> $APIRC && chown $APIUSER $APIRC
-
-###################
 
 #### Make the terminal prettier ####
 # generated with http://bashrcgenerator.com/
@@ -120,12 +102,11 @@ RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m
 
 # closing entrypoint
 
-RUN mkdir $CODE_DIR
-WORKDIR $CODE_DIR
-RUN mkdir /docker-entrypoint.d/
+RUN mkdir $CODE_DIR /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 
+WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
 

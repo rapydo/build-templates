@@ -4,13 +4,13 @@ set -e
 
 DEVID=$(id -u $IRODS_UNAME)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
-    echo "Fixing user $IRODS_UNAME uid from $DEVID to $CURRENT_UID..."
+    echo "Fixing uid of user $IRODS_UNAME from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID $IRODS_UNAME
 fi
 
 GROUPID=$(id -g $IRODS_UNAME)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
-    echo "Fixing user $IRODS_UNAME gid from $GROUPID to $CURRENT_GID..."
+    echo "Fixing gid of user $IRODS_UNAME from $GROUPID to $CURRENT_GID..."
     groupmod -og $CURRENT_GID $IRODS_UNAME
 fi
 
@@ -98,9 +98,4 @@ done
 # Completed
 echo "iRODS is ready"
 
-##############################
-# TODO: cleaner shutdown:
-# 1. create pysleeper package
-# 2. install with pip (2?)
-# 3. execute here and then "service irods stop && exit 0"
 exec sleep infinity

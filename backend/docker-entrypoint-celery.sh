@@ -3,13 +3,13 @@ set -e
 
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
-    echo "Fixing user $APIUSER uid from $DEVID to $CURRENT_UID..."
+    echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."
     usermod -u $CURRENT_UID $APIUSER
 fi
 
 GROUPID=$(id -g $APIUSER)
 if [ "$GROUPID" != "$CURRENT_GID" ]; then
-    echo "Fixing user $APIUSER gid from $GROUPID to $CURRENT_GID..."
+    echo "Fixing gid of user $APIUSER from $GROUPID to $CURRENT_GID..."
     groupmod -og $CURRENT_GID $APIUSER
 fi
 
@@ -24,11 +24,11 @@ if [ -d "/pids" ]; then
 fi
 
 export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export CELERY_HOST=1
+export IS_CELERY_CONTAINER=1
 
 echo "waiting for services"
-# eval 'restapi wait'
-eval "$DEV_SU -c 'restapi wait'"
+
+HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
 echo "Requested command: $@"
 

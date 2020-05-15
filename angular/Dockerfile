@@ -1,4 +1,4 @@
-FROM node:13.6.0-buster
+FROM node:13.10.1-buster
 
 ###################
 ARG CURRENT_UID
@@ -14,9 +14,12 @@ ENV CHROME_BIN chromium
 
 ENV NODE_PATH /opt/node_modules
 
-RUN npm install -g @angular/cli@8.3.23
+# yarn installation
+RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN npm install dotenv@8.2.0 package-merge@0.1.2 deepmerge@4.2.2
+RUN yarn global add @angular/cli@9.1.0
+
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
 WORKDIR /app/
 

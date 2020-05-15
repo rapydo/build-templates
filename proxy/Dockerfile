@@ -1,6 +1,6 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.17.8-alpine
+FROM nginx:1.17.9-alpine
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
@@ -27,7 +27,7 @@ RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
     && ./acme.sh --register-account \
-    && cd .. && rm -rf *$ACMEV
+    && cd .. && rm -rf ./*$ACMEV
 
 #######################
 RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
@@ -46,7 +46,6 @@ ENV CERTCHAINFILE $CERTSUBDIR/fullchain1.pem
 ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
 ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
 
-RUN mkdir -p $CERTDIR
 RUN mkdir -p $CERTDIR/$CERTSUBDIR
 VOLUME /etc/letsencrypt
 
@@ -57,16 +56,20 @@ VOLUME /etc/nginx/ssl
 # Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY letsencrypt.sh /usr/local/bin/updatecertificates
-COPY create_self_signed_ssl.sh /usr/local/bin/selfsign
+COPY create_ssl_certificate.sh /usr/local/bin/updatecertificates
+COPY maintenance.html /usr/share/nginx/html/maintenance.html
+COPY 404.html /usr/share/nginx/html/custom_404.html
 COPY 502.html /usr/share/nginx/html/custom_502.html
-# COPY rocket.conf /etc/nginx/sites-enabled/production
-# COPY rancher.conf /etc/nginx/sites-enabled/production
+COPY 504.html /usr/share/nginx/html/custom_504.html
+COPY errors.css /usr/share/nginx/html/errors.css
+RUN chmod +r /usr/share/nginx/html/*
 
 ###################
 # closing entrypoint
 RUN mkdir /docker-entrypoint.d
+
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
+
 ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
-# ENTRYPOINT ["docker-entrypoint"]
 CMD ["proxy"]

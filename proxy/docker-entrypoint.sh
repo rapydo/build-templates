@@ -44,6 +44,11 @@ fi
 # Extra services....
 # Not implemented
 
+if [ ! -f "$DHPARAM" ]; then
+    echo "DHParam is missing, creating a new $DHPARAM with length = ${DEFAULT_DHLEN}"
+    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
+fi
+
 if [ "$1" == 'updatecertificates' ]; then
     if pgrep "nginx" > /dev/null
         then
@@ -54,20 +59,7 @@ if [ "$1" == 'updatecertificates' ]; then
     fi
 
     echo "Creating SSL certificate for domain: ${DOMAIN}"
-    if [ "$DOMAIN" == "localhost" ]; then
-
-        if [ ! -f "$CERTCHAIN" ]; then
-            echo "Creating a self signed SSL certificate"
-            mkdir -p $CERTDIR/$CERTSUBDIR
-            selfsign
-        else
-            echo "A SSL certificate already exist, cannot create new self signed"
-        fi
-    else
-        echo "Requesting new SSL certificate to letsencrypt"
-
-        /bin/bash $@
-    fi
+    /bin/bash $@
     exit 0
 fi
 
@@ -90,13 +82,8 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        selfsign
+        /bin/bash updatecertificates
     fi
-fi
-
-if [ ! -f "$DHPARAM" ]; then
-    echo "DHParam is missing, creating a new $DHPARAM with length = ${DEFAULT_DHLEN}"
-    openssl dhparam -out $DHPARAM $DEFAULT_DHLEN -dsaparam
 fi
 
 #####################

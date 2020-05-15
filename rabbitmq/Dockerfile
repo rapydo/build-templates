@@ -1,4 +1,4 @@
-FROM rabbitmq:3.8.2
+FROM rabbitmq:3.8.3
 
 COPY ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
 
