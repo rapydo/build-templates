@@ -5,6 +5,6 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-ADD ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
-ADD ./postgresql.conf /etc/postgresql/postgresql.conf
+COPY ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
+COPY ./postgresql.conf /etc/postgresql/postgresql.conf
 
