@@ -56,6 +56,8 @@ VOLUME /etc/nginx/ssl
 # Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY confs /etc/nginx/sites-enabled-templates
+
 COPY create_ssl_certificate.sh /usr/local/bin/updatecertificates
 COPY maintenance.html /usr/share/nginx/html/maintenance.html
 COPY 404.html /usr/share/nginx/html/custom_404.html
