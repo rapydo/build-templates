@@ -5,7 +5,7 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
+RUN groupmod -og $CURRENT_GID neo4j && usermod -u $CURRENT_UID neo4j
 
 COPY ./fix_user.sh /fix_user.sh
 
