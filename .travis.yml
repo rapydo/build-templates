@@ -9,11 +9,11 @@ env:
 - SERVICE=angular
 - SERVICE=proxy
 - SERVICE=neo4j
+- SERVICE=postgres
 - SERVICE=rabbitmq
 - SERVICE=icat
 - SERVICE=ftp
 - SERVICE=dind
-- SERVICE=postgres
 # - SERVICE=react
 services:
 - docker
