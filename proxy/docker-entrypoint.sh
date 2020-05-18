@@ -22,6 +22,7 @@ function convert_conf {
 # remove single quotes from these variables to avoid nginx conf to be disrupted
 eval CSP_SCRIPT_SRC=$CSP_SCRIPT_SRC
 eval CSP_IMG_SRC=$CSP_IMG_SRC
+eval CSP_FONT_SRC=$CSP_FONT_SRC
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from production.conf
 # confs with no extension are loaded from service conf
