@@ -1,4 +1,4 @@
-FROM node:13.10.1-buster
+FROM node:13.14.0-buster
 
 ###################
 ARG CURRENT_UID
