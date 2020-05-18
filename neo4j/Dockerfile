@@ -11,4 +11,7 @@ COPY ./fix_user.sh /fix_user.sh
 
 RUN chmod +x /fix_user.sh
 
-RUN echo -e '\n\n/fix_user.sh\n' >> /docker-entrypoint.sh
+# Adding my own script as second line of the original entrypoint
+
+RUN sed -i '2i/fix_user.sh' /docker-entrypoint.sh
+
