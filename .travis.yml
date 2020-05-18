@@ -8,6 +8,7 @@ env:
 - SERVICE=backendirods
 - SERVICE=angular
 - SERVICE=proxy
+- SERVICE=neo4j
 - SERVICE=rabbitmq
 - SERVICE=icat
 - SERVICE=ftp

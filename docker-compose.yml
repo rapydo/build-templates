@@ -14,6 +14,9 @@ backendirods:
 angular:
   build: angular
 
+neo4j:
+  build: neo4j
+
 react:
   build: react
 
