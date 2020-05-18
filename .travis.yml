@@ -13,7 +13,8 @@ env:
 - SERVICE=icat
 - SERVICE=ftp
 - SERVICE=dind
-- SERVICE=react
+- SERVICE=postgres
+# - SERVICE=react
 services:
 - docker
 install:

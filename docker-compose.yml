@@ -11,11 +11,14 @@ backend:
 backendirods:
   build: backendirods
 
-angular:
-  build: angular
-
 neo4j:
   build: neo4j
+
+postgres:
+  build: postgres 
+
+angular:
+  build: angular
 
 react:
   build: react
