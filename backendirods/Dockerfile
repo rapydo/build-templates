@@ -49,7 +49,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 # It does not support versions of OAuthlib before 3.0.0
 # But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
 # gdapi-python == Python client for Rancher APIs
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinheld gunicorn uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 authlib==0.14.1 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinheld gunicorn uwsgitop==0.11 oauthlib==2.1.0 Werkzeug==0.16.1 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 authlib==0.14.1 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC

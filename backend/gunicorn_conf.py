@@ -1,44 +1,30 @@
-from __future__ import print_function
+# -*- coding: utf-8 -*-
 
-import json
+# Special thanks to https://github.com/tiangolo/meinheld-gunicorn-docker
 import multiprocessing
 import os
 
-workers_per_core_str = os.getenv("WORKERS_PER_CORE", "2")
-web_concurrency_str = os.getenv("WEB_CONCURRENCY", None)
-host = os.getenv("HOST", "0.0.0.0")
-port = os.getenv("PORT", "8080")
 bind_env = os.getenv("BIND", None)
-use_loglevel = os.getenv("LOG_LEVEL", "info")
 if bind_env:
     use_bind = bind_env
 else:
+    host = os.getenv("HOST", "0.0.0.0")
+    port = os.getenv("PORT", "8080")
     use_bind = "{host}:{port}".format(host=host, port=port)
 
-cores = multiprocessing.cpu_count()
-workers_per_core = float(workers_per_core_str)
-default_web_concurrency = workers_per_core * cores
-if web_concurrency_str:
-    web_concurrency = int(web_concurrency_str)
-    assert web_concurrency > 0
+gunicorn_workers = os.getenv("GUNICORN_WORKERS", None)
+if gunicorn_workers:
+    gunicorn_workers = int(gunicorn_workers)
 else:
-    web_concurrency = int(default_web_concurrency)
+    workers_per_core = float(os.getenv("GUNICORN_WORKERS_PER_CORE", "1"))
+    cores = multiprocessing.cpu_count()
+    gunicorn_workers = int(workers_per_core * cores)
+
+assert gunicorn_workers > 0
 
 # Gunicorn config variables
-loglevel = use_loglevel
-workers = web_concurrency
+loglevel = os.getenv("LOG_LEVEL", "info")
+workers = gunicorn_workers
 bind = use_bind
 keepalive = 120
 errorlog = "-"
-
-# For debugging and testing
-log_data = {
-    "loglevel": loglevel,
-    "workers": workers,
-    "bind": bind,
-    # Additional, non-gunicorn variables
-    "workers_per_core": workers_per_core,
-    "host": host,
-    "port": port,
-}
-print(json.dumps(log_data))
