@@ -12,4 +12,4 @@ else
 fi
 
 # Start Gunicorn
-exec gunicorn -k egg:meinheld#gunicorn_worker -c "$GUNICORN_CONF" "$APP_MODULE"
+exec gunicorn -k egg:meinheld#gunicorn_worker -c "$GUNICORN_CONF" "$APP_MODULE" -u $CURRENT_UID -g $CURRENT_GID

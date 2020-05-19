@@ -54,7 +54,6 @@ ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 COPY flask_migrate /usr/local/bin/flask_migrate 
-RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
 ###################
 # NGINX
@@ -66,6 +65,8 @@ COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py
 COPY gunicorn_conf.py ${GUNICORN_CONF}
 COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
+
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
 # variables
 ENV PAGER less
