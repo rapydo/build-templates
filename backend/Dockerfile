@@ -63,7 +63,8 @@ COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
 ###################
 # GUNICORN
-COPY gunicorn_conf.py /tmp/gunicorn_conf.py
+ENV GUNICORN_CONF /tmp/gunicorn_conf.py
+COPY gunicorn_conf.py ${GUNICORN_CONF}
 COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
 
 # variables
