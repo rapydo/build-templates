@@ -58,13 +58,12 @@ COPY gsi.conf /etc/gss/mech.d/
 ENV APIUSER developer
 # Emulating irods user creation. See http://j.mp/2lGPqlq
 
-ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
+    --uid $CURRENT_UID $APIUSER \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
-    && chown $APIUID:$CURRENT_GID /home/$APIUSER
+    && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI

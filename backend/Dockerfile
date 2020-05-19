@@ -34,13 +34,12 @@ RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinhel
 
 ENV APIUSER developer
 
-ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
+    --uid $CURRENT_UID $APIUSER \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
-    && chown $APIUID:$CURRENT_GID /home/$APIUSER
+    && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI
