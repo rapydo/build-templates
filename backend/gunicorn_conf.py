@@ -12,6 +12,7 @@ else:
     port = os.getenv("PORT", "8080")
     use_bind = "{host}:{port}".format(host=host, port=port)
 
+# by default this variable is empty => False
 gunicorn_workers = os.getenv("GUNICORN_WORKERS", None)
 if gunicorn_workers:
     gunicorn_workers = int(gunicorn_workers)
