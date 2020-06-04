@@ -48,7 +48,7 @@ RUN pip3 install --upgrade --no-cache-dir pip dumb-init
 
 RUN cat requirements.txt | xargs -n 1 -L 1 pip3 install --trusted-host pypi.python.org --upgrade --no-cache-dir
 
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
+RUN pip3 install --upgrade --no-cache-dir future git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION \
     # This is needed to make FlaskInjector work with python 3.7
     && pip3 uninstall --yes typing
 
