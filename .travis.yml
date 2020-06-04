@@ -10,7 +10,7 @@ env:
 - SERVICE=angular
 - SERVICE=icat
 - SERVICE=react
-- SERVICE=dind
+# - SERVICE=dind
 - SERVICE=ftp
 - SERVICE=rabbitmq
 # - SERVICE=react
