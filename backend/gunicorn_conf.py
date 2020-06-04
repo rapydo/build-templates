@@ -10,16 +10,18 @@ if bind_env:
 else:
     host = os.getenv("HOST", "0.0.0.0")
     port = os.getenv("PORT", "8080")
-    use_bind = "{host}:{port}".format(host=host, port=port)
+    use_bind = f"{host}:{port}"
 
-# by default this variable is empty => False
-gunicorn_workers = os.getenv("GUNICORN_WORKERS", None)
-if gunicorn_workers:
-    gunicorn_workers = int(gunicorn_workers)
-else:
-    workers_per_core = float(os.getenv("GUNICORN_WORKERS_PER_CORE", "1"))
-    cores = multiprocessing.cpu_count()
-    gunicorn_workers = int(workers_per_core * cores)
+gunicorn_workers = int(os.getenv("GUNICORN_WORKERS", "1"))
+workers_per_core = float(os.getenv("GUNICORN_WORKERS_PER_CORE", "1"))
+cores = multiprocessing.cpu_count()
+
+# GUNICORN_WORKERS + cores * GUNICORN_WORKERS_PER_CORE
+gunicorn_workers += int(workers_per_core * cores)
+
+max_workers = int(os.getenv("GUNICORN_MAX_NUM_WORKERS", "24"))
+if gunicorn_workers > max_workers:
+    gunicorn_workers = max_workers
 
 assert gunicorn_workers > 0
 
