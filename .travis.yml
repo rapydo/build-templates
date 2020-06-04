@@ -11,7 +11,7 @@ env:
 - SERVICE=icat
 - SERVICE=react
 - SERVICE=dind
-- SERVICE=ftp
+# - SERVICE=ftp
 - SERVICE=rabbitmq
 # - SERVICE=backendcentos
 services:
