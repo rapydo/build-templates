@@ -30,4 +30,5 @@ loglevel = os.getenv("LOG_LEVEL", "info")
 workers = gunicorn_workers
 bind = use_bind
 keepalive = 120
+timeout = 120
 errorlog = "-"
