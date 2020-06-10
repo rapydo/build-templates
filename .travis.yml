@@ -11,7 +11,7 @@ env:
 - SERVICE=rabbitmq
 - SERVICE=icat
 - SERVICE=ftp
-- SERVICE=dind
+# - SERVICE=dind
 - SERVICE=react
 services:
 - docker
