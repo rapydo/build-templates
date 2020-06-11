@@ -64,6 +64,7 @@ COPY 404.html /usr/share/nginx/html/custom_404.html
 COPY 502.html /usr/share/nginx/html/custom_502.html
 COPY 504.html /usr/share/nginx/html/custom_504.html
 COPY errors.css /usr/share/nginx/html/errors.css
+COPY giphy.gif /usr/share/nginx/html/giphy.gif
 RUN chmod +r /usr/share/nginx/html/*
 
 ###################
