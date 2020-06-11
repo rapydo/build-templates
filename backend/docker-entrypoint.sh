@@ -43,7 +43,7 @@ if [ ! -f "$init_file" ]; then
     HOME=$CODE_DIR su -p $APIUSER -c 'restapi init --wait'
     if [ "$?" == "0" ]; then
         # Sync after init with compose call from outside
-        touch /${JWT_APP_SECRETS}/initialized
+        touch $init_file
     else
         echo "Failed to startup flask!"
         exit 1

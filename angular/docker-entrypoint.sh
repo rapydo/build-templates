@@ -25,7 +25,7 @@ fi
 
 echo "Running as ${NODE_USER} (uid $(id -u ${NODE_USER}))"
 
-chown -R "$NODE_USER" /app
+# chown -R "$NODE_USER" /app
 
 # Defaults
 if [ -z APP_MODE ]; then
