@@ -16,7 +16,7 @@ RUN test -n "$CURRENT_GID"
 
 ###################
 RUN apk --no-cache update && \
-    apk --no-cache add vim wget git bash openssl curl netcat-openbsd tini
+    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
@@ -72,6 +72,8 @@ RUN mkdir /docker-entrypoint.d
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
+
+RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 
 ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
 CMD ["proxy"]

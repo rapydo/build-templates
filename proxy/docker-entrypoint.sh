@@ -1,6 +1,22 @@
 #!/bin/bash
 set -e
 
+PROXY_USER="nginx"
+
+DEVID=$(id -u "$PROXY_USER")
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing uid of user ${PROXY_USER} from $DEVID to $CURRENT_UID..."
+    usermod -u "$CURRENT_UID" "$PROXY_USER"
+fi
+
+GROUPID=$(id -g $PROXY_USER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing gid of user $PROXY_USER from $GROUPID to $CURRENT_GID..."
+    groupmod -og "$CURRENT_GID" "$PROXY_USER"
+fi
+
+echo "Running as ${PROXY_USER} (uid $(id -u ${PROXY_USER}))"
+
 CONF_DIR="/etc/nginx/sites-enabled"
 TEMPLATE_DIR="/etc/nginx/sites-enabled-templates"
 
