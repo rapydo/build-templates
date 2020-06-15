@@ -8,8 +8,7 @@ hba_conf='/var/lib/postgresql/data/pg_hba.conf'
 echo "Changing access"
 echo "" > $hba_conf
 
-# Enable the user to perform health checks on localhost
-echo "local   $POSTGRES_USER  $POSTGRES_USER  trust" >> $hba_conf
+echo "local   all  all  trust" >> $hba_conf
 
 echo "hostnossl       postgres  $POSTGRES_USER  $net   password" >> $hba_conf
 
