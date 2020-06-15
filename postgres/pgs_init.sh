@@ -1,9 +1,15 @@
 #!/bin/bash
 
+if [ ! -L ${PGDATA}/postgresql.conf ]; then
+    # Force postgresql.conf in datadir to be a link to the default conf file
+    # Default conf file is copied into the container at build time
+    ln -sf /etc/postgresql/postgresql.conf ${PGDATA}/postgresql.conf
+fi
+
 ## http://www.postgresql.org/docs/9.1/static/auth-pg-hba-conf.html
 net="0.0.0.0/0"
 
-hba_conf='/var/lib/postgresql/data/pg_hba.conf'
+hba_conf='/var/lib/postgresql/current/pg_hba.conf'
 
 echo "Changing access"
 echo "" > $hba_conf
