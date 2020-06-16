@@ -17,9 +17,10 @@ fi
 
 echo "Running as ${PROXY_USER} (uid $(id -u ${PROXY_USER}))"
 
-CONF_DIR="/etc/nginx/sites-enabled"
 TEMPLATE_DIR="/etc/nginx/sites-enabled-templates"
+CONF_DIR="/etc/nginx/sites-enabled"
 
+mkdir -p ${CONF_DIR}
 cp ${TEMPLATE_DIR}/maintenance.conf ${CONF_DIR}/
 
 echo -e "\n\n"
