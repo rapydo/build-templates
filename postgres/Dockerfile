@@ -17,5 +17,4 @@ RUN chmod +rx /usr/local/bin/version_upgrade
 # Adding my own script as second line of the original entrypoint
 RUN sed -i '4ibash /check_datadir.sh' /usr/local/bin/docker-entrypoint.sh
 
-DATADIR=$(dirname "${PGDATA}")
-RUN mkdir -p "${DATADIR}"/"${PG_MAJOR}"
+RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
