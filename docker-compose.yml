@@ -15,7 +15,7 @@ neo4j:
   build: neo4j
 
 postgres:
-  build: postgres 
+  build: postgres
 
 angular:
   build: angular
@@ -35,4 +35,3 @@ rabbitmq:
 dind:
   build: dind
   privileged: true
-
