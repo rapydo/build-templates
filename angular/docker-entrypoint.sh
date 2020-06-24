@@ -56,6 +56,8 @@ elif [ "$APP_MODE" == 'test' ]; then
 
 elif [ "$APP_MODE" == 'cypress' ]; then
 
+    ngx cypress install
+
 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run start-cypress'
 
 else
