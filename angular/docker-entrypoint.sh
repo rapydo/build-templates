@@ -52,12 +52,13 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run single-test'
+    sleep infinity
+# 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run single-test'
 
-elif [ "$APP_MODE" == 'cypress' ]; then
+# elif [ "$APP_MODE" == 'cypress' ]; then
 
-    HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npx cypress install'
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run start-cypress'
+#     # HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npx cypress install'
+# 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run start-cypress'
 
 else
 	echo "Unknown APP_MODE: [${APP_MODE}]"
