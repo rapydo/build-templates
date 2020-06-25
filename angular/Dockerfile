@@ -22,7 +22,7 @@ RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
-RUN npx cypress install && cp -r /root/.cache/Cypress /home/node/.cache/Cypress && chown -R node:node /home/node/.cache/Cypress
+RUN npx cypress install && mkdir /home/node/.cache && cp -r /root/.cache/Cypress /home/node/.cache/Cypress && chown -R node:node /home/node/.cache
 
 WORKDIR /app/
 
