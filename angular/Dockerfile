@@ -23,7 +23,7 @@ RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
 # not needed: npx cypress install
-RUN cp -r /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress
+RUN cp -r /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 ENV CYPRESS_RUN_BINARY=/usr/local/Cypress/4.9.0/Cypress/Cypress
 
