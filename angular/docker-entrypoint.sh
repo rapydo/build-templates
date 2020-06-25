@@ -52,7 +52,7 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-    HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
+    # HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
     sleep infinity
 
 # 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run single-test'
