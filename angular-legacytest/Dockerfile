@@ -21,10 +21,9 @@ ENV NODE_PATH /opt/node_modules
 WORKDIR /opt/
 
 ########################################
-# lsb-release by chromium 65
 RUN \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb lsb-release && \
+  apt-get install --yes --no-install-recommends vim xvfb && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
@@ -32,13 +31,20 @@ RUN \
 ########################################
 # Install Chromium 65
 RUN \
+  # This update is needed to let apt to install extra dependencies from the deb package
+  apt-get update && \
+  # Since the update is needed here... I also move specific installs
+  apt-get install --yes --no-install-recommends lsb-release && \
   wget --no-verbose -O /tmp/chromium-codecs-ffmpeg.deb "${CHROMIUM_URL}/chromium-codecs-ffmpeg_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
   wget --no-verbose -O /tmp/chromium-codecs-ffmpeg-extra.deb "${CHROMIUM_URL}/chromium-codecs-ffmpeg-extra_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
   wget --no-verbose -O /tmp/chromium-browser.deb "${CHROMIUM_URL}/chromium-browser_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
   apt --yes install /tmp/chromium-codecs-ffmpeg.deb && \
   apt --yes install /tmp/chromium-codecs-ffmpeg-extra.deb && \
   apt --yes install /tmp/chromium-browser.deb && \
-  rm /tmp/chromium-*.deb
+  rm /tmp/chromium-*.deb &&
+  apt-get autoremove --yes && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 ENV CHROME_BIN chromium
 ########################################
