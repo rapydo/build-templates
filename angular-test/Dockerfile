@@ -6,7 +6,11 @@ ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-ENV FIREFOX_VERSION "77.0.1"
+# Firefox 77 failed with this error:
+# https://github.com/cypress-io/cypress/issues/6813
+# ENV FIREFOX_VERSION "77.0.1"
+# Latest working version seems to be this one:
+ENV FIREFOX_VERSION "72.0.2"
 
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
 
