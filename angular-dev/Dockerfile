@@ -1,14 +1,18 @@
 FROM node:13.14.0-buster
 
-###################
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+ENV NODE_PATH /opt/node_modules
+
 WORKDIR /opt/
 
+########################################
+# Install Chrome
 # xvfb is required by cypress
+# dbus-x11 is required by chrome
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
@@ -18,19 +22,21 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-ENV NODE_PATH /opt/node_modules
-
-# yarn installation
+########################################
+# Install Yarn
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
-
-RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
-
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
+
+########################################
+# Install AngularCli and Cypress
+RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime
 RUN cp -r /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 ENV CYPRESS_RUN_BINARY=/usr/local/Cypress/4.9.0/Cypress/Cypress
+
+########################################
 
 WORKDIR /app/
 
