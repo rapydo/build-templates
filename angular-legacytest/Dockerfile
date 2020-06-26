@@ -21,9 +21,10 @@ ENV NODE_PATH /opt/node_modules
 WORKDIR /opt/
 
 ########################################
+# libdbus-glib-1-2 is required by firefox
 RUN \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb && \
+  apt-get install --yes --no-install-recommends vim xvfb libdbus-glib-1-2 && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
