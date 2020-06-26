@@ -20,6 +20,12 @@ postgres:
 angular:
   build: angular
 
+angular-dev:
+  build: angular-dev
+
+angular-test:
+  build: angular-test
+
 react:
   build: react
 

@@ -8,29 +8,14 @@ RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
-# chromium is requierd by jasmine
-# xvfb is required by cypress
-RUN apt-get update && apt-get install --yes --no-install-recommends chromium vim xvfb && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Protractor requires:
-# node_modules/protractor/bin/webdriver-manager update --versions.chrome='80.0.3987.162'
-# ng e2e --webdriver-update=false
-
-ENV CHROME_BIN chromium
 ENV NODE_PATH /opt/node_modules
 
 # yarn installation
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
+RUN yarn global add @angular/cli@9.1.6
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
-
-# not needed: npx cypress install
-# 777 is required to let node user to write the folder, even when uid is fixed at runtime
-RUN cp -r /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
-
-ENV CYPRESS_RUN_BINARY=/usr/local/Cypress/4.9.0/Cypress/Cypress
 
 WORKDIR /app/
 

@@ -7,11 +7,13 @@ env:
   - SERVICE=backend
   - SERVICE=backendirods
   - SERVICE=angular
+  - SERVICE=angular-dev
+  - SERVICE=angular-test
+  - SERVICE=icat
   - SERVICE=proxy
   - SERVICE=neo4j
-  - SERVICE=postgres
   - SERVICE=rabbitmq
-  - SERVICE=icat
+  - SERVICE=postgres
   - SERVICE=ftp
 # - SERVICE=dind
 # - SERVICE=react
