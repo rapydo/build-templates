@@ -12,9 +12,9 @@ ENV CHROMIUM_URL "http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-brow
 
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 # November 2017
-# ENV FIREFOX_VERSION "57.0.1"
-# November 2016
-ENV FIREFOX_VERSION "50.0.1"
+ENV FIREFOX_VERSION "57.0.1"
+# Not working: 
+# ENV FIREFOX_VERSION "50.0.1"
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
 ENV NODE_PATH /opt/node_modules
 
