@@ -53,15 +53,7 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-	# run_as_node("yarn install")
 	sleep infinity
-
-# 	run_as_node("yarn run single-test")
-
-# elif [ "$APP_MODE" == 'cypress' ]; then
-
-#     # run_as_node("npx cypress install")
-# 	run_as_node("yarn run start-cypress")
 
 else
 	echo "Unknown APP_MODE: ${APP_MODE}"
