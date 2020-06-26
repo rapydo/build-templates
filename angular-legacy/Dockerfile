@@ -5,29 +5,42 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+# http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser/?C=M;O=D
+# March 2018
+ENV CHROMIUM_VERSION "65.0.3325.181" 
+ENV CHROMIUM_URL "http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser"
+
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-ENV FIREFOX_VERSION "77.0.1"
-
+# November 2017
+# ENV FIREFOX_VERSION "57.0.1"
+# November 2016
+ENV FIREFOX_VERSION "50.0.1"
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
-
 ENV NODE_PATH /opt/node_modules
 
 WORKDIR /opt/
 
 ########################################
-# Install Chrome and Chromium
-# xvfb is required by cypress
-# dbus-x11 is required by chrome
-# libdbus-glib-1-2 is required by firefox
+# libgnome-keyring0 is required by chromium 49 (NOT required for chromium 65)
 RUN \
-  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-  echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 libdbus-glib-1-2 google-chrome-stable chromium && \
+  apt-get install --yes --no-install-recommends vim xvfb && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+########################################
+# Install Chromium 65
+RUN \
+  wget --no-verbose -O /tmp/chromium-codecs-ffmpeg.deb "${CHROMIUM_URL}/chromium-codecs-ffmpeg_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
+  wget --no-verbose -O /tmp/chromium-codecs-ffmpeg-extra.deb "${CHROMIUM_URL}/chromium-codecs-ffmpeg-extra_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
+  wget --no-verbose -O /tmp/chromium-browser.deb "${CHROMIUM_URL}/chromium-browser_${CHROMIUM_VERSION}-0ubuntu1_amd64.deb" && \
+  apt --yes install /tmp/chromium-codecs-ffmpeg.deb && \
+  apt --yes install /tmp/chromium-codecs-ffmpeg-extra.deb && \
+  apt --yes install /tmp/chromium-browser.deb &&
+  rm /tmp/chromium-*.deb
+
+ENV CHROME_BIN chromium
 ########################################
 # Install Firefox
 RUN \
@@ -63,6 +76,6 @@ COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
-RUN chromium --version && google-chrome --version && firefox --version
+RUN chromium-browser --version && firefox --version
 
 CMD ["docker-entrypoint"]
