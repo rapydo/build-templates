@@ -11,10 +11,8 @@ ENV CHROMIUM_VERSION "65.0.3325.181"
 ENV CHROMIUM_URL "http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser"
 
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-# November 2017
-ENV FIREFOX_VERSION "57.0.1"
-# Not working: 
-# ENV FIREFOX_VERSION "50.0.1"
+# Jun 2018 - this is the oldest working version
+ENV FIREFOX_VERSION "60.0.2"
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
 ENV NODE_PATH /opt/node_modules
 
