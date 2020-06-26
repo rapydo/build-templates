@@ -6,9 +6,11 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+ENV FIREFOX_VERSION "77.0.1"
 WORKDIR /opt/
 
 # xvfb is required by cypress
+# Install Chrome and Chromium
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
@@ -17,6 +19,13 @@ RUN \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+# install Firefox browser
+RUN \
+  wget --no-verbose -O /tmp/ff.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 && \
+  tar -C /opt -xjf /tmp/ff.tar.bz2 && \
+  rm /tmp/ff.tar.bz2 && \
+  ln -fs /opt/firefox/firefox /usr/bin/firefox
 
 ENV CHROME_BIN chromium
 ENV NODE_PATH /opt/node_modules
@@ -43,5 +52,7 @@ RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
+
+RUN chromium --version && google-chrome --version && firefox --version
 
 CMD ["docker-entrypoint"]
