@@ -8,9 +8,15 @@ RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
-# chromium is requierd by jasmine
 # xvfb is required by cypress
-RUN apt-get update && apt-get install --yes --no-install-recommends chromium vim xvfb && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN \
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+  echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
+  apt-get update && \
+  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 google-chrome-stable chromium  && \
+  apt-get autoremove --yes && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 ENV CHROME_BIN chromium
 ENV NODE_PATH /opt/node_modules
