@@ -41,7 +41,7 @@ RUN \
   apt --yes install /tmp/chromium-codecs-ffmpeg.deb && \
   apt --yes install /tmp/chromium-codecs-ffmpeg-extra.deb && \
   apt --yes install /tmp/chromium-browser.deb && \
-  rm /tmp/chromium-*.deb &&
+  rm /tmp/chromium-*.deb && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
