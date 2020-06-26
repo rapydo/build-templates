@@ -32,36 +32,40 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-HOME="$NODE_HOME" su -p "$NODE_USER" -c 'env > /tmp/.env'
-HOME="$NODE_HOME" su -p "$NODE_USER" -c 'node /rapydo/config-env.ts'
-HOME="$NODE_HOME" su -p "$NODE_USER" -c 'node /rapydo/merge.js'
+run_as_node(CMD) {
+    HOME="${NODE_HOME}" su -p "${NODE_USER}" -c "${CMD}"
+}
+
+run_as_node("env > /tmp/.env")
+run_as_node("node /rapydo/config-env.ts")
+run_as_node("node /rapydo/merge.js")
 
 if [ "$APP_MODE" == 'production' ]; then
 
     # --production to install only dependencies e not devDependencies
     HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
 
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run courtesy'
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false'
-	HOME="$NODE_HOM"E su -p "$NODE_USER" -c 'yarn run gzip'
+	run_as_node("yarn run courtesy")
+	run_as_node("yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false")
+	run_as_node("yarn run gzip")
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-    HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
-	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn start'
+    run_as_node("yarn install")
+	run_as_node("yarn start")
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-    # HOME="NODE_HOME" su -p "$NODE_USER" -c 'yarn install'
+    # run_as_node("yarn install")
     sleep infinity
 
-# 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run single-test'
+# 	run_as_node("yarn run single-test")
 
 # elif [ "$APP_MODE" == 'cypress' ]; then
 
-#     # HOME="$NODE_HOME" su -p "$NODE_USER" -c 'npx cypress install'
-# 	HOME="$NODE_HOME" su -p "$NODE_USER" -c 'yarn run start-cypress'
+#     # run_as_node("npx cypress install")
+# 	run_as_node("yarn run start-cypress")
 
 else
-	echo "Unknown APP_MODE: [${APP_MODE}]"
+	echo "Unknown APP_MODE: ${APP_MODE}"
 fi
