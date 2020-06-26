@@ -30,26 +30,26 @@ if [ -z APP_MODE ]; then
     APP_MODE="debug"
 fi
 
-run_as_node(CMD) {
-    HOME="${NODE_HOME}" su -p "${NODE_USER}" -c "${CMD}"
+run_as_node() {
+    HOME="${NODE_HOME}" su -p "${NODE_USER}" -c "${1}"
 }
 
-run_as_node("env > /tmp/.env")
-run_as_node("node /rapydo/config-env.ts")
-run_as_node("node /rapydo/merge.js")
+run_as_node "env > /tmp/.env"
+run_as_node "node /rapydo/config-env.ts"
+run_as_node "node /rapydo/merge.js"
 
 if [ "$APP_MODE" == 'production' ]; then
 
 	# --production to install only dependencies e not devDependencies
-	run_as_node("yarn install")
-	run_as_node("yarn run courtesy")
-	run_as_node("yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false")
-	run_as_node("yarn run gzip")
+	run_as_node "yarn install"
+	run_as_node "yarn run courtesy"
+	run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
+	run_as_node "yarn run gzip"
 
 elif [ "$APP_MODE" == 'debug' ]; then
 
-	run_as_node("yarn install")
-	run_as_node("yarn start")
+	run_as_node "yarn install"
+	run_as_node "yarn start"
 
 elif [ "$APP_MODE" == 'test' ]; then
 
