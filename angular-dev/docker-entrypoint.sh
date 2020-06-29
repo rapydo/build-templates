@@ -53,6 +53,7 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
+    export BACKEND_HOST=${CYPRESS_BACKEND_HOST}
 	sleep infinity
 
 else
