@@ -34,6 +34,10 @@ run_as_node() {
     HOME="${NODE_HOME}" su -p "${NODE_USER}" -c "${1}"
 }
 
+if [ "$APP_MODE" == 'test' ]; then
+    export BACKEND_HOST=${CYPRESS_BACKEND_HOST}
+fi
+
 run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
@@ -53,7 +57,6 @@ elif [ "$APP_MODE" == 'debug' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
-    export BACKEND_HOST=${CYPRESS_BACKEND_HOST}
 	sleep infinity
 
 else
