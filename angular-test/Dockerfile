@@ -16,7 +16,7 @@ ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases
 
 ENV NODE_PATH /opt/node_modules
 
-WORKDIR /opt/
+# WORKDIR /opt/
 
 ########################################
 # Install Chrome and Chromium
@@ -42,18 +42,19 @@ RUN \
   ln -fs /opt/firefox/firefox /usr/bin/firefox
 
 ########################################
-# Install Yarn
+# Install Yarn and npm libs
+
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
-RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
+
+RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0 dotenv@8.2.0 deepmerge@4.2.2
 
 ########################################
-# Install AngularCli and Cypress
-RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0
+# Configure Cypress
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime
-RUN cp -r /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN chown -R node:node /root/.cache/Cypress && chmod -R 777 /root/.cache/Cypress
 
-ENV CYPRESS_RUN_BINARY=/usr/local/Cypress/4.9.0/Cypress/Cypress
+ENV CYPRESS_RUN_BINARY=/root/.cache/Cypress/4.9.0/Cypress/Cypress
 
 ########################################
 
