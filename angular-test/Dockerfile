@@ -23,11 +23,12 @@ WORKDIR /opt/
 # xvfb is required by cypress
 # dbus-x11 is required by chrome
 # libdbus-glib-1-2 is required by firefox
+# removed chromium from the packages list
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 libdbus-glib-1-2 google-chrome-stable chromium && \
+  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
@@ -67,6 +68,7 @@ COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
-RUN chromium --version && google-chrome --version && firefox --version
+# RUN chromium --version && google-chrome --version && firefox --version
+RUN google-chrome --version && firefox --version
 
 CMD ["docker-entrypoint"]
