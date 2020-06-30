@@ -7,7 +7,6 @@ env:
   - SERVICE=backend
   - SERVICE=backendirods
   - SERVICE=angular
-  - SERVICE=angular-dev
   - SERVICE=angular-test
   - SERVICE=icat
   - SERVICE=proxy
