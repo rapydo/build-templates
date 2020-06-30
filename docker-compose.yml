@@ -26,9 +26,6 @@ angular-dev:
 angular-test:
   build: angular-test
 
-angular-legacytest:
-  build: angular-legacytest
-
 react:
   build: react
 

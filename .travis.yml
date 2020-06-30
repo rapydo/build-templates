@@ -9,7 +9,6 @@ env:
   - SERVICE=angular
   - SERVICE=angular-dev
   - SERVICE=angular-test
-  - SERVICE=angular-legacytest
   - SERVICE=icat
   - SERVICE=proxy
   - SERVICE=neo4j
