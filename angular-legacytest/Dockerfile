@@ -11,8 +11,8 @@ ENV CHROMIUM_VERSION "65.0.3325.181"
 ENV CHROMIUM_URL "http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser"
 
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-# Aug 2018
-ENV FIREFOX_VERSION "61.0.2"
+# Oct 2018
+ENV FIREFOX_VERSION "62.0.3"
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
 ENV NODE_PATH /opt/node_modules
 
