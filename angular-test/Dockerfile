@@ -46,7 +46,9 @@ RUN \
 
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0 dotenv@8.2.0 deepmerge@4.2.2
+RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0 
+
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
 ########################################
 # Configure Cypress
