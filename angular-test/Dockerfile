@@ -15,7 +15,9 @@ ENV FIREFOX_VERSION "72.0.2"
 ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
 
 ENV NODE_PATH /opt/node_modules
-ENV CYPRESS_RUN_BINARY=/root/.cache/Cypress/4.9.0/Cypress/Cypress
+ENV CYPRESS_PATH /usr/local/Cypress
+ENV CYPRESS_VERSION 4.9.0
+ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 # WORKDIR /opt/
 
@@ -48,7 +50,7 @@ RUN \
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@9.1.6 cypress@4.9.0 && chown -R node:node /root/.cache/Cypress && chmod -R 777 /root/.cache/Cypress
+RUN yarn global add @angular/cli@9.1.6 cypress@${CYPRESS_VERSION} && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
