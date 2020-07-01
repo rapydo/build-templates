@@ -5,8 +5,7 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-# here will be created a package.json containing dotenv and deepmerge
-WORKDIR /tmp/
+WORKDIR /opt/
 
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 # Firefox 77 failed with this error:
@@ -21,8 +20,6 @@ ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 4.9.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
-
-# WORKDIR /opt/
 
 ########################################
 # Install Chrome and Chromium
