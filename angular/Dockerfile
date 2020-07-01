@@ -6,7 +6,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-WORKDIR /opt/
+# here will be created a package.json containing dotenv and deepmerge
+WORKDIR /tmp/
 
 ENV NODE_PATH /opt/node_modules
 

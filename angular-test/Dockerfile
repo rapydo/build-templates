@@ -5,6 +5,9 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+# here will be created a package.json containing dotenv and deepmerge
+WORKDIR /tmp/
+
 # https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 # Firefox 77 failed with this error:
 # https://github.com/cypress-io/cypress/issues/6813
