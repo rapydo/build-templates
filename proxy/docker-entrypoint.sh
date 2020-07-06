@@ -101,7 +101,7 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        /bin/bash updatecertificates
+        /bin/bash updatecertificates $DOMAIN
     fi
 fi
 
