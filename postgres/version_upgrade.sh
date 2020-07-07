@@ -74,6 +74,14 @@ fi
 echo "You requested to upgrade from version ${CURRENT_VERSION} to version ${NEW_VERSION}."
 echo ""
 
+${PGFOLDER}/${NEW_VERSION}
+
+if [[ ! -d ${PGFOLDER}/${NEW_VERSION} ]]; then
+    echo "${PGFOLDER}/${NEW_VERSION} is missing, creating it..."
+    mkdir -p ${PGFOLDER}/${NEW_VERSION}
+    chown postgres ${PGFOLDER}/${NEW_VERSION}
+fi
+
 if [ ! -z "$(ls -A ${PGFOLDER}/${NEW_VERSION})" ]; then
     echo "${PGFOLDER}/${NEW_VERSION} is not empty, cannot upgrade"
     exit 1
