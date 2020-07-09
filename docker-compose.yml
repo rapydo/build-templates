@@ -34,7 +34,3 @@ ftp:
 
 rabbitmq:
   build: rabbitmq
-
-dind:
-  build: dind
-  privileged: true
