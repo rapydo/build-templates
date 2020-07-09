@@ -49,7 +49,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 # It does not support versions of OAuthlib before 3.0.0
 # But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
 # gdapi-python == Python client for Rancher APIs
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uwsgitop==0.11 oauthlib==2.1.0 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 dumb-init==1.2.2 uWSGI==2.0.18 meinheld==1.0.2 gunicorn==20.0.4 uwsgitop==0.11 oauthlib==2.1.0 Werkzeug==0.16.1 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 authlib==0.14.1 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -58,13 +58,12 @@ COPY gsi.conf /etc/gss/mech.d/
 ENV APIUSER developer
 # Emulating irods user creation. See http://j.mp/2lGPqlq
 
-ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
+    --uid $CURRENT_UID $APIUSER \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
-    && chown $APIUID:$CURRENT_GID /home/$APIUSER
+    && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI
@@ -78,10 +77,20 @@ ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 COPY flask_migrate /usr/local/bin/flask_migrate 
-RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
+###################
+# NGINX
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+
+###################
+# GUNICORN
+ENV GUNICORN_CONF /tmp/gunicorn_conf.py
+COPY gunicorn_conf.py ${GUNICORN_CONF}
+COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
+
+
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
 ENV PAGER less
 ENV TERM=xterm-256color

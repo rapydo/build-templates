@@ -1,6 +1,6 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.17.9-alpine
+FROM nginx:1.18.0-alpine
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
@@ -16,13 +16,13 @@ RUN test -n "$CURRENT_GID"
 
 ###################
 RUN apk --no-cache update && \
-    apk --no-cache add vim wget git bash openssl curl netcat-openbsd tini
+    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
 # You can also upgrade live with /acme/acme.sh --upgrade --home /acme
 # Then register the client /acme/acme.sh --register-account
-ENV ACMEV "2.8.5"
+ENV ACMEV "2.8.6"
 RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \
@@ -56,12 +56,15 @@ VOLUME /etc/nginx/ssl
 # Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY confs /etc/nginx/sites-enabled-templates
+
 COPY create_ssl_certificate.sh /usr/local/bin/updatecertificates
 COPY maintenance.html /usr/share/nginx/html/maintenance.html
 COPY 404.html /usr/share/nginx/html/custom_404.html
 COPY 502.html /usr/share/nginx/html/custom_502.html
 COPY 504.html /usr/share/nginx/html/custom_504.html
 COPY errors.css /usr/share/nginx/html/errors.css
+COPY giphy.gif /usr/share/nginx/html/giphy.gif
 RUN chmod +r /usr/share/nginx/html/*
 
 ###################
@@ -70,6 +73,8 @@ RUN mkdir /docker-entrypoint.d
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
+
+RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 
 ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
 CMD ["proxy"]

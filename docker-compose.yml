@@ -11,8 +11,17 @@ backend:
 backendirods:
   build: backendirods
 
+neo4j:
+  build: neo4j
+
+postgres:
+  build: postgres
+
 angular:
   build: angular
+
+angular-test:
+  build: angular-test
 
 react:
   build: react
@@ -29,4 +38,3 @@ rabbitmq:
 dind:
   build: dind
   privileged: true
-

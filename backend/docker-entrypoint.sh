@@ -43,7 +43,7 @@ if [ ! -f "$init_file" ]; then
     HOME=$CODE_DIR su -p $APIUSER -c 'restapi init --wait'
     if [ "$?" == "0" ]; then
         # Sync after init with compose call from outside
-        touch /${JWT_APP_SECRETS}/initialized
+        touch $init_file
     else
         echo "Failed to startup flask!"
         exit 1
@@ -92,8 +92,15 @@ else
         echo "waiting for services"
         HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
-        echo "ready to launch production proxy+wsgi"
-        myuwsgi
+        if [ "$WSGI_SERVER" == 'UWSGI' ]; then
+            echo "ready to launch production nginx+uwsgi"
+            myuwsgi
+        elif [ "$WSGI_SERVER" == 'GUNICORN' ]; then
+            echo "ready to launch production gunicorn+meinheld"
+            mygunicorn
+        else
+            echo "Unknown WSGI_SERVER: ${WSGI_SERVER}"
+        fi
 
     elif [ "$APP_MODE" == 'development' ]; then
 

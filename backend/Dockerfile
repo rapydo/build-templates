@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
-# ubuntu LTS
-# TODO: check if alpine is the way?
-# switching make better use of UWSGI: http://j.mp/2rxvp3r
+
 LABEL maintainer="Paolo D'Onorio De Meo"
 
 ARG RAPYDO_VERSION
@@ -32,17 +30,16 @@ RUN apt-get update \
 # # DEBUG CONFLICTS:
 # RUN pip3 install pip-conflict-checker && pipconflictchecker
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 && pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinheld==1.0.2 gunicorn==20.0.4 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
-ENV APIUID $CURRENT_UID
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
-    --uid $APIUID $APIUSER \
+    --uid $CURRENT_UID $APIUSER \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
-    && chown $APIUID:$CURRENT_GID /home/$APIUSER
+    && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
 
 ###################
 # UWSGI
@@ -56,10 +53,19 @@ ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
 COPY uwsgi.ini ${UWSGI_MASTER}
 COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
 COPY flask_migrate /usr/local/bin/flask_migrate 
-RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/flask_migrate
 
+###################
+# NGINX
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
+
+###################
+# GUNICORN
+ENV GUNICORN_CONF /tmp/gunicorn_conf.py
+COPY gunicorn_conf.py ${GUNICORN_CONF}
+COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
+
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
 # variables
 ENV PAGER less

@@ -1,6 +1,22 @@
 #!/bin/bash
 set -e
 
+PROXY_USER="nginx"
+
+DEVID=$(id -u "$PROXY_USER")
+if [ "$DEVID" != "$CURRENT_UID" ]; then
+    echo "Fixing uid of user ${PROXY_USER} from $DEVID to $CURRENT_UID..."
+    usermod -u "$CURRENT_UID" "$PROXY_USER"
+fi
+
+GROUPID=$(id -g $PROXY_USER)
+if [ "$GROUPID" != "$CURRENT_GID" ]; then
+    echo "Fixing gid of user $PROXY_USER from $GROUPID to $CURRENT_GID..."
+    groupmod -og "$CURRENT_GID" "$PROXY_USER"
+fi
+
+echo "Running as ${PROXY_USER} (uid $(id -u ${PROXY_USER}))"
+
 CONF_DIR="/etc/nginx/sites-enabled"
 TEMPLATE_DIR="/etc/nginx/sites-enabled-templates"
 
@@ -20,8 +36,11 @@ function convert_conf {
 }
 
 # remove single quotes from these variables to avoid nginx conf to be disrupted
-eval CSP_SCRIPT_SRC=$CSP_SCRIPT_SRC
-eval CSP_IMG_SRC=$CSP_IMG_SRC
+export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
+export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
+export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
+# add single quotes (this command also works if the string is already single quoted)
+export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from production.conf
 # confs with no extension are loaded from service conf
@@ -82,7 +101,7 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        /bin/bash updatecertificates
+        /bin/bash updatecertificates $DOMAIN
     fi
 fi
 
