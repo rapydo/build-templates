@@ -102,13 +102,9 @@ else
             echo "Unknown WSGI_SERVER: ${WSGI_SERVER}"
         fi
 
-    elif [ "$APP_MODE" == 'development' ]; then
-
-        echo "launching flask"
-        HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
-
     else
-        echo "Debug mode"
+        # HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
+        echo "Development mode"
     fi
 
     sleep infinity
