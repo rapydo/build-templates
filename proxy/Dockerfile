@@ -1,6 +1,6 @@
 
 # PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.18.0-alpine
+FROM nginx:1.19.1-alpine
 LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
 
 ###################
