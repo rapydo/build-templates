@@ -92,15 +92,8 @@ else
         echo "waiting for services"
         HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
-        if [ "$WSGI_SERVER" == 'UWSGI' ]; then
-            echo "ready to launch production nginx+uwsgi"
-            myuwsgi
-        elif [ "$WSGI_SERVER" == 'GUNICORN' ]; then
-            echo "ready to launch production gunicorn+meinheld"
-            mygunicorn
-        else
-            echo "Unknown WSGI_SERVER: ${WSGI_SERVER}"
-        fi
+        echo "ready to launch production gunicorn+meinheld"
+        mygunicorn
 
     else
         # HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
