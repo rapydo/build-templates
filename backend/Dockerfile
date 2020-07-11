@@ -21,7 +21,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
+    tzdata bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential gosu \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
@@ -43,10 +43,6 @@ RUN useradd \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
     && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
-
-# NGINX
-COPY nginx_base.conf /etc/nginx/nginx.conf
-COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
 # GUNICORN
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py

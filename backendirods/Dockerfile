@@ -16,7 +16,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
-    apt-get update \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
     bash less vim curl wget telnet iputils-ping file git jq gosu build-essential \
     libkrb5-dev \
@@ -26,7 +26,6 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     python3-setuptools python3-pip python3-distutils \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
-    nginx \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Latest requests-oauthlib [1.2.0] (required by Flask-OAuthlib)
@@ -50,10 +49,6 @@ RUN useradd \
     && groupmod -og $CURRENT_GID $APIUSER \
     && mkdir -p /home/$APIUSER \
     && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
-
-# NGINX
-COPY nginx_base.conf /etc/nginx/nginx.conf
-COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
 # GUNICORN
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py
