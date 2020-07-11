@@ -24,7 +24,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
+    tzdata bash less vim curl wget telnet iputils-ping file git jq bzip2 libreadline-dev libssl-dev software-properties-common build-essential nginx gosu \
     python${MYPYTHON_MAINVERSION} \
     python${MYPYTHON_MAINVERSION}-dev \
     python${MYPYTHON_MAINVERSION}-gdbm \
