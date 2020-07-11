@@ -1,21 +1,26 @@
-FROM ubuntu:20.04
 
+###################
+FROM ubuntu:16.04
+
+LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
+
+###################
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
+
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
+
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
+###################
+# Install repository for python3.6+
 
 ENV MYPYTHON_VERSION 3.8
-## for apt to be noninteractive
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
 
-## preesed tzdata, update package index, upgrade packages and install needed software
-RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
-    echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
-    debconf-set-selections /tmp/preseed.txt \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends software-properties-common python-software-properties \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     bash less vim curl wget telnet iputils-ping file git jq gosu build-essential \
@@ -23,10 +28,19 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
-    python3-setuptools python3-pip python3-distutils \
+    python${MYPYTHON_VERSION}-distutils \
+    python3-setuptools \
     libglobus-gssapi-gsi-dev libssl-dev libffi-dev \
     globus-proxy-utils \
+    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+###################
+# PIP
+
+RUN curl https://bootstrap.pypa.io/get-pip.py | python
+
+# # DEBUG CONFLICTS:
+# RUN pip install pip-conflict-checker && pipconflictchecker
 
 # Latest requests-oauthlib [1.2.0] (required by Flask-OAuthlib)
 # requires oauthlib<3.0.0,>=2.1.0
@@ -34,7 +48,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 # It does not support versions of OAuthlib before 3.0.0
 # But Flask-OAuthlib depe nds from OAuthlib < 3.0.0
 # gdapi-python == Python client for Rancher APIs
-RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 oauthlib==2.1.0 Werkzeug==0.16.1 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 authlib==0.14.1 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 dumb-init==1.2.2 uWSGI==2.0.18 meinheld==1.0.2 gunicorn==20.0.4 uwsgitop==0.11 oauthlib==2.1.0 Werkzeug==0.16.1 requests-oauthlib==1.1.0 Flask-OAuthlib==0.9.5 authlib==0.14.1 git+https://github.com/EUDAT-B2STAGE/B2HANDLE.git@master git+https://github.com/irods/python-irodsclient.git@master gdapi-python==0.5.3 gssapi==1.5.1 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ###################
 # Adding gsi as gssapi available mechanism for RPC
@@ -58,7 +72,7 @@ COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
 # UTILITIES
 COPY flask_migrate /usr/local/bin/flask_migrate 
 
-RUN chmod +x /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
+RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
 ENV PAGER less
 ENV TERM=xterm-256color
@@ -71,6 +85,7 @@ ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
 EXPOSE $FLASK_PORT
+
 
 #### Make the terminal prettier ####
 # generated with http://bashrcgenerator.com/
