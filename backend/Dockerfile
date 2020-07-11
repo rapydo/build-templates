@@ -7,12 +7,12 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-ENV MYPYTHON_VERSION 3.8
+ENV MYPYTHON_MAINVERSION 3.8
+ENV MYPYTHON_VERSION 3.8.3
+
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
-
-
 
 ## for apt to be noninteractive
 ENV DEBIAN_FRONTEND noninteractive
@@ -25,15 +25,18 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
     tzdata bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
-    python${MYPYTHON_VERSION} \
-    python${MYPYTHON_VERSION}-dev \
-    python${MYPYTHON_VERSION}-gdbm \
+    python${MYPYTHON_MAINVERSION} \
+    python${MYPYTHON_MAINVERSION}-dev \
+    python${MYPYTHON_MAINVERSION}-gdbm \
     python3-setuptools python3-pip python3-distutils \
-    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    # Fix to make add-apt-repository work on python 3.8
-    && sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln # -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
+# Fix to make add-apt-repository work on python 3.8
+# sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
+
+RUN curl https://pyenv.run | bash && pyenv install ${MYPYTHON_VERSION}
+
+#    && ln -sf /usr/bin/python${MYPYTHON_MAINVERSION} /usr/bin/python && ln # -sf /usr/bin/python${MYPYTHON_MAINVERSION} /usr/bin/python3 \
 
 RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 && pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinheld==1.0.2 gunicorn==20.0.4 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
