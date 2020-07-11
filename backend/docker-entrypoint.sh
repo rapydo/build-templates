@@ -21,7 +21,7 @@ fi
 
 # Defaults
 if [ -z APP_MODE ]; then
-    APP_MODE="debug"
+    APP_MODE="development"
 fi
 
 # INIT if necessary
