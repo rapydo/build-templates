@@ -69,7 +69,7 @@ RUN chmod +r /usr/share/nginx/html/*
 
 ###################
 # closing entrypoint
-RUN mkdir /docker-entrypoint.d
+RUN mkdir -p /docker-entrypoint.d
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
