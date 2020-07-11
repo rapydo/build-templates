@@ -1,6 +1,4 @@
-FROM ubuntu:18.04
-
-LABEL maintainer="Paolo D'Onorio De Meo"
+FROM ubuntu:20.04
 
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION"
@@ -14,21 +12,28 @@ ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
-RUN apt-get update \
+
+
+## for apt to be noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+## preesed tzdata, update package index, upgrade packages and install needed software
+RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
+    echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
+    debconf-set-selections /tmp/preseed.txt \
+    && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
+    tzdata bash less vim curl wget telnet iputils-ping file git jq software-properties-common build-essential nginx gosu \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools python3-pip python3-distutils \
-    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     # Fix to make add-apt-repository work on python 3.8
     && sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
 
-###################
-# # DEBUG CONFLICTS:
-# RUN pip3 install pip-conflict-checker && pipconflictchecker
+#    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln # -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
 
 RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 && pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 uWSGI==2.0.18 meinheld==1.0.2 gunicorn==20.0.4 uwsgitop==0.11 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
@@ -41,31 +46,19 @@ RUN useradd \
     && mkdir -p /home/$APIUSER \
     && chown $CURRENT_UID:$CURRENT_GID /home/$APIUSER
 
-###################
-# UWSGI
-ENV UWSGI_LOGS /var/log/uwsgi
-ENV UWSGI_RUN /var/run/uwsgi
-ENV MYUWSGI_HOME /tmp/uwsgi
-RUN mkdir -p $UWSGI_LOGS $UWSGI_RUN
-RUN chown -R www-data:www-data $UWSGI_LOGS $UWSGI_RUN
-
-ENV UWSGI_MASTER ${MYUWSGI_HOME}/uwsgi_starter.ini
-COPY uwsgi.ini ${UWSGI_MASTER}
-COPY launch_uwsgi.sh /usr/local/bin/myuwsgi
-COPY flask_migrate /usr/local/bin/flask_migrate 
-
-###################
 # NGINX
 COPY nginx_base.conf /etc/nginx/nginx.conf
 COPY nginx_uwsgi.conf /etc/nginx/sites-available/default
 
-###################
 # GUNICORN
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py
 COPY gunicorn_conf.py ${GUNICORN_CONF}
 COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
 
-RUN chmod +x /usr/local/bin/myuwsgi /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
+# UTILITIES
+COPY flask_migrate /usr/local/bin/flask_migrate 
+
+RUN chmod +x /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
 # variables
 ENV PAGER less
@@ -75,8 +68,8 @@ ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
-EXPOSE $FLASK_PORT
 
+EXPOSE $FLASK_PORT
 
 #### Make the terminal prettier ####
 # generated with http://bashrcgenerator.com/
@@ -91,6 +84,3 @@ COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD ["docker-entrypoint", "rest"]
-
-# TODO: verify if better using tini for entrypoint
-# https://github.com/krallin/tini-images
