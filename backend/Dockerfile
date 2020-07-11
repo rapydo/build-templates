@@ -34,7 +34,10 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 # Fix to make add-apt-repository work on python 3.8
 # sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
 
-RUN curl https://pyenv.run | bash && pyenv install ${MYPYTHON_VERSION}
+ENV PYENV_ROOT /usr/local/bin/pyenv
+ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+
+RUN git clone git://github.com/yyuu/pyenv.git /usr/local/bin/pyenv && pyenv install ${MYPYTHON_VERSION}
 
 #    && ln -sf /usr/bin/python${MYPYTHON_MAINVERSION} /usr/bin/python && ln # -sf /usr/bin/python${MYPYTHON_MAINVERSION} /usr/bin/python3 \
 
