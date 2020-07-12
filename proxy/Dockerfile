@@ -65,9 +65,11 @@ COPY errors.css /usr/share/nginx/html/errors.css
 COPY giphy.gif /usr/share/nginx/html/giphy.gif
 RUN chmod +r /usr/share/nginx/html/*
 
-###################
-# closing entrypoint
-RUN mkdir -p /docker-entrypoint.d
+# Remove the original docker-entrypoint. It include some files,
+# e.g. /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+# that cause errors like
+# line 33: 3: Bad file descriptor
+RUN rm -rf /docker-entrypoint.d
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
