@@ -44,8 +44,7 @@ run_as_node "node /rapydo/merge.js"
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	# --production to install only dependencies e not devDependencies
-	run_as_node "yarn install"
+	run_as_node "yarn install --production"
 	run_as_node "yarn run courtesy"
 	run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
 	run_as_node "yarn run gzip"
