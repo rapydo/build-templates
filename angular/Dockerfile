@@ -1,6 +1,6 @@
-FROM node:13.14.0-buster
+FROM node:14.5.0-buster
+# https://nodejs.org/en/blog/release
 
-###################
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
