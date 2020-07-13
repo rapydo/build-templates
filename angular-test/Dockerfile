@@ -19,7 +19,7 @@ ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases
 
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
-ENV CYPRESS_VERSION 4.9.0
+ENV CYPRESS_VERSION 4.10.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ########################################
