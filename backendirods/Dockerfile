@@ -23,7 +23,7 @@ RUN apt-get update \
     && add-apt-repository -y ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-    bash less vim curl wget telnet iputils-ping file git jq gosu build-essential \
+    bash less vim curl wget telnet iputils-ping sysstat file git jq gosu build-essential \
     libkrb5-dev \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
