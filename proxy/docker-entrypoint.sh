@@ -107,14 +107,14 @@ fi
 
 #####################
 # Extra scripts
-dedir="/docker-entrypoint.d"
-for f in $(ls $dedir); do
-    case "$f" in
-        *.sh)     echo "running $f"; bash "$dedir/$f" ;;
-        *)        echo "ignoring $f" ;;
-    esac
-    echo
-done
+# dedir="/docker-entrypoint.d"
+# for f in $(ls $dedir); do
+#     case "$f" in
+#         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
+#         *)        echo "ignoring $f" ;;
+#     esac
+#     echo
+# done
 
 # Let other services, like neo4j, to write into this volume
 chmod -R +w /etc/letsencrypt

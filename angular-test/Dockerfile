@@ -63,7 +63,7 @@ EXPOSE 8080
 
 EXPOSE 9876
 
-RUN mkdir /docker-entrypoint.d/
+# RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node

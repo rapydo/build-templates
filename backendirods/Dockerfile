@@ -93,7 +93,8 @@ RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m
 
 # closing entrypoint
 
-RUN mkdir $CODE_DIR /docker-entrypoint.d/
+# RUN mkdir $CODE_DIR /docker-entrypoint.d/
+RUN mkdir $CODE_DIR
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
 

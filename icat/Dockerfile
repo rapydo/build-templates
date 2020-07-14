@@ -108,7 +108,7 @@ ENV TERM xterm-256color
 # ENTRYPOINT
 # if you need to add future commands after irods installation:
 # allow custom scripts to be executed at launch time
-RUN mkdir /docker-entrypoint.d/
+# RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ###################

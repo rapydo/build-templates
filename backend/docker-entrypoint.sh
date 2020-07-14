@@ -55,14 +55,14 @@ chown $APIUSER $CODE_DIR
 
 #####################
 # Extra scripts
-dedir="/docker-entrypoint.d"
-for f in $(ls $dedir); do
-    case "$f" in
-        *.sh)     echo "running $f"; bash "$dedir/$f" ;;
-        *)        echo "ignoring $f" ;;
-    esac
-    echo
-done
+# dedir="/docker-entrypoint.d"
+# for f in $(ls $dedir); do
+#     case "$f" in
+#         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
+#         *)        echo "ignoring $f" ;;
+#     esac
+#     echo
+# done
 
 #####################
 # Fixers: part 1
