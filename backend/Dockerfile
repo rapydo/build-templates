@@ -28,11 +28,6 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     python3-setuptools python3-pip python3-distutils \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Fix to make add-apt-repository work on python 3.8
-# sed -i 's\#!/usr/bin/python3\#!/usr/bin/python3.6\' /usr/bin/add-apt-repository
-
-#    && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln # -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3
-
 RUN pip3 install --upgrade --no-cache-dir pip==20.1.1 && pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer

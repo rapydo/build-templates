@@ -5,16 +5,13 @@ python:
   - 3.8
 env:
   - SERVICE=backend
-  - SERVICE=backendirods
   - SERVICE=angular
   - SERVICE=angular-test
-  - SERVICE=icat
   - SERVICE=proxy
   - SERVICE=neo4j
   - SERVICE=rabbitmq
   - SERVICE=postgres
   - SERVICE=ftp
-# - SERVICE=dind
 # - SERVICE=react
 services:
   - docker

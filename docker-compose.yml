@@ -8,9 +8,6 @@ proxy:
 backend:
   build: backend
 
-backendirods:
-  build: backendirods
-
 neo4j:
   build: neo4j
 
@@ -25,9 +22,6 @@ angular-test:
 
 react:
   build: react
-
-icat:
-  build: icat
 
 ftp:
   build: ftp
