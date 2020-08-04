@@ -27,19 +27,12 @@ fi
 # fix permissions on the main development folder
 chown $APIUSER $CODE_DIR
 
-if [ "$1" != 'rest' ]; then
-    ## CUSTOM COMMAND
-    echo "Requested custom command:"
-    echo "\$ $@"
-    $@
+if [ "$APP_MODE" == 'production' ]; then
+
+    HOME=$CODE_DIR su -p $APIUSER -c 'restapi bot'
+
 else
-    if [ "$APP_MODE" == 'production' ]; then
-
-        HOME=$CODE_DIR su -p $APIUSER -c 'restapi bot'
-
-    else
-        echo "Development mode"
-    fi
-
-    sleep infinity
+    echo "Development mode"
 fi
+
+sleep infinity
