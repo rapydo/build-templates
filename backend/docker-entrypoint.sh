@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-######################################
-#
-# Entrypoint!
-#
-######################################
-
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."

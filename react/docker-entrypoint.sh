@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-######################################
-# Entrypoint!
-######################################
-
 # Defaults
 if [ -z APP_MODE ]; then
     APP_MODE="development"

@@ -92,12 +92,6 @@ if [ "$1" != 'proxy' ]; then
     exit 0
 fi
 
-######################################
-#
-# Entrypoint!
-#
-######################################
-
 # IF INIT is necessary
 if [ "$DOMAIN" != "" ]; then
     echo "Production mode"

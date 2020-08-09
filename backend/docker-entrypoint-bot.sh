@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-######################################
-#
-# Entrypoint!
-#
-######################################
-
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."
@@ -32,7 +26,7 @@ if [ "$APP_MODE" == 'production' ]; then
     HOME=$CODE_DIR su -p $APIUSER -c 'restapi bot'
 
 else
-    echo "Development mode"
+    echo "Development mode. You can start your bot by executing the command: restapi bot"
 fi
 
 sleep infinity
