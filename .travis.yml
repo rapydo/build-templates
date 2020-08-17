@@ -5,16 +5,13 @@ python:
   - 3.8
 env:
   - SERVICE=backend
-  - SERVICE=backendirods
   - SERVICE=angular
   - SERVICE=angular-test
-  - SERVICE=icat
   - SERVICE=proxy
   - SERVICE=neo4j
   - SERVICE=rabbitmq
   - SERVICE=postgres
   - SERVICE=ftp
-# - SERVICE=dind
 # - SERVICE=react
 services:
   - docker
@@ -24,7 +21,7 @@ script:
   - docker --version
   - docker-compose --version
   - echo "Building service ${SERVICE}"
-  - export RAPYDO_VERSION=0.7.4
+  - export RAPYDO_VERSION=0.7.5
   - docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} --build-arg CURRENT_UID=1000 --build-arg CURRENT_GID=1000
     ${SERVICE}
   - docker tag rapydo_${SERVICE}:latest rapydo/${SERVICE}:${RAPYDO_VERSION}

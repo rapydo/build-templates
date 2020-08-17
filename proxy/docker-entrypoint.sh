@@ -39,8 +39,11 @@ function convert_conf {
 export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
 export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
-# add single quotes (this command also works if the string is already single quoted)
-export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
+# add single quotes if non empty
+# this command also works if the string is already single quoted
+if [[ ! -z "$UNSAFE_EVAL" ]]; then
+    export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
+fi
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from production.conf
 # confs with no extension are loaded from service conf
@@ -89,12 +92,6 @@ if [ "$1" != 'proxy' ]; then
     exit 0
 fi
 
-######################################
-#
-# Entrypoint!
-#
-######################################
-
 # IF INIT is necessary
 if [ "$DOMAIN" != "" ]; then
     echo "Production mode"
@@ -107,14 +104,14 @@ fi
 
 #####################
 # Extra scripts
-dedir="/docker-entrypoint.d"
-for f in $(ls $dedir); do
-    case "$f" in
-        *.sh)     echo "running $f"; bash "$dedir/$f" ;;
-        *)        echo "ignoring $f" ;;
-    esac
-    echo
-done
+# dedir="/docker-entrypoint.d"
+# for f in $(ls $dedir); do
+#     case "$f" in
+#         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
+#         *)        echo "ignoring $f" ;;
+#     esac
+#     echo
+# done
 
 # Let other services, like neo4j, to write into this volume
 chmod -R +w /etc/letsencrypt

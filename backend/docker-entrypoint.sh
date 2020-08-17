@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-######################################
-#
-# Entrypoint!
-#
-######################################
-
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."
@@ -21,7 +15,7 @@ fi
 
 # Defaults
 if [ -z APP_MODE ]; then
-    APP_MODE="debug"
+    APP_MODE="development"
 fi
 
 # INIT if necessary
@@ -55,14 +49,14 @@ chown $APIUSER $CODE_DIR
 
 #####################
 # Extra scripts
-dedir="/docker-entrypoint.d"
-for f in $(ls $dedir); do
-    case "$f" in
-        *.sh)     echo "running $f"; bash "$dedir/$f" ;;
-        *)        echo "ignoring $f" ;;
-    esac
-    echo
-done
+# dedir="/docker-entrypoint.d"
+# for f in $(ls $dedir); do
+#     case "$f" in
+#         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
+#         *)        echo "ignoring $f" ;;
+#     esac
+#     echo
+# done
 
 #####################
 # Fixers: part 1
@@ -92,23 +86,12 @@ else
         echo "waiting for services"
         HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
-        if [ "$WSGI_SERVER" == 'UWSGI' ]; then
-            echo "ready to launch production nginx+uwsgi"
-            myuwsgi
-        elif [ "$WSGI_SERVER" == 'GUNICORN' ]; then
-            echo "ready to launch production gunicorn+meinheld"
-            mygunicorn
-        else
-            echo "Unknown WSGI_SERVER: ${WSGI_SERVER}"
-        fi
-
-    elif [ "$APP_MODE" == 'development' ]; then
-
-        echo "launching flask"
-        HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
+        echo "ready to launch production gunicorn+meinheld"
+        mygunicorn
 
     else
-        echo "Debug mode"
+        # HOME=$CODE_DIR su -p $APIUSER -c 'restapi launch'
+        echo "Development mode"
     fi
 
     sleep infinity

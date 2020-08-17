@@ -1,7 +1,5 @@
-
-# PROXY that accepts ACME challenges for letsencrypt
-FROM nginx:1.18.0-alpine
-LABEL maintainer="Paolo D'Onorio De Meo <m.dantonio@cineca.it>"
+FROM nginx:1.19.1-alpine
+# http://nginx.org/en/CHANGES
 
 ###################
 ARG RAPYDO_VERSION
@@ -67,14 +65,10 @@ COPY errors.css /usr/share/nginx/html/errors.css
 COPY giphy.gif /usr/share/nginx/html/giphy.gif
 RUN chmod +r /usr/share/nginx/html/*
 
-###################
-# closing entrypoint
-RUN mkdir /docker-entrypoint.d
-
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-maintenance.sh /usr/local/bin/docker-entrypoint-maintenanance
 
 RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 
-ENTRYPOINT ["/sbin/tini", "docker-entrypoint"]
+ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
 CMD ["proxy"]

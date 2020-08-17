@@ -27,7 +27,7 @@ echo "Running as ${NODE_USER} (uid $(id -u ${NODE_USER}))"
 
 # Defaults
 if [ -z APP_MODE ]; then
-    APP_MODE="debug"
+    APP_MODE="development"
 fi
 
 run_as_node() {
@@ -44,13 +44,12 @@ run_as_node "node /rapydo/merge.js"
 
 if [ "$APP_MODE" == 'production' ]; then
 
-	# --production to install only dependencies e not devDependencies
-	run_as_node "yarn install"
+	run_as_node "yarn install --production"
 	run_as_node "yarn run courtesy"
 	run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
 	run_as_node "yarn run gzip"
 
-elif [ "$APP_MODE" == 'debug' ]; then
+elif [ "$APP_MODE" == 'development' ]; then
 
 	run_as_node "yarn install"
 	run_as_node "yarn start"

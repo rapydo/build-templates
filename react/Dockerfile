@@ -13,7 +13,7 @@ RUN apk --no-cache update && \
 # related to current node release
 # v1.12.1 latest, 1.10.1 is installed
 
-RUN mkdir /docker-entrypoint.d/
+# RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["docker-entrypoint"]

@@ -18,3 +18,5 @@ RUN chmod +rx /usr/local/bin/version_upgrade
 RUN sed -i '4ibash /check_datadir.sh' /usr/local/bin/docker-entrypoint.sh
 
 RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
+
+WORKDIR /var/lib/postgresql/

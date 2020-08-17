@@ -23,7 +23,8 @@ max_workers = int(os.getenv("GUNICORN_MAX_NUM_WORKERS", "24"))
 if gunicorn_workers > max_workers:
     gunicorn_workers = max_workers
 
-assert gunicorn_workers > 0
+if gunicorn_workers < 1:
+    gunicorn_workers = 1
 
 # Gunicorn config variables
 loglevel = os.getenv("LOG_LEVEL", "info")
