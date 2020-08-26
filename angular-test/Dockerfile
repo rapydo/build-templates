@@ -24,7 +24,7 @@ ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ########################################
 # Install Chrome and Chromium
-# xvfb is required by cypress
+# xvfb and libxss1 are required by cypress
 # dbus-x11 is required by chrome
 # libdbus-glib-1-2 is required by firefox
 # removed chromium from the packages list
@@ -32,7 +32,7 @@ RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
+  apt-get install --yes --no-install-recommends vim xvfb libxss1 dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
