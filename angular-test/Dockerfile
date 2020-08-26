@@ -1,4 +1,4 @@
-FROM node:14.5.0-buster
+FROM node:14.8.0-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -19,7 +19,7 @@ ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases
 
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
-ENV CYPRESS_VERSION 4.10.0
+ENV CYPRESS_VERSION 5.0.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ########################################
@@ -51,7 +51,7 @@ RUN \
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@9.1.11 cypress@${CYPRESS_VERSION} angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN yarn global add @angular/cli@10.0.7 cypress@${CYPRESS_VERSION} angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
