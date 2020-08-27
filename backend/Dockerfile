@@ -30,7 +30,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 
 # Note: remove --use-feature=2020-resolver once upgraded to pip 20.3
 
-RUN pip3 install --upgrade --no-cache-dir pip==20.2.2 && pip3 --version && pip3 install --upgrade --no-cache-dir --use-feature=2020-resolver dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir pip==20.2.2 && apt-get remove -y python3-pip && pip3 --version && pip3 install --upgrade --no-cache-dir --use-feature=2020-resolver dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
