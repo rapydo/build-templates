@@ -31,7 +31,7 @@ RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb libxss1dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
+  apt-get install --yes --no-install-recommends vim xvfb libxss1 dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
