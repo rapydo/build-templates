@@ -25,6 +25,8 @@ RUN apt-get update \
     python3-setuptools \
     python3-pip \
     python3-distutils \
+    && pip3 install --upgrade --no-cache-dir pip==20.2.2 \
+    && apt-get remove -y python3-pip \
     && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python && ln -sf /usr/bin/python${MYPYTHON_VERSION} /usr/bin/python3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* \
     # Fix to make add-apt-repository work on python 3.8
