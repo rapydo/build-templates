@@ -1,4 +1,4 @@
-FROM node:14.5.0-buster
+FROM node:14.8.0-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -19,12 +19,12 @@ ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases
 
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
-ENV CYPRESS_VERSION 4.10.0
+ENV CYPRESS_VERSION 5.0.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ########################################
 # Install Chrome and Chromium
-# xvfb is required by cypress
+# xvfb and libxss1 are required by cypress
 # dbus-x11 is required by chrome
 # libdbus-glib-1-2 is required by firefox
 # removed chromium from the packages list
@@ -32,7 +32,7 @@ RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
+  apt-get install --yes --no-install-recommends vim xvfb libxss1 dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
@@ -51,7 +51,7 @@ RUN \
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@9.1.11 cypress@${CYPRESS_VERSION} angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN yarn global add @angular/cli@10.0.8 cypress@${CYPRESS_VERSION} angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2
 
