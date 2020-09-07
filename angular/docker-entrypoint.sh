@@ -44,7 +44,7 @@ run_as_node "node /rapydo/merge.js"
 echo "Converting TS Interfaces to JSON Schemas..."
 # Very rough workaround to prevent:
 # error TS2688: Cannot find type definition file for 'node'.
-cp -r /opt/node_modules/@types node_modules/
+run_as_node "cp -r /opt/node_modules/@types node_modules/"
 run_as_node "ts-json-schema-generator -f /app/tsconfig.app.json -p /app/app/rapydo/app/types.ts -o /app/app/types.json"
 
 if [ "$APP_MODE" == 'production' ]; then
