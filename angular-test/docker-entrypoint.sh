@@ -43,7 +43,7 @@ run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
 echo "Converting TS Interfaces to JSON Schemas..."
-run_as_node "node ts-json-schema-generator -f tsconfig.app.json -p app/rapydo/app/types.ts -o app/types.json"
+run_as_node "node ts-json-schema-generator -f /app/tsconfig.app.json -p /app/app/rapydo/app/types.ts -o /app/app/types.json"
 
 if [ "$APP_MODE" == 'production' ]; then
 
