@@ -12,7 +12,6 @@ env:
   - SERVICE=rabbitmq
   - SERVICE=postgres
   - SERVICE=ftp
-# - SERVICE=react
 services:
   - docker
 install:
