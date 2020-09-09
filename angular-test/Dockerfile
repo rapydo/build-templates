@@ -1,4 +1,4 @@
-FROM node:14.8.0-buster
+FROM node:14.9.0-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -51,9 +51,9 @@ RUN \
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@10.0.8 cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.73.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN yarn global add @angular/cli@10.1.0 cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.73.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
-RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.6.0
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.6.4
 
 ########################################
 
