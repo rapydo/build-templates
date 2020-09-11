@@ -49,6 +49,7 @@ run_as_node "reload-types"
 if [ "$APP_MODE" == 'production' ]; then
 
 	run_as_node "yarn install --production"
+    sed -i "s/[\"|']use strict[\"|']/;/g" node_modules/exceljs/dist/exceljs.js
 	run_as_node "yarn run courtesy"
 	run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
 	run_as_node "yarn run gzip"
