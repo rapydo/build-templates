@@ -39,7 +39,7 @@ echo "Domain: $DOMAIN"
 if [[ "$DOMAIN" == "localhost" ]]; then
     # exactly as in docker-entrypoint.sh 
     echo "Creating a self signed SSL certificate"
-    mkdir -p $CERTDIR/$CERTSUBDIR
+    mkdir -p ${CERTDIR}/${CERTSUBDIR}
 
     command="openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $CERTKEY -out $CERTCHAIN"
 
@@ -78,6 +78,7 @@ EOF
         ln -sfn ${CERTCHAINFILE} neo4j.cert
         ln -sfn ${CERTKEYFILE} neo4j.key
         chmod +r ${CERTCHAINFILE} ${CERTKEYFILE}
+        chown -R ${PROXY_USER}:${PROXY_USER} ${CERTDIR}/${CERTSUBDIR}
     else
         echo "Self signed SSL certificate generation failed!"
     fi
