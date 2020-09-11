@@ -78,7 +78,6 @@ EOF
         ln -sfn ${CERTCHAINFILE} neo4j.cert
         ln -sfn ${CERTKEYFILE} neo4j.key
         chmod +r ${CERTCHAINFILE} ${CERTKEYFILE}
-        chown -R ${PROXY_USER}:${PROXY_USER} ${CERTDIR}/${CERTSUBDIR}
     else
         echo "Self signed SSL certificate generation failed!"
     fi
