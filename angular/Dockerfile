@@ -13,7 +13,7 @@ ENV NODE_PATH /opt/node_modules
 # yarn installation
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN yarn global add @angular/cli@10.1.0 ts-json-schema-generator@0.73.0
+RUN yarn global add @angular/cli@10.1.1 ts-json-schema-generator@0.73.0
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.6.4
 
