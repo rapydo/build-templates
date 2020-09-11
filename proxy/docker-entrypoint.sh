@@ -44,6 +44,9 @@ export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
     export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
 fi
+if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
+    export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
+fi
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from production.conf
 # confs with no extension are loaded from service conf
