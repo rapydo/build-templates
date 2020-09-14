@@ -126,5 +126,5 @@ chmod +x /etc/letsencrypt
 
 #####################
 # Completed
-echo "launching server"
+echo "Executing nginx server, ready to accept connections"
 exec nginx -g 'daemon off;'
