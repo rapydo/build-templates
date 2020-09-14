@@ -60,6 +60,7 @@ if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
         convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}-${APP_MODE}.conf ${CONF_DIR}/${FRONTEND}.service
     else
         convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
+    fi
 fi
 
 # Custom Frontend header configuration, if any
