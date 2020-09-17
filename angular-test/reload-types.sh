@@ -3,8 +3,8 @@ set -e
 
 echo "Converting TS Interfaces to JSON Schemas..."
 
-cat /app/app/rapydo/app/types.ts > /tmp/types.ts
-cat /app/app/custom/app/types.ts >> /tmp/types.ts
+grep -v 'from "@app/types"' /app/app/rapydo/app/types.ts > /tmp/types.ts
+grep -v 'from "@rapydo/types"' /app/app/custom/app/types.ts >> /tmp/types.ts
 
 ts-json-schema-generator -f /app/tsconfig.app.json -p /tmp/types.ts -o /app/app/types.json
 
