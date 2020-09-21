@@ -37,38 +37,11 @@ echo "Domain: $DOMAIN"
 
 
 if [[ "$DOMAIN" == "localhost" ]]; then
-    # exactly as in docker-entrypoint.sh 
+
     echo "Creating a self signed SSL certificate"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
 
-    command="openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $CERTKEY -out $CERTCHAIN"
-
-    # Input values required by the command:
-
-    # Country Name (2 letter code) [AU]:
-    country='XX'
-    # State or Province Name (full name) [Some-State]:
-    state='Nowhere'
-    # Locality Name (eg, city) []:
-    locality='Web'
-    # Organization Name (eg, company) [Internet Widgits Pty Ltd]:
-    organization='RAPyDo'
-    # Organizational Unit Name (eg, section) []:
-    organization_unit='SSL'
-    # Common Name (e.g. server FQDN or YOUR name) []:
-    common_name=$DOMAIN
-    # Email Adress []:
-    email=$SMTP_ADMIN
-
-    $command 2> /dev/null << EOF
-$country
-$state
-$locality
-$organization
-$organization_unit
-$common_name
-$email
-EOF
+    openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout $CERTKEY -out $CERTCHAIN -subj '/CN=localhost'
 
     if [ "$?" == "0" ]; then
         echo "Self signed SSL certificate successfully created"
