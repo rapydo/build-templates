@@ -5,7 +5,7 @@ uwsgitop
 pika
 gdapi-python
 websocket-client
-celery
+celery==4.4.7
 flower==0.9.3
 git+https://github.com/zmap/celerybeat-mongo.git@master
 celery-redbeat==0.13.0
