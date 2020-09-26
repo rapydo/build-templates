@@ -11,7 +11,9 @@ WORKDIR /opt/
 ENV NODE_PATH /opt/node_modules
 
 # yarn installation
-RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
+    yarn config set network-timeout 600000 -g
+
 
 RUN yarn global add @angular/cli@10.1.3 ts-json-schema-generator@0.73.0
 
