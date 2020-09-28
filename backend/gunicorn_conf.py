@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Special thanks to https://github.com/tiangolo/meinheld-gunicorn-docker
 import multiprocessing
 import os
