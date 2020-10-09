@@ -46,11 +46,8 @@ if [[ "$DOMAIN" == "localhost" ]]; then
     if [ "$?" == "0" ]; then
         echo "Self signed SSL certificate successfully created"
 
-        cd ${CERTDIR}
-        rm -f neo4j.cert neo4j.key
-        ln -sfn ${CERTCHAINFILE} neo4j.cert
-        ln -sfn ${CERTKEYFILE} neo4j.key
-        chmod +r ${CERTCHAINFILE} ${CERTKEYFILE}
+        # It is still required?
+        chmod +r ${CERTCHAIN} ${CERTKEY}
     else
         echo "Self signed SSL certificate generation failed!"
     fi
@@ -68,14 +65,11 @@ else
         echo "Completed. Check:"
         ./acme.sh --list
 
+        # It is still required?
+        chmod +r ${CERTCHAIN} ${CERTKEY}
+
         # Could be executed with acme.sh by using --reloadcmd 'nginx -s reload'
         nginx -s reload
-
-        cd ${CERTDIR}
-        rm -f neo4j.cert neo4j.key
-        ln -sfn ${CERTCHAINFILE} neo4j.cert
-        ln -sfn ${CERTKEYFILE} neo4j.key
-        chmod +r ${CERTCHAINFILE} ${CERTKEYFILE}
     else
         echo "ACME FAILED!"
     fi
