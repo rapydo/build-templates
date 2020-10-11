@@ -3,18 +3,6 @@ set -e
 
 # Renewall script
 
-if [ "$SMTP_ADMIN" != "" ]; then
-    echo "Reference email: $SMTP_ADMIN"
-    ./acme.sh --update-account  --accountemail $SMTP_ADMIN
-    if [ "$?" == "0" ]; then
-        # List what we have
-        echo "Email account updated"
-    else
-        echo "SMTP problem"
-        exit 1
-    fi
-fi
-
 hostname=""
 force=""
 if [[ "$1" == "--force" ]]; then
@@ -53,6 +41,18 @@ if [[ "$DOMAIN" == "localhost" ]]; then
     fi
 
 else
+
+    if [ "$SMTP_ADMIN" != "" ]; then
+        echo "Reference email: $SMTP_ADMIN"
+        ./acme.sh --update-account  --accountemail $SMTP_ADMIN
+        if [ "$?" == "0" ]; then
+            # List what we have
+            echo "Email account updated"
+        else
+            echo "SMTP problem"
+            exit 1
+        fi
+    fi
 
     echo "Requesting new SSL certificate to letsencrypt"
 
