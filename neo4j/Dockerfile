@@ -1,4 +1,4 @@
-FROM neo4j:3.5.21
+FROM neo4j:4.1.1
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"

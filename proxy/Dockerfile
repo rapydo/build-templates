@@ -20,7 +20,7 @@ WORKDIR /tmp
 ENV ACMEDIR /acme
 # You can also upgrade live with /acme/acme.sh --upgrade --home /acme
 # Then register the client /acme/acme.sh --register-account
-ENV ACMEV "2.8.6"
+ENV ACMEV "2.8.7"
 RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
     && ./acme.sh --install --home $ACMEDIR \

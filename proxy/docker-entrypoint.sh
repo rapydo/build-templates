@@ -44,23 +44,30 @@ export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
     export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
 fi
+if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
+    export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
+fi
 # *.conf are loaded from main nginx.conf
-# *.service are loaded from production.conf
+# *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
 
-convert_conf ${TEMPLATE_DIR}/production.conf ${CONF_DIR}/production.conf
+convert_conf ${TEMPLATE_DIR}/${APP_MODE}.conf ${CONF_DIR}/${APP_MODE}.conf
 convert_conf ${TEMPLATE_DIR}/service_confs/backend.conf ${CONF_DIR}/backend.service
 
 # Frontend configuration
 if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
+    if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}-${APP_MODE}.conf" ]]; then
+        convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}-${APP_MODE}.conf ${CONF_DIR}/${FRONTEND}.service
+    else
+        convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
+    fi
 fi
 
 # Custom Frontend header configuration, if any
-if [[ -f "$TEMPLATE_DIR/headers_confs/production-${FRONTEND}-headers.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/headers_confs/production-${FRONTEND}-headers.conf ${CONF_DIR}/production-headers
+if [[ -f "$TEMPLATE_DIR/headers_confs/security-${FRONTEND}-headers.conf" ]]; then
+    convert_conf ${TEMPLATE_DIR}/headers_confs/security-${FRONTEND}-headers.conf ${CONF_DIR}/security-headers
 else
-    convert_conf ${TEMPLATE_DIR}/headers_confs/production-headers.conf ${CONF_DIR}/production-headers
+    convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
 fi
 
 # Extra services....
@@ -94,7 +101,7 @@ fi
 
 # IF INIT is necessary
 if [ "$DOMAIN" != "" ]; then
-    echo "Production mode"
+    echo "Starting in ${APP_MODE} mode"
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
@@ -119,5 +126,5 @@ chmod +x /etc/letsencrypt
 
 #####################
 # Completed
-echo "launching server"
+echo "Executing nginx server, ready to accept connections"
 exec nginx -g 'daemon off;'

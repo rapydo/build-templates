@@ -27,7 +27,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools python3-distutils \
     python3-pip \
-    && pip3 install --upgrade --no-cache-dir pip==20.2.2 \
+    && pip3 install --upgrade --no-cache-dir pip==20.2.3 \
     && apt-get remove -y python3-pip \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -50,7 +50,7 @@ COPY gunicorn_conf.py ${GUNICORN_CONF}
 COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
 
 # UTILITIES
-COPY flask_migrate /usr/local/bin/flask_migrate 
+COPY flask_migrate /usr/local/bin/flask_migrate
 
 RUN chmod +x /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 
