@@ -4,6 +4,7 @@ echo ""
 
 PGFOLDER="/var/lib/postgresql"
 DATAFOLDER="${PGFOLDER}/current"
+BACKUPFOLDER="/backup/postgres/"
 
 # env variable
 if [[ $DATAFOLDER != $PGDATA ]]; then
@@ -93,7 +94,7 @@ if [[ -z $1 ]]; then
     echo "If none is listed, please make a backup before starting this upgrade script"
     echo ""
 
-    for BACKUP_NAME in $(ls ${PGFOLDER}/${CURRENT_VERSION}/*.sql); do
+    for BACKUP_NAME in $(ls ${BACKUPFOLDER}/*.sql); do
         echo -e "$(basename $BACKUP_NAME) $(stat -c '\tSize: %s\tModified: %z' ${BACKUP_NAME})"
     done
 
@@ -104,11 +105,11 @@ if [[ -z $1 ]]; then
     exit 1
 else
     BACKUP_NAME=$1
-    if [[ -f ${PGFOLDER}/${CURRENT_VERSION}/${BACKUP_NAME} ]]; then
+    if [[ -f ${BACKUPFOLDER}/${BACKUP_NAME} ]]; then
         echo -e "You selected backup:\t${BACKUP_NAME} $(stat -c '\tSize: %s\tModified: %z' ${DATAFOLDER}/${BACKUP_NAME})"
         echo ""
     else
-        echo "Backup file ${BACKUP_NAME} not found in ${PGFOLDER}/${CURRENT_VERSION}"
+        echo "Backup file ${BACKUP_NAME} not found in ${BACKUPFOLDER}"
         exit 1
     fi
 fi
@@ -166,10 +167,10 @@ echo ""
 echo "##################################################################"
 # Restore the backup
 echo "The following command will restore the database from ${BACKUP_NAME}"
-echo su -c \"psql -U ${POSTGRES_USER} -d postgres -f ${PGFOLDER}/${CURRENT_VERSION}/${BACKUP_NAME}\" postgres
+echo su -c \"psql -U ${POSTGRES_USER} -d postgres -f ${BACKUPFOLDER}/${BACKUP_NAME}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "psql -U ${POSTGRES_USER} -d postgres -f ${PGFOLDER}/${CURRENT_VERSION}/${BACKUP_NAME}" postgres
+su -c "psql -U ${POSTGRES_USER} -d postgres -f ${BACKUPFOLDER}/${BACKUP_NAME}" postgres
 echo ""
 
 
