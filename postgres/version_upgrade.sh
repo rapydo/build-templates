@@ -166,7 +166,7 @@ echo ""
 
 echo "##################################################################"
 # Unzip the backup archive
-BACKUP_UNCOMPRESSED_NAME=`basename ${BACKUP_NAME} .gz`
+BACKUP_UNCOMPRESSED_NAME=$(basename ${BACKUP_NAME} .gz)
 echo -e "\e[32mGunzipping the backup archive from ${BACKUPFOLDER}/${BACKUP_NAME} to /tmp/${BACKUP_UNCOMPRESSED_NAME}\e[0m"
 echo gunzip -c ${BACKUPFOLDER}/${BACKUP_NAME} > /tmp/${BACKUP_UNCOMPRESSED_NAME}
 echo "Sleeping ${SLEEP_TIME} seconds..."
