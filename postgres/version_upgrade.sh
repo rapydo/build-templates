@@ -1,60 +1,56 @@
 #!/bin/bash
+set -e
 
 echo ""
 
 PGFOLDER="/var/lib/postgresql"
 DATAFOLDER="${PGFOLDER}/current"
-BACKUPFOLDER="/backup/postgres/"
+BACKUPFOLDER="/backup/postgres"
 
+error() {
+    echo -e "\e[31m${1}\e[0m"
+    exit 1
+}
 # env variable
 if [[ $DATAFOLDER != $PGDATA ]]; then
-    echo "Env variable PGDATA is expected to be equal to ${DATAFOLDER} and not ${PGDATA}, cannot continue"
-    exit 1
+    error "Env variable PGDATA is expected to be equal to ${DATAFOLDER} and not ${PGDATA}, cannot continue"
 fi
 
 if [[ -f $DATAFOLDER ]]; then
-    echo "Unexcepted ${DATAFOLDER} type, it is a file"
-    exit 1
+    error "Unexcepted ${DATAFOLDER} type, it is a file"
 fi
 
 if [[ ! -L $DATAFOLDER ]]; then
-    echo "Unexcepted ${DATAFOLDER} type, is it a folder? A link is expected"
-    exit 1
+    error "Unexcepted ${DATAFOLDER} type, is it a folder? A link is expected"
 fi
 
 if [[ ! -f $DATAFOLDER/PG_VERSION ]]; then
-    echo "${DATAFOLDER}/PG_VERSION not found"
-    exit 1
+    error "${DATAFOLDER}/PG_VERSION not found"
 fi
 
 CURRENT_VERSION=$(cat ${DATAFOLDER}/PG_VERSION)
 if [[ -z "${CURRENT_VERSION##*[!0-9]*}" ]]; then
-	echo "Current version ${CURRENT_VERSION} is not a number"
-	exit 1
+	error "Current version ${CURRENT_VERSION} is not a number"
 fi
 
 NEW_VERSION=$PG_MAJOR
 if [[ -z "${NEW_VERSION##*[!0-9]*}" ]]; then
-    echo "New version ${NEW_VERSION} is not a number"
-    exit 1
+    error "New version ${NEW_VERSION} is not a number"
 fi
 
 if [[ ${CURRENT_VERSION} -eq ${NEW_VERSION} ]]; then
-    echo "Current version is already upgraded to version ${NEW_VERSION}"
-    exit 1
+    error "Current version is already upgraded to version ${NEW_VERSION}"
 fi
 
 if [[ ${CURRENT_VERSION} -gt ${NEW_VERSION} ]]; then
-    echo "Current version (${CURRENT_VERSION}) is greater then new version (${NEW_VERSION}). Downgrade is not supported"
-    exit 1
+    error "Current version (${CURRENT_VERSION}) is greater then new version (${NEW_VERSION}). Downgrade is not supported"
 fi
 
 # This is the case data is already a link to a version-aware folder
 if [[ -L $DATAFOLDER ]]; then
     REAL_PATH=$(realpath $DATAFOLDER)
     if [[ $REAL_PATH != ${PGFOLDER}/${CURRENT_VERSION} ]]; then
-        echo "Data folder is expected to be a link to ${PGFOLDER}/${CURRENT_VERSION}, but ${REAL_PATH} is found"
-        exit 1
+    error cho "Data folder is expected to be a link to ${PGFOLDER}/${CURRENT_VERSION}, but ${REAL_PATH} is found"
     fi
 fi
 
@@ -72,10 +68,8 @@ if [[ $NEXT_VERSION -lt ${NEW_VERSION} ]]; then
     sleep $SLEEP
 fi
 
-echo "You requested to upgrade from version ${CURRENT_VERSION} to version ${NEW_VERSION}."
+echo -e "You requested to upgrade from version \e[32m${CURRENT_VERSION}\e[0m to version \e[32m${NEW_VERSION}\e[0m."
 echo ""
-
-${PGFOLDER}/${NEW_VERSION}
 
 if [[ ! -d ${PGFOLDER}/${NEW_VERSION} ]]; then
     echo "${PGFOLDER}/${NEW_VERSION} is missing, creating it..."
@@ -84,40 +78,42 @@ if [[ ! -d ${PGFOLDER}/${NEW_VERSION} ]]; then
 fi
 
 if [ ! -z "$(ls -A ${PGFOLDER}/${NEW_VERSION})" ]; then
-    echo "${PGFOLDER}/${NEW_VERSION} is not empty, cannot upgrade"
-    exit 1
+    error "${PGFOLDER}/${NEW_VERSION} is not empty, cannot upgrade"
 fi
 
 if [[ -z $1 ]]; then
 
-    echo "Please select one of the following backup files."
-    echo "If none is listed, please make a backup before starting this upgrade script"
+    echo "Please select one of the following backup files by executing:"
+    echo ""
+    echo -e "$ \e[32mversion_upgrade backupfile\e[0m"
+    echo ""
+    echo "If nothing is listed, please make a backup before starting this upgrade script"
     echo ""
 
-    for BACKUP_NAME in $(ls ${BACKUPFOLDER}/*.sql); do
-        echo -e "$(basename $BACKUP_NAME) $(stat -c '\tSize: %s\tModified: %z' ${BACKUP_NAME})"
+    for BACKUP_NAME in $(ls ${BACKUPFOLDER}/*.sql.gz); do
+        echo -e " - \e[32m$(basename $BACKUP_NAME)\e[0m $(stat -c '\tSize: %s\tModified: %z' ${BACKUP_NAME})"
     done
-
-    echo ""
-    echo "To select a backup:"
-    echo "$0 backup_filename"
 
     exit 1
 else
     BACKUP_NAME=$1
     if [[ -f ${BACKUPFOLDER}/${BACKUP_NAME} ]]; then
-        echo -e "You selected backup:\t${BACKUP_NAME} $(stat -c '\tSize: %s\tModified: %z' ${DATAFOLDER}/${BACKUP_NAME})"
+        echo -e "You selected backup:\t\e[32m${BACKUP_NAME}\e[0m $(stat -c '\tSize: %s\tModified: %z' ${BACKUPFOLDER}/${BACKUP_NAME})"
         echo ""
     else
-        echo "Backup file ${BACKUP_NAME} not found in ${BACKUPFOLDER}"
-        exit 1
+        error "Backup file ${BACKUP_NAME} not found in ${BACKUPFOLDER}"
     fi
+fi
+
+
+if [[ ${BACKUP_NAME: -7} != ".sql.gz" ]]; then
+    error "Invalid backup file, unexpected format! Backup files are expected to have .sql.gz extension"
 fi
 
 SLEEP_TIME=5
 echo "##################################################################"
 # Update the current link to the TO folder
-echo "The following command will update the current link to the new ${NEW_VERSION} folder"
+echo -e "\e[32mUpdating the current link to the new ${NEW_VERSION} folder\e[0m"
 echo ln -sfT ${PGFOLDER}/${NEW_VERSION} ${DATAFOLDER}
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
@@ -126,7 +122,7 @@ echo ""
 
 echo "##################################################################"
 # Initialize the new database folder
-echo "The following command will initialize the new folder ${NEW_VERSION}"
+echo -e "\e[32mInitializing the new folder ${NEW_VERSION}\e[0m"
 echo su -c \"initdb -D ${DATAFOLDER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
@@ -135,16 +131,20 @@ echo ""
 
 echo "##################################################################"
 # Restore previous configuration files
-echo "pg_hba.conf and postgresql.conf will be copied from version ${CURRENT_VERSION} to version ${NEW_VERSION}"
+echo -e "\e[32mpg_hba.conf and postgresql.conf will be copied from version ${CURRENT_VERSION} to version ${NEW_VERSION}\e[0m"
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-cp -p ${PGFOLDER}/${CURRENT_VERSION}/pg_hba.conf ${PGFOLDER}/${NEW_VERSION}/pg_hba.conf
-cp -p ${PGFOLDER}/${CURRENT_VERSION}/postgresql.conf ${PGFOLDER}/${NEW_VERSION}/postgresql.conf
+# -d  Preserve symlinks
+# -p  Preserve file attributes if possible
+cp -dp ${PGFOLDER}/${CURRENT_VERSION}/pg_hba.conf ${PGFOLDER}/${NEW_VERSION}/pg_hba.conf
+cp -dp ${PGFOLDER}/${CURRENT_VERSION}/postgresql.conf ${PGFOLDER}/${NEW_VERSION}/postgresql.conf
+chown postgres ${PGFOLDER}/${NEW_VERSION}/pg_hba.conf ${PGFOLDER}/${NEW_VERSION}/postgresql.conf
 echo ""
 
 echo "##################################################################"
 # Run postgres
-echo "Postgres server will be executed"
+echo -e "\e[32mPostgres server will be executed\e[0m"
+echo su -c \"postgres -D ${DATAFOLDER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
 su -c "postgres -D ${DATAFOLDER}" postgres &
@@ -157,7 +157,7 @@ echo ""
 
 echo "##################################################################"
 # Restore the sqluser
-echo "The following command will recreate the ${POSTGRES_USER} user"
+echo -e "\e[32mRecreating the ${POSTGRES_USER} user\e[0m"
 echo su -c \"createuser -s ${POSTGRES_USER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
@@ -165,14 +165,24 @@ su -c "createuser -s ${POSTGRES_USER}" postgres
 echo ""
 
 echo "##################################################################"
-# Restore the backup
-echo "The following command will restore the database from ${BACKUP_NAME}"
-echo su -c \"psql -U ${POSTGRES_USER} -d postgres -f ${BACKUPFOLDER}/${BACKUP_NAME}\" postgres
+# Unzip the backup archive
+BACKUP_UNCOMPRESSED_NAME=`basename ${BACKUP_NAME} .gz`
+echo -e "\e[32mGunzipping the backup archive from ${BACKUPFOLDER}/${BACKUP_NAME} to /tmp/${BACKUP_UNCOMPRESSED_NAME}\e[0m"
+echo gunzip -c ${BACKUPFOLDER}/${BACKUP_NAME} > /tmp/${BACKUP_UNCOMPRESSED_NAME}
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "psql -U ${POSTGRES_USER} -d postgres -f ${BACKUPFOLDER}/${BACKUP_NAME}" postgres
+gunzip -c ${BACKUPFOLDER}/${BACKUP_NAME} > /tmp/${BACKUP_UNCOMPRESSED_NAME}
+chown postgres /tmp/${BACKUP_UNCOMPRESSED_NAME}
 echo ""
 
+echo "##################################################################"
+# Restore the backup
+echo -e "\e[32mRestoring the database from /tmp/${BACKUP_UNCOMPRESSED_NAME}\e[0m"
+echo su -c \"psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}\" postgres
+echo "Sleeping ${SLEEP_TIME} seconds..."
+sleep $SLEEP_TIME
+su -c "psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}" postgres
+echo ""
 
 echo ""
-echo "All done."
+echo -e "\e[32mAll done.\e[0m"
