@@ -91,14 +91,14 @@ if [[ -z $1 ]]; then
     echo ""
 
     for BACKUP_NAME in $(ls ${BACKUPFOLDER}/*.sql.gz); do
-        echo -e " - \e[32m$(basename $BACKUP_NAME)\e[0m $(stat -c '\tSize: %s\tModified: %z' ${BACKUP_NAME})"
+        echo -e " - \e[32m$(basename $BACKUP_NAME)\e[0m $(stat -c '\tSize: %s' ${BACKUP_NAME})"
     done
 
     exit 1
 else
     BACKUP_NAME=$1
     if [[ -f ${BACKUPFOLDER}/${BACKUP_NAME} ]]; then
-        echo -e "You selected backup:\t\e[32m${BACKUP_NAME}\e[0m $(stat -c '\tSize: %s\tModified: %z' ${BACKUPFOLDER}/${BACKUP_NAME})"
+        echo -e "You selected backup:\t\e[32m${BACKUP_NAME}\e[0m $(stat -c '\tSize: %s' ${BACKUPFOLDER}/${BACKUP_NAME})"
         echo ""
     else
         error "Backup file ${BACKUP_NAME} not found in ${BACKUPFOLDER}"
