@@ -74,6 +74,7 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
     echo "Enabling cron..."
     mkdir -p /etc/cron.rapydo
     touch /var/log/cron.log
+    chown $APIUSER /var/log/cron.log
     # Adding an empty line to cron log
     echo "" >> /var/log/cron.log
     cron
