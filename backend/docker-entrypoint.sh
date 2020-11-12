@@ -70,6 +70,12 @@ fi
 export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=0
 
+if [[ "$CRONTAB_ENABLE" == "1" ]]; then
+    mkdir -p /etc/cron.rapydo
+    cron
+    crontab /etc/cron.rapydo/*
+fi
+
 # Completed
 
 if [ "$1" != 'rest' ]; then

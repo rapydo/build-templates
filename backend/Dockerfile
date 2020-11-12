@@ -21,7 +21,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu \
+    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
