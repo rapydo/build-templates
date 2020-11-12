@@ -71,7 +71,7 @@ export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=0
 
 if [[ "$CRONTAB_ENABLE" == "1" ]]; then
-    if [[ "$(ls -A /etc/cron.rapydo)" ]]; then
+    if [[ "$(ls /etc/cron.rapydo)" ]]; then
         echo "Enabling cron..."
         mkdir -p /etc/cron.rapydo
         touch /var/log/cron.log
