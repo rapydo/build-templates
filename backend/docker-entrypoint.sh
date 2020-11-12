@@ -77,7 +77,7 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
     # Adding an empty line to cron log
     echo "" >> /var/log/cron.log
     cron
-    crontab /etc/cron.rapydo/*
+    crontab -u ${APIUSER} /etc/cron.rapydo/*
     echo "Cron enabled"
     # -n 1 will only print the empty line previously added
     tail -n 1 -f /var/log/cron.log &
