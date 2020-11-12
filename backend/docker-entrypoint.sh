@@ -71,18 +71,22 @@ export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=0
 
 if [[ "$CRONTAB_ENABLE" == "1" ]]; then
-    echo "Enabling cron..."
-    mkdir -p /etc/cron.rapydo
-    touch /var/log/cron.log
-    chown $APIUSER /var/log/cron.log
-    # Adding an empty line to cron log
-    echo "" >> /var/log/cron.log
-    cron
-    crontab -u ${APIUSER} /etc/cron.rapydo/*
-    crontab -u ${APIUSER} -l
-    echo "Cron enabled"
-    # -n 1 will only print the empty line previously added
-    tail -n 1 -f /var/log/cron.log &
+    if [[ "$(ls -A /etc/cron.rapydo)" ]]; then
+        echo "Enabling cron..."
+        mkdir -p /etc/cron.rapydo
+        touch /var/log/cron.log
+        chown $APIUSER /var/log/cron.log
+        # Adding an empty line to cron log
+        echo "" >> /var/log/cron.log
+        cron
+        crontab -u ${APIUSER} /etc/cron.rapydo/*
+        crontab -u ${APIUSER} -l
+        echo "Cron enabled"
+        # -n 1 will only print the empty line previously added
+        tail -n 1 -f /var/log/cron.log &
+    else
+        echo "Found no cronjob to be enabled, skipping crontab setup"
+    fi
 fi
 
 # Completed
