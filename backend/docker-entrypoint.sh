@@ -71,7 +71,7 @@ export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=0
 
 if [[ "$CRONTAB_ENABLE" == "1" ]]; then
-    if [[ "$(ls /etc/cron.rapydo)" ]]; then
+    if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
         echo "Enabling cron..."
         mkdir -p /etc/cron.rapydo
         touch /var/log/cron.log
@@ -79,7 +79,8 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
         # Adding an empty line to cron log
         echo "" >> /var/log/cron.log
         cron
-        crontab -u ${APIUSER} /etc/cron.rapydo/*
+        # .cron extension is to avoid accidentally including backup files from editors
+        cat /etc/cron.rapydo/*.cron | crontab -u ${APIUSER} -
         crontab -u ${APIUSER} -l
         echo "Cron enabled"
         # -n 1 will only print the empty line previously added
