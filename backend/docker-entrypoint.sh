@@ -75,7 +75,7 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
         echo "Enabling cron..."
 
         # Make an initial backup of the original environment file. Only executed once
-        if [ ! -f "/etc/environment" ]; then
+        if [ ! -f "/etc/environment.bak" ]; then
             cp /etc/environment /etc/environment.bak
         fi
         # Restore the original environment ...
