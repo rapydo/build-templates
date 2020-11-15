@@ -73,7 +73,16 @@ export IS_CELERY_CONTAINER=0
 if [[ "$CRONTAB_ENABLE" == "1" ]]; then
     if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
         echo "Enabling cron..."
-        mkdir -p /etc/cron.rapydo
+
+        # Make an initial backup of the original environment file. Only executed once
+        if [ ! -f "/etc/environment" ]; then
+            cp /etc/environment /etc/environment.bak
+        fi
+        # Restore the original environment ...
+        cp /etc/environment.bak /etc/environment
+        # ... and append all the env variables to make them available to the cron jobs
+        cat env >> /etc/environment
+
         touch /var/log/cron.log
         chown $APIUSER /var/log/cron.log
         # Adding an empty line to cron log
