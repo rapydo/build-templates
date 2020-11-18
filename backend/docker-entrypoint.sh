@@ -74,8 +74,8 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
     if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
         echo "Enabling cron..."
 
-        # sed is needed to add quotes to env values and escape quotes ( " -> \\" )
-        env | sed 's/"/\\"/' | sed 's/=\(.*\)/="\1"/' > /etc/rapydo-environment
+        # sed is needed to add quotes to env values and to escape quotes ( ' -> \\' )
+        env | sed "s/'/\\'/" | sed "s/=\(.*\)/='\1'/" > /etc/rapydo-environment
 
         touch /var/log/cron.log
         chown $APIUSER /var/log/cron.log
