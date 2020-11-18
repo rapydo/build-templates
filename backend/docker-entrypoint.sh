@@ -81,6 +81,7 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
         # Restore the original environment ...
         cp /etc/environment.bak /etc/environment
         # ... and append all the env variables to make them available to the cron jobs
+        # sed is needed to add quotes to env values
         env | sed 's/=\(.*\)/="\1"/' >> /etc/environment
 
         touch /var/log/cron.log
