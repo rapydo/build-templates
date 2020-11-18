@@ -74,15 +74,8 @@ if [[ "$CRONTAB_ENABLE" == "1" ]]; then
     if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
         echo "Enabling cron..."
 
-        # Make an initial backup of the original environment file. Only executed once
-        if [ ! -f "/etc/environment.bak" ]; then
-            cp /etc/environment /etc/environment.bak
-        fi
-        # Restore the original environment ...
-        cp /etc/environment.bak /etc/environment
-        # ... and append all the env variables to make them available to the cron jobs
         # sed is needed to add quotes to env values
-        env | sed 's/=\(.*\)/="\1"/' >> /etc/environment
+        env | sed 's/=\(.*\)/="\1"/' > /etc/rapydo-environment
 
         touch /var/log/cron.log
         chown $APIUSER /var/log/cron.log
