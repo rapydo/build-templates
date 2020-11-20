@@ -12,6 +12,7 @@ env:
   - SERVICE=rabbitmq
   - SERVICE=postgres
   - SERVICE=ftp
+  - SERVICE=adminer
 services:
   - docker
 install:

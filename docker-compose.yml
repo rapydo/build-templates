@@ -25,3 +25,6 @@ ftp:
 
 rabbitmq:
   build: rabbitmq
+
+adminer:
+  build: adminer
