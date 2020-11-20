@@ -13,6 +13,7 @@ env:
   - SERVICE=postgres
   - SERVICE=ftp
   - SERVICE=adminer
+  - SERVICE=swaggerui
 services:
   - docker
 install:
