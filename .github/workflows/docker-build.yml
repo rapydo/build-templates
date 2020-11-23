@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       RAPYDO_VERSION: 0.9
 
