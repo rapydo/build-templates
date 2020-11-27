@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    timeout-minutes: 8
+
     env:
       RAPYDO_VERSION: 0.9
 
