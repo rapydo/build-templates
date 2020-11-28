@@ -79,4 +79,5 @@ COPY ./docker-entrypoint-bot.sh /usr/local/bin/docker-entrypoint-bot
 
 WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+STOPSIGNAL SIGINT
 CMD ["docker-entrypoint", "rest"]
