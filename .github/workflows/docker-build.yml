@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 8
+
+    env:
+      RAPYDO_VERSION: 0.8
+
+    strategy:
+      matrix:
+        service:
+          [
+            backend,
+            angular,
+            angular-test,
+            proxy,
+            neo4j,
+            rabbitmq,
+            postgres,
+            ftp,
+            adminer,
+            swaggerui,
+          ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker-compose --project-name rapydo build --build-arg RAPYDO_VERSION=${{ env.RAPYDO_VERSION }} --build-arg CURRENT_UID=1000 --build-arg CURRENT_GID=1000 ${{ matrix.service }}
+      - name: Image Tag
+        run: docker tag rapydo_${{ matrix.service }}:latest rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Docker Push
+        run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
