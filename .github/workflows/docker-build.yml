@@ -24,8 +24,6 @@ jobs:
             rabbitmq,
             postgres,
             ftp,
-            adminer,
-            swaggerui,
           ]
 
     steps:
