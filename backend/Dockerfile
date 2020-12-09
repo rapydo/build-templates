@@ -27,13 +27,11 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools python3-distutils \
     python3-pip \
-    && pip3 install --upgrade --no-cache-dir pip==20.2.4 \
+    && pip3 install --upgrade --no-cache-dir pip==20.3.1 \
     && apt-get remove -y python3-pip \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Note: remove --use-feature=2020-resolver once upgraded to pip 20.3
-
-RUN pip3 install --upgrade --no-cache-dir --use-feature=2020-resolver dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
