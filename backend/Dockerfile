@@ -21,19 +21,17 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu \
+    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron \
     python${MYPYTHON_VERSION} \
     python${MYPYTHON_VERSION}-dev \
     python${MYPYTHON_VERSION}-gdbm \
     python3-setuptools python3-distutils \
     python3-pip \
-    && pip3 install --upgrade --no-cache-dir pip==20.2.3 \
+    && pip3 install --upgrade --no-cache-dir pip==20.3.1 \
     && apt-get remove -y python3-pip \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Note: remove --use-feature=2020-resolver once upgraded to pip 20.3
-
-RUN pip3 install --upgrade --no-cache-dir --use-feature=2020-resolver dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
@@ -79,4 +77,5 @@ COPY ./docker-entrypoint-bot.sh /usr/local/bin/docker-entrypoint-bot
 
 WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+STOPSIGNAL SIGINT
 CMD ["docker-entrypoint", "rest"]

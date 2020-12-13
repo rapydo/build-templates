@@ -70,6 +70,29 @@ fi
 export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
 export IS_CELERY_CONTAINER=0
 
+if [[ "$CRONTAB_ENABLE" == "1" ]]; then
+    if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
+        echo "Enabling cron..."
+
+        # sed is needed to add quotes to env values and to escape quotes ( ' -> \\' )
+        env | sed "s/'/\\'/" | sed "s/=\(.*\)/='\1'/" > /etc/rapydo-environment
+
+        touch /var/log/cron.log
+        chown $APIUSER /var/log/cron.log
+        # Adding an empty line to cron log
+        echo "" >> /var/log/cron.log
+        cron
+        # .cron extension is to avoid accidentally including backup files from editors
+        cat /etc/cron.rapydo/*.cron | crontab -u ${APIUSER} -
+        crontab -u ${APIUSER} -l
+        echo "Cron enabled"
+        # -n 1 will only print the empty line previously added
+        tail -n 1 -f /var/log/cron.log &
+    else
+        echo "Found no cronjob to be enabled, skipping crontab setup"
+    fi
+fi
+
 # Completed
 
 if [ "$1" != 'rest' ]; then

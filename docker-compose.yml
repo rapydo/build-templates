@@ -25,3 +25,9 @@ ftp:
 
 rabbitmq:
   build: rabbitmq
+
+adminer:
+  build: adminer
+
+swaggerui:
+  build: swaggerui

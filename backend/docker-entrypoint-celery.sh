@@ -30,7 +30,7 @@ echo "waiting for services"
 
 HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 
-echo "Requested command: $@"
+# echo "Requested command: $@"
 
 # $@
 # exit 0

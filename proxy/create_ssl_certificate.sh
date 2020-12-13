@@ -22,6 +22,7 @@ fi
 
 echo "Mode: *$MODE*"
 echo "Domain: $DOMAIN"
+echo "Domain Aliases: $DOMAIN_ALIASES"
 
 
 if [[ "$DOMAIN" == "localhost" ]]; then
@@ -56,9 +57,16 @@ else
 
     echo "Requesting new SSL certificate to letsencrypt"
 
+    domains="-d $DOMAIN"
+    # Add additional -d for each alias
+    # Before: not tested
+    for d in ${DOMAIN_ALIASES/,/ }; do
+        domains="${domains} -d ${d}"
+    done
+
     ./acme.sh --issue ${force} --debug \
         --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
-        -d $DOMAIN -w $WWWDIR $MODE
+        ${domains} -w ${WWWDIR} ${MODE}
 
     if [ "$?" == "0" ]; then
         # List what we have
