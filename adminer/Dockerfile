@@ -1,4 +1,4 @@
-FROM adminer:4.7.7 AS adminer
+FROM adminer:4.7.8 AS adminer
 
 # FROM php:7.3.24-apache-buster
 
