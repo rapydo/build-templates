@@ -1,6 +1,6 @@
 FROM swaggerapi/swagger-ui:v3.36.0 AS swaggerui
 
-FROM nginx:1.19.5-alpine
+FROM nginx:1.19.6-alpine
 
 COPY --from=swaggerui /usr/share/nginx/html /usr/share/nginx/html
 
