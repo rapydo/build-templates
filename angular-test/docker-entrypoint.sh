@@ -53,6 +53,9 @@ if [ "$APP_MODE" == 'production' ]; then
     run_as_node "reload-types"
     run_as_node "yarn run courtesy"
     run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
+    if [ "$ENABLE_ANGULAR_SSR" == "1" ]; then
+        run_as_node "yarn run build:ssr"
+    fi
     run_as_node "yarn run gzip"
 
 elif [ "$APP_MODE" == 'development' ]; then
