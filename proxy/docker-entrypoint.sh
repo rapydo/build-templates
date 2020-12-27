@@ -63,12 +63,7 @@ if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
     fi
 fi
 
-# Custom Frontend header configuration, if any
-if [[ -f "$TEMPLATE_DIR/headers_confs/security-${FRONTEND}-headers.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/headers_confs/security-${FRONTEND}-headers.conf ${CONF_DIR}/security-headers
-else
-    convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
-fi
+convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
 
 # Extra services....
 # Not implemented
