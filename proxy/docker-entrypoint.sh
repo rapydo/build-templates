@@ -54,6 +54,12 @@ fi
 convert_conf ${TEMPLATE_DIR}/${APP_MODE}.conf ${CONF_DIR}/${APP_MODE}.conf
 convert_conf ${TEMPLATE_DIR}/service_confs/backend.conf ${CONF_DIR}/backend.service
 
+# $FRONTEND_MODE can be development, production or test... and ssr
+if [ "$ENABLE_ANGULAR_SSR" == "1" ]; then
+    FRONTEND_MODE="ssr"
+else
+    FRONTEND_MODE=$APP_MODE
+fi
 # Frontend configuration
 if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
     if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}-${APP_MODE}.conf" ]]; then
