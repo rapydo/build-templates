@@ -47,6 +47,10 @@ fi
 if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
     export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
 fi
+
+if [[ -z "${CORS_ALLOWED_ORIGIN}" ]]; then
+    export CORS_ALLOWED_ORIGIN=$DOMAIN;
+fi
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
