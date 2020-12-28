@@ -62,8 +62,8 @@ else
 fi
 # Frontend configuration
 if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
-    if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}-${APP_MODE}.conf" ]]; then
-        convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}-${APP_MODE}.conf ${CONF_DIR}/${FRONTEND}.service
+    if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}-${FRONTEND_MODE}.conf" ]]; then
+        convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}-${FRONTEND_MODE}.conf ${CONF_DIR}/${FRONTEND}.service
     else
         convert_conf ${TEMPLATE_DIR}/service_confs/${FRONTEND}.conf ${CONF_DIR}/${FRONTEND}.service
     fi
