@@ -7,7 +7,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-ENV MYPYTHON_VERSION 3.9
+ARG PYTHON_VERSION=3.9
+
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -22,7 +23,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
     tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron ca-certificates libgeos-dev \
-    python${MYPYTHON_VERSION} python${MYPYTHON_VERSION}-dev \
+    python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
     python3-gdbm python3-setuptools python3-distutils \
     && ln -sf /usr/bin/python3.9 /usr/bin/python3 \
     && curl --silent https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
