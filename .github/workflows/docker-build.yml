@@ -25,6 +25,7 @@ jobs:
             neo4j,
             rabbitmq,
             postgres,
+            mongodb,
             ftp,
             adminer,
             swaggerui,
