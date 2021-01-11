@@ -3,6 +3,20 @@ mongo -- "${MONGO_INITDB_DATABASE}" <<EOF
     var passwd = '${MONGO_INITDB_ROOT_PASSWORD}';
     var admin = db.getSiblingDB('admin');
     admin.auth(user, passwd);
-    db.createUser({user: user, pwd: passwd, roles: [{role: "readWrite", db: "${MONGO_INITDB_DATABASE}"}]});
-    db.createUser({user: user, pwd: passwd, roles: [{role: "readWrite", db: "celery"}]});
+    db.createUser(
+        {
+            user: user,
+            pwd: passwd,
+            roles: [
+                {
+                    role: "readWrite",
+                    db: "${MONGO_INITDB_DATABASE}"
+                },
+                {
+                    role: "readWrite",
+                    db: "celery"
+                }
+            ]
+        }
+    );
 EOF
