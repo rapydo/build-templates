@@ -24,7 +24,7 @@ mongo -- "${MONGO_INITDB_DATABASE}" <<EOF
         {
             user: user,
             pwd: passwd,
-            roles: ["userAdminAnyDatabase"]
+            roles: ["readWrite", "dbAdmin"]
         }
     );
 EOF
