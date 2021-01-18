@@ -104,6 +104,12 @@ else
     ## NORMAL MODES
     echo "REST API backend server is ready to be launched"
 
+    if [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
+        echo "Testing latest migration:"
+        flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1
+        echo ""
+    fi
+
     if [ "$APP_MODE" == 'production' ]; then
 
         echo "waiting for services"
