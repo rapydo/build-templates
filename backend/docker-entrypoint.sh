@@ -107,10 +107,14 @@ else
     if [[ $ALEMBIC_AUTO_MIGRATE == "1" ]] && [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
 
         if [[ $(flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
-            echo "Verified that latest database migration is already installed"
+            echo "All database migrations are already installed";
         else
-            flask_migrate upgrade
+            # Short version: flask_migrate upgrade
+            flask db upgrade --directory "${VANILLA_PACKAGE}/migrations";
+
+            echo "Migration completed";
         fi
+
     fi
 
     if [ "$APP_MODE" == 'production' ]; then
