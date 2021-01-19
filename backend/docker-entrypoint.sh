@@ -105,9 +105,13 @@ else
     echo "REST API backend server is ready to be launched"
 
     if [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
-        echo "Testing latest migration:"
-        flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1
-        echo ""
+
+        if [[ $(flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
+            echo "Verified that latest database migration is installed"
+        else
+            echo "A database migration is missing, please execute:"
+            echo "flask_migrate upgrade"
+        fi
     fi
 
     if [ "$APP_MODE" == 'production' ]; then
