@@ -106,7 +106,9 @@ else
 
     if [[ $ALEMBIC_AUTO_MIGRATE == "1" ]] && [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
 
-        if [[ $(flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
+        if [[ ! -d "${VANILLA_PACKAGE}/migrations" ]]; then
+            echo "Skipping migrations check, ${VANILLA_PACKAGE}/migrations does not exist";
+        elif [[ $(flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
             echo "All database migrations are already installed";
         else
             # Short version: flask_migrate upgrade
