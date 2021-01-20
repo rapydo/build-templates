@@ -8,42 +8,43 @@ RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
-# https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-# Firefox 77 failed with this error:
-# https://github.com/cypress-io/cypress/issues/6813
-# ENV FIREFOX_VERSION "77.0.1"
-# Latest working version seems to be this one:
-ENV FIREFOX_VERSION "72.0.2"
-
-ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
-
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 6.2.1
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ########################################
-# Install Chrome and Chromium
-# xvfb, libxss1 and libxtst6 are required by cypress
+# Install Chrome
+# from libgtk2.0-0 to xvfb are required by cypress as reported here:
+# https://docs.cypress.io/guides/guides/continuous-integration.html#Dependencies
 # dbus-x11 is required by chrome
-# libdbus-glib-1-2 is required by firefox
-# removed chromium from the packages list
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim xvfb libxss1 libxtst6 dbus-x11 libdbus-glib-1-2 google-chrome-stable && \
+  apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
 ########################################
 # Install Firefox
-RUN \
-  wget --no-verbose -O /tmp/ff.tar.bz2 ${FIREFOX_URL} && \
-  tar -C /opt -xjf /tmp/ff.tar.bz2 && \
-  rm /tmp/ff.tar.bz2 && \
-  ln -fs /opt/firefox/firefox /usr/bin/firefox
+# include libdbus-glib-1-2 to apt-get install
+
+# https://download-installer.cdn.mozilla.net/pub/firefox/releases/
+# Firefox 77 failed with this error:
+# https://github.com/cypress-io/cypress/issues/6813
+# ENV FIREFOX_VERSION "77.0.1"
+# Latest working version seems to be this one:
+# ENV FIREFOX_VERSION "72.0.2"
+
+# ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
+
+# RUN \
+#   wget --no-verbose -O /tmp/ff.tar.bz2 ${FIREFOX_URL} && \
+#   tar -C /opt -xjf /tmp/ff.tar.bz2 && \
+#   rm /tmp/ff.tar.bz2 && \
+#   ln -fs /opt/firefox/firefox /usr/bin/firefox
 
 ########################################
 # Install Yarn and npm libs
@@ -71,6 +72,6 @@ COPY ./reload-types.sh /usr/local/bin/reload-types
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 # RUN chromium --version && google-chrome --version && firefox --version
-RUN google-chrome --version && firefox --version
+RUN google-chrome --version
 
 CMD ["docker-entrypoint"]
