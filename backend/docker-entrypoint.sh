@@ -112,7 +112,8 @@ else
             echo "All database migrations are already installed";
         else
             # Short version: flask_migrate upgrade
-            flask db upgrade --directory "${VANILLA_PACKAGE}/migrations";
+            # Please note that errors in the upgrade will not make fail the server startup due to the || true statement
+            flask db upgrade --directory "${VANILLA_PACKAGE}/migrations" || true;
 
             echo "Migration completed";
         fi
