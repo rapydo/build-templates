@@ -10,5 +10,6 @@ COPY ./production.conf /etc/nginx/adminer-production.conf
 
 RUN chmod +x /usr/share/nginx/swagger-nginx-prerun.sh
 
-# Add swagger prerun.sh as third line of run.sh
-RUN sed -i '3i/usr/share/nginx/swagger-nginx-prerun.sh' /usr/share/nginx/run.sh
+# Add swagger prerun.sh as third line of the docker entrypoint
+# Note the . to run the instructions in pre-run in the original shell and make the env variables to survive
+RUN sed -i '3i. /usr/share/nginx/swagger-nginx-prerun.sh' /docker-entrypoint.sh
