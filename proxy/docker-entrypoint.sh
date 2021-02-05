@@ -52,6 +52,13 @@ fi
 if [[ -z "${CORS_ALLOWED_ORIGIN}" ]]; then
     export CORS_ALLOWED_ORIGIN=$DOMAIN;
 fi
+
+if [[ ! -z "$GA_TRACKING_CODE" ]]; then
+   export CSPGA="https://www.google-analytics.com https://www.googletagmanager.com";
+else
+    export CSPGA="";
+fi
+
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
