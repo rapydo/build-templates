@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # mongo -- "${MONGO_INITDB_DATABASE}" <<EOF
 #     var user = '${MONGO_INITDB_ROOT_USERNAME}';
 #     var passwd = '${MONGO_INITDB_ROOT_PASSWORD}';
