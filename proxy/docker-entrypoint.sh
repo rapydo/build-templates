@@ -39,6 +39,7 @@ function convert_conf {
 export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
 export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
+export CSP_CONNECT_SRC=${CSP_CONNECT_SRC//\'/}
 # add single quotes if non empty
 # this command also works if the string is already single quoted
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
@@ -47,6 +48,17 @@ fi
 if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
     export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
 fi
+
+if [[ -z "${CORS_ALLOWED_ORIGIN}" ]]; then
+    export CORS_ALLOWED_ORIGIN=$DOMAIN;
+fi
+
+if [[ ! -z "$GA_TRACKING_CODE" ]]; then
+   export CSPGA="https://www.google-analytics.com https://www.googletagmanager.com";
+else
+    export CSPGA="";
+fi
+
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
@@ -63,12 +75,7 @@ if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
     fi
 fi
 
-# Custom Frontend header configuration, if any
-if [[ -f "$TEMPLATE_DIR/headers_confs/security-${FRONTEND}-headers.conf" ]]; then
-    convert_conf ${TEMPLATE_DIR}/headers_confs/security-${FRONTEND}-headers.conf ${CONF_DIR}/security-headers
-else
-    convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
-fi
+convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
 
 # Extra services....
 # Not implemented

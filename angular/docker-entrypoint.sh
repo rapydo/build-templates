@@ -34,7 +34,7 @@ run_as_node() {
     HOME="${NODE_HOME}" su -p "${NODE_USER}" -c "${1}"
 }
 
-if [ "$APP_MODE" == 'test' ]; then
+if [ "$APP_MODE" == "test" ]; then
     export BACKEND_HOST=${CYPRESS_BACKEND_HOST}
 fi
 
@@ -42,24 +42,28 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 # Very rough workaround to prevent:
-# error TS2688: Cannot find type definition file for 'node'.
+# error TS2688: Cannot find type definition file for "node".
 run_as_node "cp -r /opt/node_modules/@types node_modules/"
 
-if [ "$APP_MODE" == 'production' ]; then
+if [ "$APP_MODE" == "production" ]; then
 
     run_as_node "yarn install --production"
+    run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     run_as_node "yarn run courtesy"
-    run_as_node "yarn run build -- --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
+    run_as_node "yarn run build --base-href https://${BASE_HREF}${FRONTEND_PREFIX} --deleteOutputPath=false"
+    if [ "$ENABLE_ANGULAR_SSR" == "1" ]; then
+        run_as_node "yarn run build:ssr"
+    fi
     run_as_node "yarn run gzip"
 
-elif [ "$APP_MODE" == 'development' ]; then
+elif [ "$APP_MODE" == "development" ]; then
 
     run_as_node "yarn install"
     run_as_node "reload-types"
     run_as_node "yarn start"
 
-elif [ "$APP_MODE" == 'test' ]; then
+elif [ "$APP_MODE" == "test" ]; then
 
     sleep infinity
 

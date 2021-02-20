@@ -7,7 +7,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-ENV MYPYTHON_VERSION 3.8
+ENV PYTHON_VERSION 3.9
+
 ENV TERM=xterm-256color
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -21,17 +22,16 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron \
-    python${MYPYTHON_VERSION} \
-    python${MYPYTHON_VERSION}-dev \
-    python${MYPYTHON_VERSION}-gdbm \
-    python3-setuptools python3-distutils \
-    python3-pip \
-    && pip3 install --upgrade --no-cache-dir pip==20.3.1 \
-    && apt-get remove -y python3-pip \
+    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron ca-certificates libgeos-dev \
+    python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
+    python3-gdbm python3-setuptools python3-distutils \
+    && ln -sf /usr/bin/python3.9 /usr/bin/python3 \
+    && curl --silent https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
+    && python3 get-pip.py \
+    && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.2 meinheld==1.0.2 gunicorn==20.0.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.4 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 

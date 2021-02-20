@@ -1,19 +1,15 @@
 FROM swaggerapi/swagger-ui:v3.36.0 AS swaggerui
 
-FROM nginx:1.19.3-alpine
+COPY ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 
-COPY --from=swaggerui /usr/share/nginx/html /usr/share/nginx/html
+# Use the original nginx.conf as development configuration
+RUN mv /etc/nginx/nginx.conf /etc/nginx/adminer-development.conf
 
-###################
-RUN apk --no-cache update && apk --no-cache add tini
-
-COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-
-COPY ./development.conf /etc/nginx/adminer-development.conf
+# Add a new configuration to be used in production mode
 COPY ./production.conf /etc/nginx/adminer-production.conf
 
-RUN chmod +x /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/share/nginx/swagger-nginx-prerun.sh
 
-EXPOSE 80
-
-ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
+# Add swagger prerun.sh as third line of the docker entrypoint
+# Note the . to run the instructions in pre-run in the original shell and make the env variables to survive
+RUN sed -i '3i. /usr/share/nginx/swagger-nginx-prerun.sh' /docker-entrypoint.sh
