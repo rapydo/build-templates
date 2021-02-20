@@ -1,4 +1,4 @@
-FROM rabbitmq:3.8.9-management
+FROM rabbitmq:3.8.12-management
 
 COPY --chown=rabbitmq ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
 COPY --chown=rabbitmq ./check_ssl.sh /usr/local/bin/check_ssl.sh
