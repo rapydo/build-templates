@@ -17,7 +17,7 @@ RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
 
 RUN yarn global add @angular/cli@11.0.7 ts-json-schema-generator@0.86.1
 
-RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.14.13
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.14.31
 
 WORKDIR /app/
 
