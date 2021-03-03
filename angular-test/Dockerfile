@@ -10,7 +10,7 @@ WORKDIR /opt/
 
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
-ENV CYPRESS_VERSION 6.5.0
+ENV CYPRESS_VERSION 6.6.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ##################################################################################
@@ -29,7 +29,7 @@ ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11  && \
+  apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
@@ -39,7 +39,7 @@ RUN \
 ##################################################################################
 # Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
 ##################################################################################
-RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_88.0.4324.182-1_amd64.deb \
+# RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_88.0.4324.182-1_amd64.deb \
   && dpkg -i  /tmp/chrome.deb \
   && rm /tmp/chrome.deb
 ##################################################################################
