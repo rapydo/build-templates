@@ -14,12 +14,7 @@ ENV CYPRESS_VERSION 6.6.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
 ##################################################################################
-##################################################################################
-# Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
-##################################################################################
-# Removed: google-chrome-stable
-##################################################################################
-# Note: also removed this line since it is a duplicate!?
+# Note: removed this line since it is a duplicate!?
 #   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
 ########################################
 # Install Chrome
@@ -34,14 +29,13 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-
 ##################################################################################
 ##################################################################################
 # Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
 ##################################################################################
 # RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_88.0.4324.182-1_amd64.deb \
-  && dpkg -i  /tmp/chrome.deb \
-  && rm /tmp/chrome.deb
+#  && dpkg -i  /tmp/chrome.deb \
+#  && rm /tmp/chrome.deb
 ##################################################################################
 ##################################################################################
 
