@@ -13,6 +13,14 @@ ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 6.5.0
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
+##################################################################################
+##################################################################################
+# Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
+##################################################################################
+# Removed: google-chrome-stable
+##################################################################################
+# Note: also removed this line since it is a duplicate!?
+#   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
 ########################################
 # Install Chrome
 # from libgtk2.0-0 to xvfb are required by cypress as reported here:
@@ -20,12 +28,23 @@ ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 # dbus-x11 is required by chrome
 RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-  echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update && \
-  apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11 google-chrome-stable && \
+  apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11  && \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+
+##################################################################################
+##################################################################################
+# Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
+##################################################################################
+RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_88.0.4324.182-1_amd64.deb \
+  && dpkg -i  /tmp/chrome.deb \
+  && rm /tmp/chrome.deb
+##################################################################################
+##################################################################################
+
 
 ########################################
 # Install Firefox
