@@ -56,7 +56,6 @@ RUN chmod +x /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
 ENV PAGER less
 ENV PYTHONIOENCODING="utf-8"
 ENV FLASK_PORT 8080
-ENV JWT_APP_SECRETS /jwts
 ENV CODE_DIR /code
 ENV CERTDIR /opt/certificates
 ENV PYTHONPATH $CODE_DIR
