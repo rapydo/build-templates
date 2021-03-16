@@ -131,6 +131,7 @@ else
 
     elif [[ "$APP_MODE" == 'test' ]]; then
 
+        pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
         echo "Testing mode"
 
     else
