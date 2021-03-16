@@ -2,19 +2,19 @@
 set -e
 
 DEVID=$(id -u ${APIUSER})
-if [ "${DEVID}" != "${CURRENT_UID}" ]; then
+if [[ "${DEVID}" != "${CURRENT_UID}" ]]; then
     echo "Fixing uid of user ${APIUSER} from ${DEVID} to ${CURRENT_UID}..."
     usermod -u ${CURRENT_UID} ${APIUSER}
 fi
 
 GROUPID=$(id -g ${APIUSER})
-if [ "${GROUPID}" != "${CURRENT_GID}" ]; then
+if [[ "${GROUPID}" != "${CURRENT_GID}" ]]; then
     echo "Fixing gid user ${APIUSER} from ${GROUPID} to ${CURRENT_GID}..."
     groupmod -og ${CURRENT_GID} ${APIUSER}
 fi
 
 # Defaults
-if [ -z APP_MODE ]; then
+if [[ -z APP_MODE ]]; then
     APP_MODE="development"
 fi
 
@@ -22,7 +22,7 @@ fi
 secret_file="${APP_SECRETS}/secret.key"
 init_file="${APP_SECRETS}/initialized"
 
-if [ ! -f "$secret_file" ]; then
+if [[ ! -f "$secret_file" ]]; then
 
     # Create the secret to enable security on JWT tokens
     # mkdir -p $APP_SECRETS
@@ -33,10 +33,10 @@ if [ ! -f "$secret_file" ]; then
     update-ca-certificates
 fi
 
-if [ ! -f "${init_file}" ]; then
+if [[ ! -f "${init_file}" ]]; then
     echo "Init flask app"
     HOME=${CODE_DIR} su -p ${APIUSER} -c 'restapi init --wait'
-    if [ "$?" == "0" ]; then
+    if [[ "$?" == "0" ]]; then
         # Sync after init with compose call from outside
         touch ${init_file}
     else
@@ -62,7 +62,7 @@ chown ${APIUSER} ${CODE_DIR}
 #####################
 # Fixers: part 1
 
-if [ -d "${CERTDIR}" ]; then
+if [[ -d "${CERTDIR}" ]]; then
     chown -R ${APIUSER} ${CERTDIR}
 fi
 
@@ -96,7 +96,7 @@ fi
 
 # Completed
 
-if [ "$1" != 'rest' ]; then
+if [[ "$1" != 'rest' ]]; then
     ## CUSTOM COMMAND
     echo "Requested custom command:"
     echo "\$ $@"
@@ -121,13 +121,17 @@ else
 
     fi
 
-    if [ "${APP_MODE}" == 'production' ]; then
+    if [[ "${APP_MODE}" == 'production' ]]; then
 
         echo "waiting for services"
         HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
 
         echo "ready to launch production gunicorn+meinheld"
         mygunicorn
+
+    elif [[ "$APP_MODE" == 'test' ]]; then
+
+        echo "Testing mode"
 
     else
         # HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
