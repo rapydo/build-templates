@@ -45,6 +45,10 @@ export CSP_CONNECT_SRC=${CSP_CONNECT_SRC//\'/}
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
     export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
 fi
+if [[ ! -z "$UNSAFE_INLINE" ]]; then
+    export UNSAFE_INLINE="'${UNSAFE_INLINE//\'/}'"
+fi
+
 if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
     export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
 fi
