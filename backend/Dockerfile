@@ -22,7 +22,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash less vim curl wget telnet iputils-ping sysstat file git build-essential gosu cron ca-certificates libgeos-dev \
+    tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev \
     python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
     python3-gdbm python3-setuptools python3-distutils \
     && ln -sf /usr/bin/python3.9 /usr/bin/python3 \
