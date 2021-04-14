@@ -52,8 +52,10 @@ if [ "$APP_MODE" == 'production' ]; then
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     run_as_node "yarn run courtesy"
-    run_as_node "yarn run build --base-href https://${BASE_HREF}${FRONTEND_PREFIX}"
-    if [ "$ENABLE_ANGULAR_SSR" == "1" ]; then
+    if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
+        # run_as_node "yarn run build --base-href https://${BASE_HREF}${FRONTEND_PREFIX}"
+        run_as_node "yarn run build"
+    else
         run_as_node "yarn run build:ssr"
         run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist/sitemap.xml https://${BASE_HREF}${FRONTEND_PREFIX}"
         run_as_node "echo \"Sitemap: https://${BASE_HREF}${FRONTEND_PREFIX}sitemap.xml\" > /app/dist/robots.txt"
