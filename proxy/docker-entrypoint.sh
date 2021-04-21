@@ -81,6 +81,12 @@ fi
 
 convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
 
+# Set domain aliases with redirect alias -> main domain
+for ALIAS_DOMAIN in ${DOMAIN_ALIASES/,/ }; do
+    export ALIAS_DOMAIN
+    convert_conf ${TEMPLATE_DIR}/aliases.conf ${CONF_DIR}/alias.${ALIAS_DOMAIN}.conf
+done
+
 # Extra services....
 # Not implemented
 
