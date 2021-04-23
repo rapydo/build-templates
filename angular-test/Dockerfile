@@ -1,4 +1,4 @@
-FROM node:14.15.1-buster
+FROM node:14.15.5-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -10,10 +10,9 @@ WORKDIR /opt/
 
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
-ENV CYPRESS_VERSION 6.2.1
+ENV CYPRESS_VERSION 6.9.1
 ENV CYPRESS_RUN_BINARY=${CYPRESS_PATH}/${CYPRESS_VERSION}/Cypress/Cypress
 
-########################################
 # Install Chrome
 # from libgtk2.0-0 to xvfb are required by cypress as reported here:
 # https://docs.cypress.io/guides/guides/continuous-integration.html#Dependencies
@@ -26,6 +25,18 @@ RUN \
   apt-get autoremove --yes && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+
+##################################################################################
+##################################################################################
+# Temporary fix to prevent google-chrome upgrade to version 89 (breaking ffmpeg integration for Cypress)
+##################################################################################
+RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_88.0.4324.182-1_amd64.deb \
+ && dpkg -i  /tmp/chrome.deb \
+ && rm /tmp/chrome.deb
+##################################################################################
+##################################################################################
+
 
 ########################################
 # Install Firefox
@@ -53,9 +64,9 @@ RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
     yarn config set network-timeout 600000 -g
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@11.0.7 cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.80.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN yarn global add @angular/cli@11.2.3 cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.86.1 sitemap-generator-cli@7.5.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
-RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.14.13
+RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.14.31
 
 ########################################
 

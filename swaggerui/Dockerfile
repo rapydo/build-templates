@@ -1,4 +1,4 @@
-FROM swaggerapi/swagger-ui:v3.36.0 AS swaggerui
+FROM swaggerapi/swagger-ui:v3.43.0 AS swaggerui
 
 COPY ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 

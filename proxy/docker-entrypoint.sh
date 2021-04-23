@@ -45,6 +45,10 @@ export CSP_CONNECT_SRC=${CSP_CONNECT_SRC//\'/}
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
     export UNSAFE_EVAL="'${UNSAFE_EVAL//\'/}'"
 fi
+if [[ ! -z "$UNSAFE_INLINE" ]]; then
+    export UNSAFE_INLINE="'${UNSAFE_INLINE//\'/}'"
+fi
+
 if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
     export STYLE_UNSAFE_INLINE="'${STYLE_UNSAFE_INLINE//\'/}'"
 fi
@@ -76,6 +80,12 @@ if [[ -f "$TEMPLATE_DIR/service_confs/${FRONTEND}.conf" ]]; then
 fi
 
 convert_conf ${TEMPLATE_DIR}/headers_confs/security-headers.conf ${CONF_DIR}/security-headers
+
+# Set domain aliases with redirect alias -> main domain
+for ALIAS_DOMAIN in ${DOMAIN_ALIASES/,/ }; do
+    export ALIAS_DOMAIN
+    convert_conf ${TEMPLATE_DIR}/aliases.conf ${CONF_DIR}/alias.${ALIAS_DOMAIN}.conf
+done
 
 # Extra services....
 # Not implemented

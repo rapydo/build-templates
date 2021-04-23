@@ -12,7 +12,8 @@ jobs:
     timeout-minutes: 8
 
     env:
-      RAPYDO_VERSION: "1.0"
+      RAPYDO_VERSION: "1.1"
+      DOCKER_BUILDKIT: "1"
 
     strategy:
       matrix:
