@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/bin/ash
 echo "$(psql --version)"

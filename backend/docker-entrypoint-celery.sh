@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."

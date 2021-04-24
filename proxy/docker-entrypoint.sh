@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 PROXY_USER="nginx"
 
 DEVID=$(id -u "$PROXY_USER")

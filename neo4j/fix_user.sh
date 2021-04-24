@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 NEO4J_USER="neo4j"
 
 DEVID=$(id -u "$NEO4J_USER")

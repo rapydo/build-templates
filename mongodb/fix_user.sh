@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 MONGO_USER="mongodb"
 
 DEVID=$(id -u "${MONGO_USER}")
