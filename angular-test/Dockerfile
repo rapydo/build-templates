@@ -9,7 +9,7 @@ RUN test -n "$CURRENT_GID"
 WORKDIR /opt/
 
 # used by print_versions
-ENV ANGULAR_VERSION 11.2.3
+ENV ANGULAR_VERSION 11.2.10
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 6.9.1
