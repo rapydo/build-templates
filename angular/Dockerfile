@@ -31,3 +31,7 @@ COPY ./reload-types.sh /usr/local/bin/reload-types
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 CMD ["docker-entrypoint"]
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+

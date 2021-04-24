@@ -72,3 +72,7 @@ RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 
 ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
 CMD ["proxy"]
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+

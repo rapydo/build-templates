@@ -86,3 +86,7 @@ RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 RUN google-chrome --version
 
 CMD ["docker-entrypoint"]
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+

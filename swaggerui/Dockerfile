@@ -13,3 +13,7 @@ RUN chmod +x /usr/share/nginx/swagger-nginx-prerun.sh
 # Add swagger prerun.sh as third line of the docker entrypoint
 # Note the . to run the instructions in pre-run in the original shell and make the env variables to survive
 RUN sed -i '3i. /usr/share/nginx/swagger-nginx-prerun.sh' /docker-entrypoint.sh
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+

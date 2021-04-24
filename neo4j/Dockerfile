@@ -15,3 +15,7 @@ RUN chmod +x /fix_user.sh /check_ssl.sh
 # Adding my own scripts as second line of the original entrypoint
 RUN sed -i '2i/fix_user.sh' /docker-entrypoint.sh
 RUN sed -i '2i/check_ssl.sh' /docker-entrypoint.sh
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+

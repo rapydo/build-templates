@@ -11,3 +11,7 @@ RUN echo "echo 'Use myftp command to create/modify users'" >> /root/.bashrc
 CMD /run.sh -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30019
 
 EXPOSE 21 30000-30019
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+
