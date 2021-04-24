@@ -22,5 +22,4 @@ RUN mkdir -p /run/nginx \
 EXPOSE 80
 
 COPY banner.sh print_versions.sh /etc/
-RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-
+RUN echo '/bin/ash /etc/banner.sh' >> /etc/bashrc

@@ -18,12 +18,12 @@ content() {
 
     prefix=''
     for i in $(seq 1 $prefix_indent); do
-        prefix+=" "
+        prefix="${prefix} "
     done
 
     suffix=''
     for i in $(seq 1 $suffix_indent); do
-        suffix+=" "
+        suffix="${suffix} "
     done
     
 
@@ -32,6 +32,7 @@ content() {
 
 
 CWD="$( dirname "$0" )"
+VERSIONS=$(/bin/sh ${CWD}/print_versions.sh)
 
 header
 content ""
@@ -42,6 +43,6 @@ echo " ║    ██╔══██╗██╔══██║██╔═══
 echo " ║    ██║  ██║██║  ██║██║        ██║   ██████╔╝╚██████╔╝       ██║ ██╗ ███████╗   ║"
 echo " ║    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝   ╚═════╝  ╚═════╝        ╚═╝ ╚═╝ ╚══════╝   ║"
 content ""
-content "$(/bin/sh ${CWD}/print_versions.sh)"
+content "${VERSIONS}"
 content ""
 suffix
