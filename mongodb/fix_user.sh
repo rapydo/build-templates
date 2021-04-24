@@ -2,7 +2,7 @@
 set -e
 
 if [[ ! -t 0 ]]; then
-    /bin/ash /etc/banner.sh
+    /bin/bash /etc/banner.sh
 fi
 
 MONGO_USER="mongodb"

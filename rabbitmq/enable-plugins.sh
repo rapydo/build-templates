@@ -2,7 +2,7 @@
 set -eu
 
 if [[ ! -t 0 ]]; then
-    /bin/ash /etc/banner.sh
+    /bin/bash /etc/banner.sh
 fi
 
 if [[ $RABBITMQ_ENABLE_SHOVEL_PLUGIN == 1 ]];
