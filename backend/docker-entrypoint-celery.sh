@@ -30,11 +30,6 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
-if [[ "$APP_MODE" == 'test' ]]; then
-    RAPYDO_VERSION=$(pip3 list | grep rapydo-http | awk {'print $2'})
-    pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
-fi
-
 echo "waiting for services"
 
 HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
