@@ -32,7 +32,7 @@ content() {
 
 
 CWD="$( dirname "$0" )"
-VERSIONS=$(/bin/sh ${CWD}/print_versions.sh)
+VERSIONS=$(/bin/sh ${CWD}/print_versions.sh 2>&1)
 
 header
 content ""

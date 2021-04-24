@@ -74,4 +74,4 @@ ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
 CMD ["proxy"]
 
 COPY banner.sh print_versions.sh /etc/
-RUN echo '/bin/ash /etc/banner.sh' >> /etc/bashrc
+RUN echo '/bin/ash /etc/banner.sh' >> /etc/profile

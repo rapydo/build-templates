@@ -23,5 +23,5 @@ RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
 WORKDIR /var/lib/postgresql/
 
 COPY banner.sh print_versions.sh /etc/
-RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/profile
 
