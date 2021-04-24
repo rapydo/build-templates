@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ""
+echo "Angular ${ANGULAR_VERSION} Node ${NODE_VERSION}"

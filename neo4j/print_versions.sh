@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ""
+echo "$(neo4j --version)"

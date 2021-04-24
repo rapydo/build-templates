@@ -8,6 +8,8 @@ RUN test -n "$CURRENT_GID"
 
 WORKDIR /opt/
 
+# used by print_versions
+ENV ANGULAR_VERSION 11.2.3
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 6.9.1
@@ -64,7 +66,7 @@ RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
     yarn config set network-timeout 600000 -g
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
-RUN yarn global add @angular/cli@11.2.3 cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.86.1 sitemap-generator-cli@7.5.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
+RUN yarn global add @angular/cli@${ANGULAR_VERSION} cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.86.1 sitemap-generator-cli@7.5.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
 RUN yarn add dotenv@8.2.0 deepmerge@4.2.2 @types/node@14.14.31
 

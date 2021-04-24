@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ""
+echo "$(mongo --version | head -1)"

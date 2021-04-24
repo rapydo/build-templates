@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ""
+echo "$(pure-ftpd --help | head -1)"
