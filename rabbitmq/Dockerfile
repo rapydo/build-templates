@@ -9,3 +9,6 @@ RUN chmod +x /usr/local/bin/enable-plugins.sh /usr/local/bin/check_ssl.sh
 
 RUN sed -i '3i/usr/local/bin/enable-plugins.sh' /usr/local/bin/docker-entrypoint.sh
 RUN sed -i '3i/usr/local/bin/check_ssl.sh' /usr/local/bin/docker-entrypoint.sh
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
