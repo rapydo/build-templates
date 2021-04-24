@@ -1,9 +1,5 @@
 FROM adminer:4.8.0 AS adminer
 
-# FROM php:7.3.24-apache-buster
-
-# COPY --from=adminer /var/www/html /var/www/html
-
 USER root
 
 RUN apk --no-cache update && \
