@@ -73,7 +73,7 @@ else
 
         mkdir -p ${CERTDIR}/${CERTSUBDIR}
         cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
-        cp /etc/letsencrypt/archive/${DOMAIN}/privkey.pem ${CERTKEY}
+        cp /etc/letsencrypt/archive/${DOMAIN}/privkey1.pem ${CERTKEY}
 
         nginx -s reload
     else
