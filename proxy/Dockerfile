@@ -14,7 +14,7 @@ RUN test -n "$CURRENT_GID"
 
 ###################
 RUN apk --no-cache update && \
-    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini
+    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini certbot
 
 WORKDIR /tmp
 ENV ACMEDIR /acme
@@ -31,7 +31,7 @@ RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
 RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
 RUN chown -R nginx /usr/share/nginx/html
 
-# Set the directory for launching the renewall script
+# Set the directory for launching the renewal script
 WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 

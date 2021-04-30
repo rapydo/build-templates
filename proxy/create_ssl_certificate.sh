@@ -1,8 +1,6 @@
 # !/bin/bash
 set -e
 
-# Renewall script
-
 hostname=""
 force=""
 if [[ "$1" == "--force" ]]; then
