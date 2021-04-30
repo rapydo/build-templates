@@ -71,6 +71,7 @@ else
         # It is still required?
         # chmod +r ${CERTCHAIN} ${CERTKEY}
 
+        mkdir -p $CERTSUBDIR
         cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
         cp /etc/letsencrypt/archive/${DOMAIN}/privkey.pem ${CERTKEY}
 
