@@ -1,14 +1,7 @@
 # !/bin/bash
 set -e
 
-hostname=""
-force=""
-if [[ "$1" == "--force" ]]; then
-    force="--force"
-    hostname=$2
-else
-    hostname=$1
-fi
+hostname=$1
 
 if [[ "$hostname" != "$DOMAIN" ]]; then
     echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
@@ -18,7 +11,6 @@ if [[ "$hostname" != "$DOMAIN" ]]; then
     exit 1
 fi
 
-echo "Mode: *$MODE*"
 echo "Domain: $DOMAIN"
 echo "Domain Aliases: $DOMAIN_ALIASES"
 
@@ -41,17 +33,17 @@ if [[ "$DOMAIN" == "localhost" ]]; then
 
 else
 
-    if [ "$SMTP_ADMIN" != "" ]; then
-        echo "Reference email: $SMTP_ADMIN"
-        ./acme.sh --update-account  --accountemail $SMTP_ADMIN
-        if [ "$?" == "0" ]; then
-            # List what we have
-            echo "Email account updated"
-        else
-            echo "SMTP problem"
-            exit 1
-        fi
-    fi
+    # if [ "$SMTP_ADMIN" != "" ]; then
+    #     echo "Reference email: $SMTP_ADMIN"
+    #     ./acme.sh --update-account  --accountemail $SMTP_ADMIN
+    #     if [ "$?" == "0" ]; then
+    #         # List what we have
+    #         echo "Email account updated"
+    #     else
+    #         echo "SMTP problem"
+    #         exit 1
+    #     fi
+    # fi
 
     echo "Requesting new SSL certificate to letsencrypt"
 
@@ -62,21 +54,28 @@ else
         domains="${domains} -d ${d}"
     done
 
-    ./acme.sh --issue ${force} --debug \
-        --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
-        ${domains} -w ${WWWDIR} ${MODE}
+    # ./acme.sh --issue --debug \
+    #     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
+    #     ${domains} -w ${WWWDIR}
+
+    certbot certonly --debug --non-interactive ${domains} \
+        -a webroot -w ${WWWDIR} \
+        --agree-tos --email ${SMTP_ADMIN}
 
     if [ "$?" == "0" ]; then
         # List what we have
         echo "Completed. Check:"
-        ./acme.sh --list
+        # ./acme.sh --list
+        certbot certificates
 
         # It is still required?
-        chmod +r ${CERTCHAIN} ${CERTKEY}
+        # chmod +r ${CERTCHAIN} ${CERTKEY}
 
-        # Could be executed with acme.sh by using --reloadcmd 'nginx -s reload'
+        cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
+        cp /etc/letsencrypt/archive/${DOMAIN}/privkey.pem ${CERTKEY}
+
         nginx -s reload
     else
-        echo "ACME FAILED!"
+        echo "SSL issuing FAILED!"
     fi
 fi
