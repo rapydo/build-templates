@@ -3,19 +3,7 @@ set -e
 
 hostname=$1
 
-if [[ "$hostname" != "$DOMAIN" ]]; then
-    echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
-    echo ""
-    echo "Please re-created the proxy container with the correct configuration"
-    echo ""
-    exit 1
-fi
-
-echo "Domain: $DOMAIN"
-echo "Domain Aliases: $DOMAIN_ALIASES"
-
-
-if [[ "$DOMAIN" == "localhost" ]]; then
+if [[ "$hostname" == "localhost" ]]; then
 
     echo "Creating a self signed SSL certificate"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
@@ -32,6 +20,19 @@ if [[ "$DOMAIN" == "localhost" ]]; then
     fi
 
 else
+
+    if [[ "$hostname" != "$DOMAIN" ]]; then
+        echo ""
+        echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
+        echo ""
+        echo "Please re-created the proxy container with the correct configuration"
+        echo ""
+        exit 1
+    fi
+
+    echo "Domain: $DOMAIN"
+    echo "Domain Aliases: $DOMAIN_ALIASES"
+
 
     # if [ "$SMTP_ADMIN" != "" ]; then
     #     echo "Reference email: $SMTP_ADMIN"
