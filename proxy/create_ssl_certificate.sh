@@ -33,6 +33,7 @@ else
     echo "Domain: $DOMAIN"
     echo "Domain Aliases: $DOMAIN_ALIASES"
 
+    NGINX_PID="/var/run/nginx.pid"
 
     # if [ "$SMTP_ADMIN" != "" ]; then
     #     echo "Reference email: $SMTP_ADMIN"
@@ -59,9 +60,13 @@ else
     #     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
     #     ${domains} -w ${WWWDIR}
 
-    certbot certonly --debug --non-interactive ${domains} \
-        -a webroot -w ${WWWDIR} \
-        --agree-tos --email ${SMTP_ADMIN}
+    if [[ -e ${NGINX_PID} ]]; then
+        certbot certonly --debug --non-interactive ${domains} \
+            -a webroot -w ${WWWDIR} \
+            --agree-tos --email ${SMTP_ADMIN}
+    else
+        print("not supported yet")
+    fi
 
     if [ "$?" == "0" ]; then
         # List what we have
@@ -76,7 +81,10 @@ else
         cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
         cp /etc/letsencrypt/archive/${DOMAIN}/privkey1.pem ${CERTKEY}
 
-        nginx -s reload
+        if [[ -e ${NGINX_PID} ]]; then
+            nginx -s reload;
+        fi
+
     else
         echo "SSL issuing FAILED!"
     fi
