@@ -47,7 +47,7 @@ else
     #     fi
     # fi
 
-    echo "Requesting new SSL certificate to letsencrypt"
+    echo "Requesting new SSL certificate to Let's Encrypt"
 
     domains="-d $DOMAIN"
     # Add additional -d for each alias
@@ -65,7 +65,9 @@ else
             -a webroot -w ${WWWDIR} \
             --agree-tos --email ${SMTP_ADMIN}
     else
-        print("not supported yet")
+        certbot certonly --debug --non-interactive ${domains} \
+            --standalone \
+            --agree-tos --email ${SMTP_ADMIN}
     fi
 
     if [ "$?" == "0" ]; then
