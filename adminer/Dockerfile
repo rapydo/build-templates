@@ -21,5 +21,3 @@ EXPOSE 80
 
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
-
-USER adminer
