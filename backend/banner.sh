@@ -14,7 +14,7 @@ print_line() {
     done
 
     suffix=''
-    for i in $(seq 1 $suffix_indent); do
+    for _ in $(seq 1 $suffix_indent); do
         suffix="${suffix} "
     done
     
