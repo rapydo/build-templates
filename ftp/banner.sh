@@ -9,7 +9,7 @@ print_line() {
     suffix_indent=$(( banner_width - text_len - prefix_indent ))
 
     prefix=''
-    for i in $(seq 1 $prefix_indent); do
+    for _ in $(seq 1 $prefix_indent); do
         prefix="${prefix} "
     done
 
