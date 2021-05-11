@@ -36,6 +36,7 @@ if [[ ! -f "$secret_file" ]]; then
     # head -c 24 /dev/urandom > $secret_file
 
     chown ${APIUSER} ${APP_SECRETS}
+    chmod u+w ${APP_SECRETS}
     # certificates chains for external oauth services (e.g. B2ACCESS)
     update-ca-certificates
 fi
