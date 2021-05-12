@@ -25,22 +25,19 @@ if [[ -z APP_MODE ]]; then
     APP_MODE="development"
 fi
 
-# INIT if necessary
-secret_file="${APP_SECRETS}/secret.key"
+chown -R ${APIUSER} ${APP_SECRETS}
+chmod u+w ${APP_SECRETS}
+
+# secret_file="${APP_SECRETS}/secret.key"
+# if [[ ! -f "$secret_file" ]]; then
+#     # Create the secret to enable security on JWT tokens
+#     # mkdir -p $APP_SECRETS
+#     # head -c 24 /dev/urandom > $secret_file
+#     # certificates chains for external oauth services (e.g. B2ACCESS)
+#     update-ca-certificates
+# fi
+
 init_file="${APP_SECRETS}/initialized"
-
-if [[ ! -f "$secret_file" ]]; then
-
-    # Create the secret to enable security on JWT tokens
-    # mkdir -p $APP_SECRETS
-    # head -c 24 /dev/urandom > $secret_file
-
-    chown ${APIUSER} ${APP_SECRETS}
-    chmod u+w ${APP_SECRETS}
-    # certificates chains for external oauth services (e.g. B2ACCESS)
-    update-ca-certificates
-fi
-
 if [[ ! -f "${init_file}" ]]; then
     echo "Init flask app"
     HOME=${CODE_DIR} su -p ${APIUSER} -c 'restapi init --wait'
