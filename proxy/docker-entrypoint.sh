@@ -58,7 +58,7 @@ if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
 fi
 
 if [[ -z "${CORS_ALLOWED_ORIGIN}" ]]; then
-    export CORS_ALLOWED_ORIGIN=$DOMAIN;
+    export CORS_ALLOWED_ORIGIN=https://$DOMAIN;
 fi
 
 if [[ ! -z "$GA_TRACKING_CODE" ]]; then
