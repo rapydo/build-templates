@@ -7,6 +7,10 @@ set -e
 #                                     #
 #######################################
 
+if [[ ! -t 0 ]]; then
+    /bin/bash /etc/banner.sh
+fi
+
 NODE_USER="node"
 NODE_HOME=$(eval echo ~$NODE_USER)
 

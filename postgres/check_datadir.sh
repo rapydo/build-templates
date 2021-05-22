@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 DATADIR="$(dirname $PGDATA)/${PG_MAJOR}"
 # Create the version datadir, if missing
 mkdir -p ${DATADIR}

@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
+export IS_CELERY_CONTAINER=0
+
+if [[ ! -t 0 ]]; then
+    /bin/bash /etc/banner.sh
+fi
+
 DEVID=$(id -u ${APIUSER})
 if [[ "${DEVID}" != "${CURRENT_UID}" ]]; then
     echo "Fixing uid of user ${APIUSER} from ${DEVID} to ${CURRENT_UID}..."
@@ -18,21 +25,19 @@ if [[ -z APP_MODE ]]; then
     APP_MODE="development"
 fi
 
-# INIT if necessary
-secret_file="${APP_SECRETS}/secret.key"
+chown -R ${APIUSER} ${APP_SECRETS}
+chmod u+w ${APP_SECRETS}
+
+# secret_file="${APP_SECRETS}/secret.key"
+# if [[ ! -f "$secret_file" ]]; then
+#     # Create the secret to enable security on JWT tokens
+#     # mkdir -p $APP_SECRETS
+#     # head -c 24 /dev/urandom > $secret_file
+#     # certificates chains for external oauth services (e.g. B2ACCESS)
+#     update-ca-certificates
+# fi
+
 init_file="${APP_SECRETS}/initialized"
-
-if [[ ! -f "$secret_file" ]]; then
-
-    # Create the secret to enable security on JWT tokens
-    # mkdir -p $APP_SECRETS
-    # head -c 24 /dev/urandom > $secret_file
-
-    chown ${APIUSER} ${APP_SECRETS}
-    # certificates chains for external oauth services (e.g. B2ACCESS)
-    update-ca-certificates
-fi
-
 if [[ ! -f "${init_file}" ]]; then
     echo "Init flask app"
     HOME=${CODE_DIR} su -p ${APIUSER} -c 'restapi init --wait'
@@ -67,9 +72,6 @@ if [[ -d "${CERTDIR}" ]]; then
 fi
 
 #####################
-
-export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export IS_CELERY_CONTAINER=0
 
 if [[ "${CRONTAB_ENABLE}" == "1" ]]; then
     if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
@@ -131,8 +133,6 @@ else
 
     elif [[ "$APP_MODE" == 'test' ]]; then
 
-        RAPYDO_VERSION=$(pip3 list | grep rapydo-http | awk {'print $2'})
-        pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
         echo "Testing mode"
 
     else

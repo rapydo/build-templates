@@ -1,13 +1,11 @@
 FROM adminer:4.8.0 AS adminer
 
-# FROM php:7.3.24-apache-buster
-
-# COPY --from=adminer /var/www/html /var/www/html
-
 USER root
 
 RUN apk --no-cache update && \
-    apk --no-cache add nginx
+    apk --no-cache add nginx autoconf gcc g++ make libffi-dev openssl-dev && \
+    pecl install mongodb && \
+    echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/docker-php-ext-mongodb.ini
 
 COPY ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
 
@@ -20,3 +18,6 @@ RUN mkdir -p /run/nginx \
     && sed -i '3i/usr/local/bin/nginx-docker-entrypoint' /usr/local/bin/docker-php-entrypoint
 
 EXPOSE 80
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc

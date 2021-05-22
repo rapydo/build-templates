@@ -1,31 +1,9 @@
 # !/bin/bash
 set -e
 
-# Renewall script
+hostname=$1
 
-hostname=""
-force=""
-if [[ "$1" == "--force" ]]; then
-    force="--force"
-    hostname=$2
-else
-    hostname=$1
-fi
-
-if [[ "$hostname" != "$DOMAIN" ]]; then
-    echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
-    echo ""
-    echo "Please re-created the proxy container with the correct configuration"
-    echo ""
-    exit 1
-fi
-
-echo "Mode: *$MODE*"
-echo "Domain: $DOMAIN"
-echo "Domain Aliases: $DOMAIN_ALIASES"
-
-
-if [[ "$DOMAIN" == "localhost" ]]; then
+if [[ "$hostname" == "localhost" ]]; then
 
     echo "Creating a self signed SSL certificate"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
@@ -43,19 +21,33 @@ if [[ "$DOMAIN" == "localhost" ]]; then
 
 else
 
-    if [ "$SMTP_ADMIN" != "" ]; then
-        echo "Reference email: $SMTP_ADMIN"
-        ./acme.sh --update-account  --accountemail $SMTP_ADMIN
-        if [ "$?" == "0" ]; then
-            # List what we have
-            echo "Email account updated"
-        else
-            echo "SMTP problem"
-            exit 1
-        fi
+    if [[ "$hostname" != "$DOMAIN" ]]; then
+        echo ""
+        echo "Domain mismatch: you requested **${hostname}** but your proxy is configured with **${DOMAIN}**"
+        echo ""
+        echo "Please re-created the proxy container with the correct configuration"
+        echo ""
+        exit 1
     fi
 
-    echo "Requesting new SSL certificate to letsencrypt"
+    echo "Domain: $DOMAIN"
+    echo "Domain Aliases: $DOMAIN_ALIASES"
+
+    NGINX_PID="/var/run/nginx.pid"
+
+    # if [ "$SMTP_ADMIN" != "" ]; then
+    #     echo "Reference email: $SMTP_ADMIN"
+    #     ./acme.sh --update-account  --accountemail $SMTP_ADMIN
+    #     if [ "$?" == "0" ]; then
+    #         # List what we have
+    #         echo "Email account updated"
+    #     else
+    #         echo "SMTP problem"
+    #         exit 1
+    #     fi
+    # fi
+
+    echo "Requesting new SSL certificate to Let's Encrypt"
 
     domains="-d $DOMAIN"
     # Add additional -d for each alias
@@ -64,21 +56,38 @@ else
         domains="${domains} -d ${d}"
     done
 
-    ./acme.sh --issue ${force} --debug \
-        --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
-        ${domains} -w ${WWWDIR} ${MODE}
+    # ./acme.sh --issue --debug \
+    #     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
+    #     ${domains} -w ${WWWDIR}
+
+    if [[ -e ${NGINX_PID} ]]; then
+        certbot certonly --debug --non-interactive ${domains} \
+            -a webroot -w ${WWWDIR} \
+            --agree-tos --email ${SMTP_ADMIN}
+    else
+        certbot certonly --debug --non-interactive ${domains} \
+            --standalone \
+            --agree-tos --email ${SMTP_ADMIN}
+    fi
 
     if [ "$?" == "0" ]; then
         # List what we have
         echo "Completed. Check:"
-        ./acme.sh --list
+        # ./acme.sh --list
+        certbot certificates
 
         # It is still required?
-        chmod +r ${CERTCHAIN} ${CERTKEY}
+        # chmod +r ${CERTCHAIN} ${CERTKEY}
 
-        # Could be executed with acme.sh by using --reloadcmd 'nginx -s reload'
-        nginx -s reload
+        mkdir -p ${CERTDIR}/${CERTSUBDIR}
+        cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
+        cp /etc/letsencrypt/archive/${DOMAIN}/privkey1.pem ${CERTKEY}
+
+        if [[ -e ${NGINX_PID} ]]; then
+            nginx -s reload;
+        fi
+
     else
-        echo "ACME FAILED!"
+        echo "SSL issuing FAILED!"
     fi
 fi

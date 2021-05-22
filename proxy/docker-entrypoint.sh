@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 PROXY_USER="nginx"
 
 DEVID=$(id -u "$PROXY_USER")
@@ -54,7 +58,7 @@ if [[ ! -z "$STYLE_UNSAFE_INLINE" ]]; then
 fi
 
 if [[ -z "${CORS_ALLOWED_ORIGIN}" ]]; then
-    export CORS_ALLOWED_ORIGIN=$DOMAIN;
+    export CORS_ALLOWED_ORIGIN=https://$DOMAIN;
 fi
 
 if [[ ! -z "$GA_TRACKING_CODE" ]]; then
@@ -63,10 +67,12 @@ else
     export CSPGA="";
 fi
 
+# limit_req_zone.preconf is loaded from main nginx.conf before all *confs
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
 
+convert_conf ${TEMPLATE_DIR}/limit_req_zone.conf ${CONF_DIR}/limit_req_zone.preconf
 convert_conf ${TEMPLATE_DIR}/${APP_MODE}.conf ${CONF_DIR}/${APP_MODE}.conf
 convert_conf ${TEMPLATE_DIR}/service_confs/backend.conf ${CONF_DIR}/backend.service
 
@@ -122,7 +128,8 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        /bin/bash updatecertificates $DOMAIN
+        # /bin/bash updatecertificates $DOMAIN
+        /bin/bash updatecertificates localhost
     fi
 fi
 

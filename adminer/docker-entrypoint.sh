@@ -2,6 +2,10 @@
 
 set -e
 
+if [[ ! -t 0 ]]; then
+    /bin/ash /etc/banner.sh
+fi
+
 cp /etc/nginx/adminer-${APP_MODE}.conf /etc/nginx/conf.d/adminer.conf
 
 nginx

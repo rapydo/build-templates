@@ -1,4 +1,4 @@
-FROM nginx:1.19.7-alpine
+FROM nginx:1.20.0-alpine
 # http://nginx.org/en/CHANGES
 
 ###################
@@ -14,25 +14,26 @@ RUN test -n "$CURRENT_GID"
 
 ###################
 RUN apk --no-cache update && \
-    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini
+    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini certbot
 
-WORKDIR /tmp
-ENV ACMEDIR /acme
+# WORKDIR /tmp
+# ENV ACMEDIR /acme
 # You can also upgrade live with /acme/acme.sh --upgrade --home /acme
 # Then register the client /acme/acme.sh --register-account
-ENV ACMEV "2.8.8"
-RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
-    && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
-    && ./acme.sh --install --home $ACMEDIR \
-    && ./acme.sh --register-account \
-    && cd .. && rm -rf ./*$ACMEV
+# ENV ACMEV "2.8.8"
+# RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
+#     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
+#     && ./acme.sh --install --home $ACMEDIR \
+#     && ./acme.sh --register-account \
+#     && cd .. && rm -rf ./*$ACMEV
 
 #######################
-RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
+# RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
+RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html
 
-# Set the directory for launching the renewall script
-WORKDIR $ACMEDIR
+# Set the directory for launching the renewal script
+# WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
 # Save production certificates across multiple run
@@ -72,3 +73,6 @@ RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 
 ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
 CMD ["proxy"]
+
+COPY banner.sh print_versions.sh /etc/
+RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc

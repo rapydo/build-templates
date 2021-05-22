@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
+export IS_CELERY_CONTAINER=1
+
+if [[ ! -t 0 ]]; then
+    /bin/bash /etc/banner.sh
+fi
+
 DEVID=$(id -u $APIUSER)
 if [ "$DEVID" != "$CURRENT_UID" ]; then
     echo "Fixing uid of user $APIUSER from $DEVID to $CURRENT_UID..."
@@ -22,9 +29,6 @@ fi
 if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
-
-export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export IS_CELERY_CONTAINER=1
 
 echo "waiting for services"
 
