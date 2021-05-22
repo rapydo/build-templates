@@ -1,7 +1,9 @@
 FROM rabbitmq:3.8.14-management
 
-COPY --chown=rabbitmq --chmod=+x ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
-COPY --chown=rabbitmq --chmod=+x ./check_ssl.sh /usr/local/bin/check_ssl.sh
+COPY --chown=rabbitmq ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
+COPY --chown=rabbitmq ./check_ssl.sh /usr/local/bin/check_ssl.sh
+
+RUN chmod +x /usr/local/bin/enable-plugins.sh /usr/local/bin/check_ssl.sh
 
 # Adding my own scripts as third line of the original entrypoint to force execution before start
 
