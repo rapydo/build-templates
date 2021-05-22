@@ -7,7 +7,7 @@ RUN apk --no-cache update && \
     pecl install mongodb && \
     echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/docker-php-ext-mongodb.ini
 
-COPY --chmod=+x ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
+COPY --chmod=740 ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
 
 COPY ./development.conf /etc/nginx/adminer-development.conf
 COPY ./production.conf /etc/nginx/adminer-production.conf

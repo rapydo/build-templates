@@ -1,6 +1,6 @@
 FROM stilliard/pure-ftpd:stretch-latest
 
-COPY --chmod=+x ./ftp_utilities.sh /usr/local/bin/myftp
+COPY --chmod=740 ./ftp_utilities.sh /usr/local/bin/myftp
 
 RUN echo "echo 'Use myftp command to create/modify users'" >> /root/.bashrc
 

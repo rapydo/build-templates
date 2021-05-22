@@ -5,8 +5,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-COPY --chown=mongodb --chmod=+x ./init-mongo.sh /docker-entrypoint-initdb.d/init-mongo.sh
-COPY --chmod=+x ./fix_user.sh /fix_user.sh
+COPY --chown=mongodb --chmod=740 ./init-mongo.sh /docker-entrypoint-initdb.d/init-mongo.sh
+COPY --chmod=740 ./fix_user.sh /fix_user.sh
 
 # Adding my own script as third line of the original entrypoint. The script 
 # is only executed when the docker entrypoint is run as root to prevent

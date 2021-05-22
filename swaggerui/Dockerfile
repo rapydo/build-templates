@@ -1,6 +1,6 @@
 FROM swaggerapi/swagger-ui:v3.47.1 AS swaggerui
 
-COPY --chmod=+x ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
+COPY --chmod=740 ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 
 # Use the original nginx.conf as development configuration
 RUN mv /etc/nginx/nginx.conf /etc/nginx/adminer-development.conf

@@ -45,10 +45,10 @@ RUN useradd \
 # GUNICORN
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py
 COPY gunicorn_conf.py ${GUNICORN_CONF}
-COPY --chmod=+x launch_gunicorn.sh /usr/local/bin/mygunicorn
+COPY --chmod=740 launch_gunicorn.sh /usr/local/bin/mygunicorn
 
 # UTILITIES
-COPY --chmod=+x flask_migrate /usr/local/bin/flask_migrate
+COPY --chmod=740 flask_migrate /usr/local/bin/flask_migrate
 
 # variables
 ENV PAGER less
