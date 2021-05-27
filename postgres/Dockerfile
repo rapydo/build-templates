@@ -1,4 +1,4 @@
-FROM postgres:13.2-alpine
+FROM postgres:13.3-alpine
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
