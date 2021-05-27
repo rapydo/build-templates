@@ -39,6 +39,11 @@ function convert_conf {
 
 }
 
+if [ "$DOMAIN" != "localhost" ]; then
+    export SSL_STAPLING="on"
+else
+    export SSL_STAPLING="off"
+fi
 # remove single quotes from these variables to avoid nginx conf to be disrupted
 export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
