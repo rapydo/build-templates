@@ -13,6 +13,7 @@ if [[ "$hostname" == "localhost" ]]; then
     if [ "$?" == "0" ]; then
         echo "Self signed SSL certificate successfully created"
 
+        # This is required to let other services to read the certificates
         chmod +r ${CERTCHAIN} ${CERTKEY}
     else
         echo "Self signed SSL certificate generation failed!"
@@ -65,6 +66,9 @@ else
         mkdir -p ${CERTDIR}/${CERTSUBDIR}
         cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
         cp /etc/letsencrypt/archive/${DOMAIN}/privkey1.pem ${CERTKEY}
+
+        # This is required to let other services to read the certificates
+        chmod +r ${CERTCHAIN} ${CERTKEY}
 
         if [[ -e ${NGINX_PID} ]]; then
             nginx -s reload;
