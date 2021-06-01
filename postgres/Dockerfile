@@ -7,9 +7,11 @@ RUN test -n "$CURRENT_GID"
 
 COPY ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
 # o is required because postgres does not run with CURRENT_UID
-COPY --chmod=o+r ./postgresql.conf /etc/postgresql/postgresql.conf
-COPY --chmod=+rx ./version_upgrade.sh /usr/local/bin/version_upgrade
-COPY --chmod=o+rx ./check_datadir.sh /check_datadir.sh
+# read to all
+COPY --chmod=444 ./postgresql.conf /etc/postgresql/postgresql.conf
+# read&exec to all
+COPY --chmod=555 ./version_upgrade.sh /usr/local/bin/version_upgrade
+COPY --chmod=555 ./check_datadir.sh /check_datadir.sh
 
 # Adding my own script as second line of the original entrypoint
 RUN sed -i '4ibash /check_datadir.sh' /usr/local/bin/docker-entrypoint.sh
@@ -18,6 +20,6 @@ RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
 
 WORKDIR /var/lib/postgresql/
 
-COPY banner.sh print_versions.sh /etc/
+COPY --chmod=444 banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
 
