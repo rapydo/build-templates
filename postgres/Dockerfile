@@ -5,8 +5,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-COPY ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
-# o is required because postgres does not run with CURRENT_UID
+COPY --chmod=555 ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
+# permissions to others are required because postgres does not run with CURRENT_UID
 # read to all
 COPY --chmod=444 ./postgresql.conf /etc/postgresql/postgresql.conf
 # read&exec to all
