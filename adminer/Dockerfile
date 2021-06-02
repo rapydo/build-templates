@@ -1,4 +1,4 @@
-FROM adminer:4.8.0 AS adminer
+FROM adminer:4.8.1
 
 USER root
 
