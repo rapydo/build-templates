@@ -46,11 +46,10 @@ ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
 ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
 
 RUN mkdir -p $CERTDIR/$CERTSUBDIR
-VOLUME /etc/letsencrypt
+# VOLUME /etc/letsencrypt
 
 # dhparam for better security
-ENV DHPARAM /etc/nginx/ssl/dhparam.pem
-VOLUME /etc/nginx/ssl
+ENV DHPARAM /etc/letsencrypt/dhparam.pem
 
 # Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
