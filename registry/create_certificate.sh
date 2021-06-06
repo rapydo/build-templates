@@ -15,6 +15,6 @@ then
 
     # Beware! This only works if ADDRESS is an IP address.
     # Otherwise remove "IP:" in the subjectAltName
-    echo -e "[req]\ndistinguished_name  = req_distinguished_name\n\n[req_distinguished_name]\ncountryName = XX\n\n[v3_ca]\nbasicConstraints=critical,CA:true,pathlen:0\nsubjectAltName=IP:$ADDRESS" > /tmp/config.ini
+    echo -e "[req]\ndistinguished_name  = req_distinguished_name\n\n[req_distinguished_name]\ncountryName = XX\n\n[v3_ca]\nbasicConstraints=critical,CA:true,pathlen:0\nsubjectAltName=@alt_names\n\n[alt_names]\nIP.1 = $ADDRESS" > /tmp/config.ini
     openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${REGISTRY_HTTP_TLS_KEY} -x509 -days 365 -config /tmp/config.ini -out ${REGISTRY_HTTP_TLS_CERTIFICATE} -subj '/CN=*/'
 fi
