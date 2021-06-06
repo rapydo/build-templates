@@ -34,3 +34,6 @@ adminer:
 
 swaggerui:
   build: swaggerui
+
+registry:
+  build: registry

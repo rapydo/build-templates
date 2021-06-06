@@ -30,6 +30,7 @@ jobs:
             ftp,
             adminer,
             swaggerui,
+            registry,
           ]
 
     steps:
