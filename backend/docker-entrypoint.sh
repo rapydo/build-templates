@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export IS_CELERY_CONTAINER=0
-
 if [[ ! -t 0 ]]; then
     /bin/bash /etc/banner.sh
 fi
@@ -20,7 +17,6 @@ if [[ "${GROUPID}" != "${CURRENT_GID}" ]]; then
     groupmod -og ${CURRENT_GID} ${APIUSER}
 fi
 
-# Defaults
 if [[ -z APP_MODE ]]; then
     APP_MODE="development"
 fi
@@ -28,21 +24,12 @@ fi
 chown -R ${APIUSER} ${APP_SECRETS}
 chmod u+w ${APP_SECRETS}
 
-# secret_file="${APP_SECRETS}/secret.key"
-# if [[ ! -f "$secret_file" ]]; then
-#     # Create the secret to enable security on JWT tokens
-#     # mkdir -p $APP_SECRETS
-#     # head -c 24 /dev/urandom > $secret_file
-#     # certificates chains for external oauth services (e.g. B2ACCESS)
-#     update-ca-certificates
-# fi
-
 init_file="${APP_SECRETS}/initialized"
 if [[ ! -f "${init_file}" ]]; then
     echo "Init flask app"
     HOME=${CODE_DIR} su -p ${APIUSER} -c 'restapi init --wait'
     if [[ "$?" == "0" ]]; then
-        # Sync after init with compose call from outside
+        #Sync after init with compose call from outside
         touch ${init_file}
     else
         echo "Failed to startup flask!"
@@ -53,25 +40,9 @@ fi
 # fix permissions on the main development folder
 chown ${APIUSER} ${CODE_DIR}
 
-#####################
-# Extra scripts
-# dedir="/docker-entrypoint.d"
-# for f in $(ls $dedir); do
-#     case "$f" in
-#         *.sh)     echo "running $f"; bash "$dedir/$f" ;;
-#         *)        echo "ignoring $f" ;;
-#     esac
-#     echo
-# done
-
-#####################
-# Fixers: part 1
-
 if [[ -d "${CERTDIR}" ]]; then
     chown -R ${APIUSER} ${CERTDIR}
 fi
-
-#####################
 
 if [[ "${CRONTAB_ENABLE}" == "1" ]]; then
     if [[ "$(find /etc/cron.rapydo/ -name '*.cron')" ]]; then
@@ -96,15 +67,13 @@ if [[ "${CRONTAB_ENABLE}" == "1" ]]; then
     fi
 fi
 
-# Completed
-
 if [[ "$1" != 'rest' ]]; then
-    ## CUSTOM COMMAND
+    ##CUSTOM COMMAND
     echo "Requested custom command:"
     echo "\$ $@"
     $@
 else
-    ## NORMAL MODES
+    ##NORMAL MODES
     echo "REST API backend server is ready to be launched"
 
     if [[ ${ALEMBIC_AUTO_MIGRATE} == "1" ]] && [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
