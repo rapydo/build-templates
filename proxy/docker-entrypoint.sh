@@ -139,7 +139,7 @@ if [ "$DOMAIN" != "" ]; then
 fi
 
 #####################
-# Extra scripts
+# Extra scripts
 # dedir="/docker-entrypoint.d"
 # for f in $(ls $dedir); do
 #     case "$f" in
@@ -154,6 +154,6 @@ chmod -R +w /etc/letsencrypt
 chmod +x /etc/letsencrypt
 
 #####################
-# Completed
+# Completed
 echo "Executing nginx server, ready to accept connections"
 exec nginx -g 'daemon off;'

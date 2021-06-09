@@ -32,7 +32,7 @@ RUN apk --no-cache update && \
 RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html
 
-# Set the directory for launching the renewal script
+# Set the directory for launching the renewal script
 # WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
@@ -51,7 +51,7 @@ RUN mkdir -p $CERTDIR/$CERTSUBDIR
 # dhparam for better security
 ENV DHPARAM /etc/letsencrypt/dhparam.pem
 
-# Configure nginx on basic aspects
+# Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY confs /etc/nginx/sites-enabled-templates
