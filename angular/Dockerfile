@@ -10,7 +10,7 @@ WORKDIR /opt/
 
 ENV NODE_PATH /opt/node_modules
 # used by print_versions
-ENV ANGULAR_VERSION 12.0.4
+ENV ANGULAR_VERSION 12.0.5
 
 # yarn installation
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
