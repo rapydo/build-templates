@@ -78,14 +78,14 @@ else
 
     if [[ ${ALEMBIC_AUTO_MIGRATE} == "1" ]] && [[ ${AUTH_SERVICE} == "sqlalchemy" ]]; then
 
-        if [[ ! -d "${VANILLA_PACKAGE}/migrations" ]]; then
-            echo "Skipping migrations check, ${VANILLA_PACKAGE}/migrations does not exist";
-        elif [[ $(flask db current --directory "${VANILLA_PACKAGE}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
+        if [[ ! -d "${PROJECT_NAME}/migrations" ]]; then
+            echo "Skipping migrations check, ${PROJECT_NAME}/migrations does not exist";
+        elif [[ $(flask db current --directory "${PROJECT_NAME}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
             echo "All database migrations are already installed";
         else
             # Short version: flask_migrate upgrade
             # Please note that errors in the upgrade will not make fail the server startup due to the || true statement
-            flask db upgrade --directory "${VANILLA_PACKAGE}/migrations" || true;
+            flask db upgrade --directory "${PROJECT_NAME}/migrations" || true;
 
             echo "Migration completed";
         fi
