@@ -2,6 +2,7 @@ FROM rabbitmq:3.8.14-management
 
 COPY --chown=rabbitmq ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
 COPY --chown=rabbitmq --chmod=+x ./check_ssl.sh /usr/local/bin/check_ssl.sh
+COPY --chown=rabbitmq --chmod=+x  ./reload_certificate.sh /usr/local/bin/reload_certificate
 
 RUN chmod +x /usr/local/bin/enable-plugins.sh /usr/local/bin/check_ssl.sh
 
