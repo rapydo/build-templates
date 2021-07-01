@@ -7,6 +7,7 @@ then
 
     echo "PEM Cached cleared"
 else
+    echo ""
     echo "RabbitMQ is not reachable (still starting?), can't clear the PEM cache"
 fi
 
