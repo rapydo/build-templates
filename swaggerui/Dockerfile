@@ -1,4 +1,4 @@
-FROM swaggerapi/swagger-ui:v3.49.0
+FROM swaggerapi/swagger-ui:v3.51.1
 
 COPY --chmod=740 ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 
