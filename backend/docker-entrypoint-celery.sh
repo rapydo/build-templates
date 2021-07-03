@@ -18,8 +18,8 @@ if [ "$GROUPID" != "$CURRENT_GID" ]; then
 fi
 
 # fix permissions of flower db dir
-if [ -d "$CELERYUI_DBDIR" ]; then
-    chown -R $APIUSER $CELERYUI_DBDIR
+if [ -d "$FLOWER_DBDIR" ]; then
+    chown -R $APIUSER $FLOWER_DBDIR
 fi
 
 # fix permissions of celery beat pid dir
