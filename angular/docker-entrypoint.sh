@@ -70,7 +70,11 @@ if [ "$APP_MODE" == "production" ]; then
 
 elif [ "$APP_MODE" == "development" ]; then
 
-    run_as_node "yarn install"
+    # run_as_node "yarn install"
+    # This image is intended to run the application, but not the tests
+    # Since all dev dependencies are needed for tests, why should them installed?
+    # On the opposite, with the angular-test image, dev dependencies are installed
+    run_as_node "yarn install --production"
     run_as_node "reload-types"
     run_as_node "yarn start"
 
