@@ -60,11 +60,10 @@ RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/p
 #   ln -fs /opt/firefox/firefox /usr/bin/firefox
 
 ########################################
-# Install Yarn and npm libs
-
-RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
-    yarn set version berry && \
-    yarn config set httpTimeout 600000
+# Set yarn v2 (Berry)
+RUN yarn set version berry
+# yarn plugin import typescript && \
+#yarn config set httpTimeout 600000
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
 RUN yarn global add @angular/cli@${ANGULAR_VERSION} cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.93.0 sitemap-generator-cli@7.5.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress

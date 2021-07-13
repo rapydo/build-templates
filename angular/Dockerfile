@@ -12,10 +12,10 @@ ENV NODE_PATH /opt/node_modules
 # used by print_versions
 ENV ANGULAR_VERSION 12.1.0
 
-# yarn installation
-RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
-    yarn set version berry && \
-    yarn config set httpTimeout 600000
+# Set yarn v2 (Berry)
+RUN yarn set version berry
+# yarn plugin import typescript && \
+#yarn config set httpTimeout 600000
 
 RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.93.0 sitemap-generator-cli@7.5.0
 
