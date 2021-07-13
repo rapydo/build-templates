@@ -37,33 +37,11 @@ RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/p
  && dpkg -i  /tmp/chrome.deb \
  && rm /tmp/chrome.deb
 ##################################################################################
-##################################################################################
 
+# Install Yarn and npm libs
 
-########################################
-# Install Firefox
-# include libdbus-glib-1-2 to apt-get install
-
-# https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-# Firefox 77 failed with this error:
-# https://github.com/cypress-io/cypress/issues/6813
-# ENV FIREFOX_VERSION "77.0.1"
-# Latest working version seems to be this one:
-# ENV FIREFOX_VERSION "72.0.2"
-
-# ENV FIREFOX_URL "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2"
-
-# RUN \
-#   wget --no-verbose -O /tmp/ff.tar.bz2 ${FIREFOX_URL} && \
-#   tar -C /opt -xjf /tmp/ff.tar.bz2 && \
-#   rm /tmp/ff.tar.bz2 && \
-#   ln -fs /opt/firefox/firefox /usr/bin/firefox
-
-########################################
-# Set yarn v2 (Berry)
-RUN yarn set version berry
-# yarn plugin import typescript && \
-#yarn config set httpTimeout 600000
+RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
+    yarn config set network-timeout 600000 -g
 
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
 RUN yarn global add @angular/cli@${ANGULAR_VERSION} cypress@${CYPRESS_VERSION} ts-json-schema-generator@0.93.0 sitemap-generator-cli@7.5.0 angular-spec-generator@1.1.0 && mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
