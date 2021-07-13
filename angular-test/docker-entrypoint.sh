@@ -46,10 +46,6 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
-# Very rough workaround to prevent:
-# error TS2688: Cannot find type definition file for 'node'.
-run_as_node "cp -r /opt/node_modules/@types node_modules/"
-
 if [ "$APP_MODE" == 'production' ]; then
 
     run_as_node "yarn install --production"

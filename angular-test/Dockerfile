@@ -38,8 +38,6 @@ RUN yarn global add @angular/cli@${ANGULAR_VERSION} cypress@${CYPRESS_VERSION} t
 
 RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@15.12.5
 
-########################################
-
 WORKDIR /app/
 
 EXPOSE 8080
