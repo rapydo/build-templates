@@ -15,7 +15,7 @@ ENV ANGULAR_VERSION 12.1.0
 # yarn installation
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
     yarn set version berry && \
-    yarn config set httpTimeout 600000 -g
+    yarn config set httpTimeout 600000
 
 RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.93.0 sitemap-generator-cli@7.5.0
 
