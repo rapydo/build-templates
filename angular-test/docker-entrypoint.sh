@@ -53,7 +53,6 @@ if [ "$APP_MODE" == 'production' ]; then
     run_as_node "reload-types"
     run_as_node "yarn run courtesy"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
-        # run_as_node "yarn run build --base-href https://${BASE_HREF}${FRONTEND_PREFIX}"
         run_as_node "yarn run build"
     else
         run_as_node "yarn run build:ssr"
