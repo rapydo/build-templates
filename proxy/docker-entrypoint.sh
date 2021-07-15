@@ -45,9 +45,16 @@ else
     export SSL_STAPLING="off"
 fi
 
-CLIENT_CERT="${CERTDIR}/client.pem"
-rm -f ${CLIENT_CERT}
+# Create a self signed certificate to be used:
+# 1) as client certificate for health checks
+# 2) as default certificate to prevent the server to crash if not valid certificates is found
+openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ${CERTDIR}/local_client.key -out ${CERTDIR}/local_client.crt -subj '/CN=localhost'
+
 if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
+
+    CLIENT_CERT="${CERTDIR}/client.pem"
+    rm -f ${CLIENT_CERT}
+    cat ${CERTDIR}/local_client.crt >> ${CLIENT_CERT}
 
     if [ -d "${CERTDIR}/client_certs" ]; then
         for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
@@ -68,11 +75,6 @@ if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
 
     else
         printf "\033[0;31m${CERTDIR}/client_certs folder not found\033[0m\n"
-    fi
-
-    if [ ! -f ${CERTDIR}/client.pem ]; then
-        printf "\033[0;31mNo client certificate found, the server will be shut down\033[0m\n"
-        exit 1
     fi
 
 fi
