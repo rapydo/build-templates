@@ -67,13 +67,12 @@ if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
         done
 
     else
-        printf "\033[0;32m${CERTDIR}/client_certs folder not found\033[0m\n"
+        printf "\033[0;33m${CERTDIR}/client_certs folder not found\033[0m\n"
     fi
 
     if [ ! -f ${CERTDIR}/client.pem ]; then
-        printf "\033[0;32mNo client certificate found\033[0m\n"
-        # an empty file is created, nginx will start but no client will be allowed
-        touch ${CERTDIR}/client.pem
+        printf "\033[0;32mNo client certificate found, the server will be shut down\033[0m\n"
+        exit 1
     fi
 
 fi
