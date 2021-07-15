@@ -50,7 +50,13 @@ fi
 # 2) as default certificate to prevent the server to crash if not valid certificates is found
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ${CERTDIR}/local_client.key -out ${CERTDIR}/local_client.crt -subj '/CN=localhost'
 
-if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
+if [ "${SSL_VERIFY_CLIENT}" == "0" ]; then
+
+    export SSL_VERIFY_CLIENT="off";
+
+elif [ "${SSL_VERIFY_CLIENT}" == "1" ]; then
+
+    export SSL_VERIFY_CLIENT="on";
 
     CLIENT_CERT="${CERTDIR}/client.pem"
     rm -f ${CLIENT_CERT}
