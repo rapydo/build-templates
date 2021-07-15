@@ -62,26 +62,24 @@ elif [ "${SSL_VERIFY_CLIENT}" == "1" ]; then
     rm -f ${CLIENT_CERT}
     cat ${CERTDIR}/local_client.crt >> ${CLIENT_CERT}
 
-    if [ -d "${CERTDIR}/client_certs" ]; then
-        for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
+    # -p ensures no errors if the folder already exists
+    mkdir -p "${CERTDIR}/client_certs"
 
-            if openssl x509 -in ${cert} -noout -checkend 3600 > /dev/null; then
+    for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
 
-                printf "\033[0;32mImported certificate from ${cert}\033[0m\n";
-                openssl x509 -in ${cert} -noout -issuer -subject
+        if openssl x509 -in ${cert} -noout -checkend 3600 > /dev/null; then
 
-                cat ${cert} >> ${CLIENT_CERT}
-            else
+            printf "\033[0;32mImported certificate from ${cert}\033[0m\n";
+            openssl x509 -in ${cert} -noout -issuer -subject
 
-                printf "\033[0;31mSkipping import of ${cert}: certificate expired or near to expire\033[0m\n";
-                openssl x509 -in ${cert} -noout -dates
+            cat ${cert} >> ${CLIENT_CERT}
+        else
 
-            fi
-        done
+            printf "\033[0;31mSkipping import of ${cert}: certificate expired or near to expire\033[0m\n";
+            openssl x509 -in ${cert} -noout -dates
 
-    else
-        printf "\033[0;31m${CERTDIR}/client_certs folder not found\033[0m\n"
-    fi
+        fi
+    done
 
 fi
 
