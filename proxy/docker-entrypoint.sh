@@ -52,7 +52,7 @@ if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
     if [ -d "${CERTDIR}/client_certs" ]; then
         for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
 
-            if openssl x509 -in ${cert} -noout -checkend 86400 > /dev/null; then
+            if openssl x509 -in ${cert} -noout -checkend 3600 > /dev/null; then
 
                 printf "\033[0;32mImported certificate from ${cert}\033[0m\n";
                 openssl x509 -in ${cert} -noout -issuer -subject
@@ -67,11 +67,11 @@ if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
         done
 
     else
-        printf "\033[0;33m${CERTDIR}/client_certs folder not found\033[0m\n"
+        printf "\033[0;31m${CERTDIR}/client_certs folder not found\033[0m\n"
     fi
 
     if [ ! -f ${CERTDIR}/client.pem ]; then
-        printf "\033[0;32mNo client certificate found, the server will be shut down\033[0m\n"
+        printf "\033[0;31mNo client certificate found, the server will be shut down\033[0m\n"
         exit 1
     fi
 
