@@ -65,19 +65,17 @@ if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
 
             fi
         done
-    else
-        printf "\033[0;32m${CERTDIR}/client_certs folder not found, disabling SSL_VERIFY_CLIENT\033[0m\n"
-        export SSL_VERIFY_CLIENT="off"
-    fi
-fi
 
-# if ssl verify client is on
-# (and so not disable by the above block because the folder is missing)
-if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
-    if [ ! -f ${CERTDIR}/client.pem ]; then
-        printf "\033[0;32mNo client certificate found, disabling SSL_VERIFY_CLIENT\033[0m\n"
-        export SSL_VERIFY_CLIENT="off"
+    else
+        printf "\033[0;32m${CERTDIR}/client_certs folder not found\033[0m\n"
     fi
+
+    if [ ! -f ${CERTDIR}/client.pem ]; then
+        printf "\033[0;32mNo client certificate found\033[0m\n"
+        # an empty file is created, nginx will start but no client will be allowed
+        touch ${CERTDIR}/client.pem
+    fi
+
 fi
 
 # remove single quotes from these variables to avoid nginx conf to be disrupted
