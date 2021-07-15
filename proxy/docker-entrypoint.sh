@@ -44,6 +44,42 @@ if [ "$DOMAIN" != "localhost" ]; then
 else
     export SSL_STAPLING="off"
 fi
+
+CLIENT_CERT="${CERTDIR}/client.pem"
+rm -f ${CLIENT_CERT}
+if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
+
+    if [ -d "${CERTDIR}/client_certs" ]; then
+        for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
+
+            if openssl x509 -in ${cert} -noout -checkend 86400 > /dev/null; then
+
+                printf "\033[0;32mImported certificate from ${cert}\033[0m\n";
+                openssl x509 -in ${cert} -noout -issuer -subject
+
+                cat ${cert} >> ${CLIENT_CERT}
+            else
+
+                printf "\033[0;31mSkipping import of ${cert}: certificate expired or near to expire\033[0m\n";
+                openssl x509 -in ${cert} -noout -dates
+
+            fi
+        done
+    else
+        printf "\033[0;32m${CERTDIR}/client_certs folder not found, disabling SSL_VERIFY_CLIENT\033[0m\n"
+        export SSL_VERIFY_CLIENT="off"
+    fi
+fi
+
+# if ssl verify client is on
+# (and so not disable by the above block because the folder is missing)
+if [ "$SSL_VERIFY_CLIENT" == "on" ]; then
+    if [ ! -f ${CERTDIR}/client.pem ]; then
+        printf "\033[0;32mNo client certificate found, disabling SSL_VERIFY_CLIENT\033[0m\n"
+        export SSL_VERIFY_CLIENT="off"
+    fi
+fi
+
 # remove single quotes from these variables to avoid nginx conf to be disrupted
 export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
@@ -150,8 +186,8 @@ fi
 # done
 
 # Let other services, like neo4j, to write into this volume
-chmod -R +w /etc/letsencrypt
-chmod +x /etc/letsencrypt
+chmod -R +w ${CERTDIR}
+chmod +x ${CERTDIR}
 
 #####################
 # Completed
