@@ -44,4 +44,12 @@ jobs:
           pip3 install git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}
           rapydo install buildx
           docker buildx version
-          docker buildx build --tag rapydo/${{ matrix.service }}:${RAPYDO_VERSION} --build-arg CURRENT_UID=1000 --build-arg CURRENT_GID=1000 --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} ${{ matrix.service }}
+          docker buildx build \
+            --tag rapydo/${{ matrix.service }}:${RAPYDO_VERSION} \
+            --build-arg CURRENT_UID=1000 \
+            --build-arg CURRENT_GID=1000 \
+            --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} \
+            --cache-from=type=gha \
+            --cache-to=type=gha \
+            --push \
+            ${{ matrix.service }}
