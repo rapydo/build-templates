@@ -49,7 +49,5 @@ jobs:
             --build-arg CURRENT_UID=1000 \
             --build-arg CURRENT_GID=1000 \
             --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} \
-            --cache-from=type=gha \
-            --cache-to=type=gha \
             --push \
             ${{ matrix.service }}
