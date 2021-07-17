@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build the Docker image
         run: |
-          pip3 install rapydo@${RAPYDO_VERSION}
+          pip3 install git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}
           rapydo install buildx
           rapydo install compose
           docker buildx version
