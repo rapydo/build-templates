@@ -41,9 +41,12 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build the Docker image
         run: |
+          pip3 install rapydo@${RAPYDO_VERSION}
+          rapydo install buildx
+          rapydo install compose
           docker buildx version
           echo "RAPYDO_VERSION=${RAPYDO_VERSION}" > .env
           echo "CURRENT_UID=1000" >> .env
           echo "CURRENT_GID=1000" >> .env
-          docker-compose config > docker-compose-2.yml
+          docker compose config > docker-compose-2.yml
           docker buildx bake --file docker-compose-2.yml --push ${{ matrix.service }}
