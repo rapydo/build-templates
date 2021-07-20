@@ -29,7 +29,7 @@ if [[ ! -f "${init_file}" ]]; then
     echo "Init flask app"
     HOME=${CODE_DIR} su -p ${APIUSER} -c 'restapi init --wait'
     if [[ "$?" == "0" ]]; then
-        #Sync after init with compose call from outside
+        # Sync after init with compose call from outside
         touch ${init_file}
     else
         echo "Failed to startup flask!"
