@@ -29,9 +29,9 @@ RUN \
   rm -rf /var/lib/apt/lists/*
 
 ########################################################################
-# Force installation of google-chrome 89
+# Force installation of google-chrome 90
 ########################################################################
-RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_89.0.4389.90-1_amd64.deb \
+RUN wget --no-verbose -O /tmp/chrome.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_90.0.4430.93-1_amd64.deb \
  && dpkg -i  /tmp/chrome.deb \
  && rm /tmp/chrome.deb
 ########################################################################
