@@ -86,10 +86,7 @@ else
             # Short version: flask_migrate upgrade
             # Please note that errors in the upgrade will not make fail the server startup due to the || true statement
 
-            if ! restapi verify -s sqlalchemy;
-                restapi wait
-            fi
-
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
             flask db upgrade --directory "${PROJECT_NAME}/migrations" || true;
 
             echo "Migration completed";
