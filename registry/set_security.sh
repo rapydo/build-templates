@@ -7,6 +7,20 @@ then
     exit 1
 fi
 
+if [[ -z $REGISTRY_USERNAME ]];
+then
+    echo "Invalid registry username"
+    exit 1
+fi
+
+if [[ -z $REGISTRY_PASSWORD ]];
+then
+    echo "Invalid registry password"
+    exit 1
+fi
+
+htpasswd -Bbn "${REGISTRY_USERNAME}" "${REGISTRY_PASSWORD}" > /auth
+
 if [[ ! -f ${REGISTRY_HTTP_TLS_KEY} || ! -f ${REGISTRY_HTTP_TLS_CERTIFICATE} ]];
 then
     # REGISTRY_ADDRESS == manager.host:port/

@@ -1,8 +1,9 @@
 FROM registry:2.7.1
 
-RUN apk --no-cache update && apk --no-cache add openssl
+# apache2-utils adds htpasswd
+RUN apk --no-cache update && apk --no-cache add openssl apache2-utils
 
-COPY --chmod=5 ./create_certificate.sh /create_certificate.sh
+COPY --chmod=5 ./set_security.sh /set_security.sh
 
 # Adding my own script as 4th line of the original entrypoint
-RUN sed -i '4iash /create_certificate.sh' /entrypoint.sh
+RUN sed -i '4iash /set_security.sh' /entrypoint.sh
