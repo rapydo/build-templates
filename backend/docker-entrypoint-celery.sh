@@ -27,7 +27,7 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
-echo "waiting for services"
+echo "Waiting for services"
 
 HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 

@@ -94,10 +94,10 @@ else
 
     if [[ "${APP_MODE}" == 'production' ]]; then
 
-        echo "waiting for services"
+        echo "Waiting for services"
         HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
 
-        echo "ready to launch production gunicorn+meinheld"
+        echo "Ready to launch production gunicorn+meinheld"
         mygunicorn
 
     elif [[ "$APP_MODE" == 'test' ]]; then
