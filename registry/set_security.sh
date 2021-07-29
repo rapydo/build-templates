@@ -1,9 +1,9 @@
 #!/bin/ash
 set -e
 
-if [[ -z $REGISTRY_ADDRESS ]];
+if [[ -z $REGISTRY_HOST ]];
 then
-    echo "Invalid registry address"
+    echo "Invalid registry host"
     exit 1
 fi
 
@@ -23,9 +23,6 @@ htpasswd -Bbn "${REGISTRY_USERNAME}" "${REGISTRY_PASSWORD}" > /auth
 
 if [[ ! -f ${REGISTRY_HTTP_TLS_KEY} || ! -f ${REGISTRY_HTTP_TLS_CERTIFICATE} ]];
 then
-    # REGISTRY_ADDRESS == manager.host:port/
-    # cut everything after the : => ADDRESS == manager.host
-    ADDRESS=$(echo ${REGISTRY_ADDRESS%:*})
 
     echo -e """[req]
 default_bits = 4096
@@ -39,13 +36,13 @@ ST = XX
 L = XXX
 O = NoCompany
 OU = Orgainizational_Unit
-CN = ${ADDRESS}
+CN = ${REGISTRY_HOST}
 [v3_req]
 keyUsage = keyEncipherment, dataEncipherment
 extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 [alt_names]
-IP.1 = ${ADDRESS}
+IP.1 = ${REGISTRY_HOST}
 """ > /tmp/config.ini
     openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${REGISTRY_HTTP_TLS_KEY} -x509 -days 365 -config /tmp/config.ini -out ${REGISTRY_HTTP_TLS_CERTIFICATE} -subj '/CN=*/'
 fi
