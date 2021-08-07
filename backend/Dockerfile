@@ -31,7 +31,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 watchdog[watchmedo]==2.1.3 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
@@ -45,12 +45,10 @@ RUN useradd \
 # GUNICORN
 ENV GUNICORN_CONF /tmp/gunicorn_conf.py
 COPY gunicorn_conf.py ${GUNICORN_CONF}
-COPY launch_gunicorn.sh /usr/local/bin/mygunicorn
+COPY --chmod=740 launch_gunicorn.sh /usr/local/bin/mygunicorn
 
 # UTILITIES
-COPY flask_migrate /usr/local/bin/flask_migrate
-
-RUN chmod +x /usr/local/bin/mygunicorn /usr/local/bin/flask_migrate
+COPY --chmod=740 flask_migrate /usr/local/bin/flask_migrate
 
 # variables
 ENV PAGER less

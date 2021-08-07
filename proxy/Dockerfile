@@ -1,4 +1,4 @@
-FROM nginx:1.20.0-alpine
+FROM nginx:1.21.0-alpine
 # http://nginx.org/en/CHANGES
 
 ###################
@@ -32,7 +32,7 @@ RUN apk --no-cache update && \
 RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html
 
-# Set the directory for launching the renewal script
+# Set the directory for launching the renewal script
 # WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
@@ -46,13 +46,11 @@ ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
 ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
 
 RUN mkdir -p $CERTDIR/$CERTSUBDIR
-VOLUME /etc/letsencrypt
+# VOLUME /etc/letsencrypt
 
-# dhparam for better security
-ENV DHPARAM /etc/nginx/ssl/dhparam.pem
-VOLUME /etc/nginx/ssl
+ENV DHPARAM /etc/letsencrypt/dhparam.pem
 
-# Configure nginx on basic aspects
+# Configure nginx on basic aspects
 # + read configurations in "sites-enabled" dir
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY confs /etc/nginx/sites-enabled-templates

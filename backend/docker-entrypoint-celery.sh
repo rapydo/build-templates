@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-export CONTAINER_ID=$(head -1 /proc/self/cgroup|cut -d/ -f3 | cut -c1-12)
-export IS_CELERY_CONTAINER=1
-
 if [[ ! -t 0 ]]; then
     /bin/bash /etc/banner.sh
 fi
@@ -21,8 +18,8 @@ if [ "$GROUPID" != "$CURRENT_GID" ]; then
 fi
 
 # fix permissions of flower db dir
-if [ -d "$CELERYUI_DBDIR" ]; then
-    chown -R $APIUSER $CELERYUI_DBDIR
+if [ -d "$FLOWER_DBDIR" ]; then
+    chown -R $APIUSER $FLOWER_DBDIR
 fi
 
 # fix permissions of celery beat pid dir
@@ -30,7 +27,7 @@ if [ -d "/pids" ]; then
     chown -R $APIUSER /pids
 fi
 
-echo "waiting for services"
+echo "Waiting for services"
 
 HOME=$CODE_DIR su -p $APIUSER -c 'restapi wait'
 

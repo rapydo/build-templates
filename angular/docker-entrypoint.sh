@@ -45,9 +45,6 @@ fi
 run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
-# Very rough workaround to prevent:
-# error TS2688: Cannot find type definition file for "node".
-run_as_node "cp -r /opt/node_modules/@types node_modules/"
 
 if [ "$APP_MODE" == "production" ]; then
 
@@ -56,7 +53,6 @@ if [ "$APP_MODE" == "production" ]; then
     run_as_node "reload-types"
     run_as_node "yarn run courtesy"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
-        # run_as_node "yarn run build --base-href https://${BASE_HREF}${FRONTEND_PREFIX}"
         run_as_node "yarn run build"
     else
         run_as_node "yarn run build:ssr"
@@ -70,7 +66,10 @@ if [ "$APP_MODE" == "production" ]; then
 
 elif [ "$APP_MODE" == "development" ]; then
 
-    run_as_node "yarn install"
+    # This image is intended to run the application, but not the tests
+    # Since all dev dependencies are needed for tests, why should them installed?
+    # On the opposite, with the angular-test image, dev dependencies are installed
+    run_as_node "yarn install --production"
     run_as_node "reload-types"
     run_as_node "yarn start"
 

@@ -14,5 +14,5 @@ This script will proxy every command to flask db by adding
 if [[ -z $1 ]]; then
 	flask db --help
 else
-	flask db $@ --directory "${VANILLA_PACKAGE}/migrations"
+	flask db $@ --directory "${PROJECT_NAME}/migrations"
 fi

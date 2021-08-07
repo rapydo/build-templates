@@ -13,7 +13,7 @@ if [[ "$hostname" == "localhost" ]]; then
     if [ "$?" == "0" ]; then
         echo "Self signed SSL certificate successfully created"
 
-        # It is still required?
+        # This is required to let other services to read the certificates
         chmod +r ${CERTCHAIN} ${CERTKEY}
     else
         echo "Self signed SSL certificate generation failed!"
@@ -32,33 +32,21 @@ else
 
     echo "Domain: $DOMAIN"
     echo "Domain Aliases: $DOMAIN_ALIASES"
+    echo "SMTP Admin: $SMTP_ADMIN"
+
+    if [ -z "$SMTP_ADMIN" ]; then
+        echo "SMTP_ADMIN is not set, can't continue"
+        exit 1
+    fi
 
     NGINX_PID="/var/run/nginx.pid"
-
-    # if [ "$SMTP_ADMIN" != "" ]; then
-    #     echo "Reference email: $SMTP_ADMIN"
-    #     ./acme.sh --update-account  --accountemail $SMTP_ADMIN
-    #     if [ "$?" == "0" ]; then
-    #         # List what we have
-    #         echo "Email account updated"
-    #     else
-    #         echo "SMTP problem"
-    #         exit 1
-    #     fi
-    # fi
 
     echo "Requesting new SSL certificate to Let's Encrypt"
 
     domains="-d $DOMAIN"
-    # Add additional -d for each alias
-    # Before: not tested
     for d in ${DOMAIN_ALIASES/,/ }; do
         domains="${domains} -d ${d}"
     done
-
-    # ./acme.sh --issue --debug \
-    #     --fullchain-file ${CERTCHAIN} --key-file ${CERTKEY} \
-    #     ${domains} -w ${WWWDIR}
 
     if [[ -e ${NGINX_PID} ]]; then
         certbot certonly --debug --non-interactive ${domains} \
@@ -73,15 +61,14 @@ else
     if [ "$?" == "0" ]; then
         # List what we have
         echo "Completed. Check:"
-        # ./acme.sh --list
         certbot certificates
-
-        # It is still required?
-        # chmod +r ${CERTCHAIN} ${CERTKEY}
 
         mkdir -p ${CERTDIR}/${CERTSUBDIR}
         cp /etc/letsencrypt/archive/${DOMAIN}/fullchain1.pem ${CERTCHAIN}
         cp /etc/letsencrypt/archive/${DOMAIN}/privkey1.pem ${CERTKEY}
+
+        # This is required to let other services to read the certificates
+        chmod +r ${CERTCHAIN} ${CERTKEY}
 
         if [[ -e ${NGINX_PID} ]]; then
             nginx -s reload;

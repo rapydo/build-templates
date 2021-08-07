@@ -156,7 +156,7 @@ sleep 10
 echo ""
 
 echo "##################################################################"
-# Restore the sqluser
+# Restore the default user
 echo -e "\e[32mRecreating the ${POSTGRES_USER} user\e[0m"
 echo su -c \"createuser -s ${POSTGRES_USER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."

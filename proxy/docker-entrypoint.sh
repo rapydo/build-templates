@@ -39,6 +39,50 @@ function convert_conf {
 
 }
 
+if [ "$DOMAIN" != "localhost" ]; then
+    export SSL_STAPLING="on"
+else
+    export SSL_STAPLING="off"
+fi
+
+# Create a self signed certificate to be used:
+# 1) as client certificate for health checks
+# 2) as default certificate to prevent the server to crash if not valid certificates is found
+openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ${CERTDIR}/local_client.key -out ${CERTDIR}/local_client.crt -subj '/CN=localhost'
+
+if [ "${SSL_VERIFY_CLIENT}" == "0" ]; then
+
+    export SSL_VERIFY_CLIENT="off";
+
+elif [ "${SSL_VERIFY_CLIENT}" == "1" ]; then
+
+    export SSL_VERIFY_CLIENT="on";
+
+    CLIENT_CERT="${CERTDIR}/client.pem"
+    rm -f ${CLIENT_CERT}
+    cat ${CERTDIR}/local_client.crt >> ${CLIENT_CERT}
+
+    # -p ensures no errors if the folder already exists
+    mkdir -p "${CERTDIR}/client_certs"
+
+    for cert in $(ls ${CERTDIR}/client_certs/*.crt); do
+
+        if openssl x509 -in ${cert} -noout -checkend 3600 > /dev/null; then
+
+            printf "\033[0;32mImported certificate from ${cert}\033[0m\n";
+            openssl x509 -in ${cert} -noout -issuer -subject
+
+            cat ${cert} >> ${CLIENT_CERT}
+        else
+
+            printf "\033[0;31mSkipping import of ${cert}: certificate expired or near to expire\033[0m\n";
+            openssl x509 -in ${cert} -noout -dates
+
+        fi
+    done
+
+fi
+
 # remove single quotes from these variables to avoid nginx conf to be disrupted
 export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
@@ -134,7 +178,7 @@ if [ "$DOMAIN" != "" ]; then
 fi
 
 #####################
-# Extra scripts
+# Extra scripts
 # dedir="/docker-entrypoint.d"
 # for f in $(ls $dedir); do
 #     case "$f" in
@@ -145,10 +189,10 @@ fi
 # done
 
 # Let other services, like neo4j, to write into this volume
-chmod -R +w /etc/letsencrypt
-chmod +x /etc/letsencrypt
+chmod -R +w ${CERTDIR}
+chmod +x ${CERTDIR}
 
 #####################
-# Completed
+# Completed
 echo "Executing nginx server, ready to accept connections"
 exec nginx -g 'daemon off;'

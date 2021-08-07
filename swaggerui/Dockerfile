@@ -1,14 +1,12 @@
-FROM swaggerapi/swagger-ui:v3.47.1 AS swaggerui
+FROM swaggerapi/swagger-ui:v3.51.1
 
-COPY ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
+COPY --chmod=740 ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 
 # Use the original nginx.conf as development configuration
-RUN mv /etc/nginx/nginx.conf /etc/nginx/adminer-development.conf
+RUN mv /etc/nginx/nginx.conf /etc/nginx/swaggerui-development.conf
 
 # Add a new configuration to be used in production mode
-COPY ./production.conf /etc/nginx/adminer-production.conf
-
-RUN chmod +x /usr/share/nginx/swagger-nginx-prerun.sh
+COPY ./production.conf /etc/nginx/swaggerui-production.conf
 
 # Add swagger prerun.sh as third line of the docker entrypoint
 # Note the . to run the instructions in pre-run in the original shell and make the env variables to survive

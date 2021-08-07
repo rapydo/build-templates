@@ -1,4 +1,4 @@
-FROM adminer:4.8.0 AS adminer
+FROM adminer:4.8.1
 
 USER root
 
@@ -7,14 +7,13 @@ RUN apk --no-cache update && \
     pecl install mongodb && \
     echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/docker-php-ext-mongodb.ini
 
-COPY ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
+COPY --chmod=740 ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
 
 COPY ./development.conf /etc/nginx/adminer-development.conf
 COPY ./production.conf /etc/nginx/adminer-production.conf
 
 RUN mkdir -p /run/nginx \
-    && rm -f /etc/nginx/conf.d/default.conf \
-    && chmod +x /usr/local/bin/nginx-docker-entrypoint \
+    && rm -f /etc/nginx/http.d/default.conf \
     && sed -i '3i/usr/local/bin/nginx-docker-entrypoint' /usr/local/bin/docker-php-entrypoint
 
 EXPOSE 80

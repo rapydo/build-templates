@@ -1,12 +1,12 @@
-FROM mongo:4.4.5
+FROM mongo:5.0.0
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-COPY --chown=mongodb ./init-mongo.sh /docker-entrypoint-initdb.d/init-mongo.sh
-COPY ./fix_user.sh /fix_user.sh
+COPY --chown=mongodb --chmod=740 ./init-mongo.sh /docker-entrypoint-initdb.d/init-mongo.sh
+COPY --chmod=740 ./fix_user.sh /fix_user.sh
 
 # Adding my own script as third line of the original entrypoint. The script 
 # is only executed when the docker entrypoint is run as root to prevent
@@ -16,7 +16,6 @@ COPY ./fix_user.sh /fix_user.sh
 
 RUN mkdir -p /home/mongodb \
     && chown -R mongodb:mongodb /home/mongodb \
-    && chmod +x /fix_user.sh /docker-entrypoint-initdb.d/init-mongo.sh \
     && sed -i '3iif [[ $(whoami) == "root" ]]; then /fix_user.sh; fi' /usr/local/bin/docker-entrypoint.sh
 
 COPY banner.sh print_versions.sh /etc/
