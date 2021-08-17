@@ -21,6 +21,7 @@ function verify_ssl_files {
 
 }
 
-verify_ssl_files ${RABBITMQ_SSL_CACERTFILE}
-verify_ssl_files ${RABBITMQ_SSL_CERTFILE}
-verify_ssl_files ${RABBITMQ_SSL_KEYFILE}
+verify_ssl_files ${SSL_CACERTFILE}
+verify_ssl_files ${SSL_CERTFILE}
+verify_ssl_files ${SSL_KEYFILE}
+
