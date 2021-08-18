@@ -194,5 +194,5 @@ chmod +x ${CERTDIR}
 
 #####################
 # Completed
-echo "Executing nginx server, ready to accept connections"
+echo "Starting nginx, ready to accept connections"
 exec nginx -g 'daemon off;'

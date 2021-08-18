@@ -51,7 +51,7 @@ if [ "$APP_MODE" == "production" ]; then
     run_as_node "yarn install --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
-    run_as_node "yarn run courtesy"
+    # run_as_node "yarn run courtesy"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
     else
@@ -63,6 +63,7 @@ if [ "$APP_MODE" == "production" ]; then
         run_as_node "echo \"Disallow:\" >> /app/dist/robots.txt"
     fi
     run_as_node "yarn run gzip"
+    run_as_node "yarn run move-build-online"
 
 elif [ "$APP_MODE" == "development" ]; then
 
