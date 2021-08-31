@@ -35,7 +35,7 @@ C = XX
 ST = XX
 L = XXX
 O = NoCompany
-OU = Orgainizational_Unit
+OU = Organizational_Unit
 CN = ${REGISTRY_HOST}
 [v3_req]
 keyUsage = keyEncipherment, dataEncipherment
