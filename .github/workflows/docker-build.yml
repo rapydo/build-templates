@@ -41,8 +41,6 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build the Docker image
         run: |
-          pip3 install git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}
-          rapydo install buildx
           docker buildx version
           docker buildx build \
             --tag rapydo/${{ matrix.service }}:${RAPYDO_VERSION} \
