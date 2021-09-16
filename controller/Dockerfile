@@ -11,3 +11,6 @@ RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/do.git@$
 RUN git config --global user.email "tests@rapy.do" && git config --global user.name "RAPyDo"
 
 RUN rapydo install buildx && rapydo install compose
+
+# got with pip show rapydo | grep "Location:"
+WORKDIR /usr/lib/python3.9/site-packages/controller

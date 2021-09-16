@@ -1,4 +1,4 @@
-FROM mongo:5.0.0
+FROM mongo:5.0.2
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
