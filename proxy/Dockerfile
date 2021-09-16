@@ -1,4 +1,4 @@
-FROM nginx:1.21.0-alpine
+FROM nginx:1.21.3-alpine
 # http://nginx.org/en/CHANGES
 
 ###################
