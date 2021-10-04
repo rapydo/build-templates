@@ -1,4 +1,4 @@
-FROM node:16.9.1-buster
+FROM node:16.10.0-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -18,7 +18,7 @@ RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
 
 RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0
 
-RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@16.9.1
+RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@16.10.2
 
 WORKDIR /app/
 
