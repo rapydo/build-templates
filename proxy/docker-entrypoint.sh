@@ -45,13 +45,6 @@ else
     export SSL_STAPLING="off"
 fi
 
-# Used to update ca certificates, if provided from an external volume
-if [[ -d "/etc/letsencrypt/ca_certs" ]]; then
-    cp /etc/letsencrypt/ca_certs/* /usr/local/share/ca-certificates/
-fi
-
-update-ca-certificates
-
 # Create a self signed certificate to be used:
 # 1) as client certificate for health checks
 # 2) as default certificate to prevent the server to crash if not valid certificates is found
