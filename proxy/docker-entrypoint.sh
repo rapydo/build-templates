@@ -45,6 +45,9 @@ else
     export SSL_STAPLING="off"
 fi
 
+# Used to update ca certificates, if provided via a volume
+update-ca-certificates
+
 # Create a self signed certificate to be used:
 # 1) as client certificate for health checks
 # 2) as default certificate to prevent the server to crash if not valid certificates is found
