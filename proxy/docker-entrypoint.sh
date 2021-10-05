@@ -202,4 +202,9 @@ chmod +x ${CERTDIR}
 #####################
 # Completed
 echo "Starting nginx, ready to accept connections"
-exec nginx -g 'daemon off;'
+
+
+if [ "${PROXY_DEBUG_MODE}" == "1" ]; then
+    exec nginx-debug -g 'daemon off;'
+else
+    exec nginx -g 'daemon off;'
