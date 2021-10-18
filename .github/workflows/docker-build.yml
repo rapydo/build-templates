@@ -61,7 +61,7 @@ jobs:
           echo $ipt
           echo $ipt | grep --color "DOCKER-USER"
 
-          git clone https://github.com/rapydo/do.git@${RAPYDO_VERSION}
+          git clone -b ${RAPYDO_VERSION} https://github.com/rapydo/do.git
 
           docker cp tests/testbed.syslog fail2ban:/tmp/
           docker cp do/controller/confs/fail2ban fail2ban:/tmp/
