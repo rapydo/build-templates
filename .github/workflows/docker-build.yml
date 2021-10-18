@@ -52,6 +52,39 @@ jobs:
             --push \
             ${{ matrix.service }}
 
-      - name: Test the Docker image
+      - name: Test Fail2ban
+        if: ${{ matrix.service == 'fail2ban' }}
         run: |
-          echo "not implemented yet"
+          docker run --rm -d --name fail2ban --network host --cap-add NET_ADMIN --cap-add NET_RAW rapydo/${{ matrix.service }}:${RAPYDO_VERSION}
+
+          ipt=$(docker exec fail2ban iptables -L)
+          echo $ipt
+          echo $ipt | grep --color "DOCKER-USER"
+
+          git clone https://github.com/rapydo/do.git@${RAPYDO_VERSION}
+
+          docker cp tests/testbed.syslog fail2ban:/tmp/
+          docker cp do/controller/confs/fail2ban fail2ban:/tmp/
+
+          docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-matched > /tmp/nginx.matched
+          docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-missed > /tmp/nginx.missed
+
+          cat tests/expected.matches | while read url
+          do
+            echo "Checking: ${url}";
+            if ! grep "${url}" /tmp/nginx.matched;
+            then
+              echo "Invalid result, this URL was expected to match: ${url}";
+              exit 1
+            fi
+          done
+
+          cat tests/expected.missed | while read url
+          do
+            echo "Checking: ${url}";
+            if ! grep "${url}" /tmp/nginx.missed;
+            then
+              echo "Invalid result, this URL was expected to be missed: ${url}";
+              exit 1
+            fi
+          done
