@@ -63,13 +63,13 @@ jobs:
 
           git clone -b ${RAPYDO_VERSION} https://github.com/rapydo/do.git
 
-          docker cp tests/testbed.syslog fail2ban:/tmp/
+          docker cp fail2ban/tests/testbed.syslog fail2ban:/tmp/
           docker cp do/controller/confs/fail2ban fail2ban:/tmp/
 
           docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-matched > /tmp/nginx.matched
           docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-missed > /tmp/nginx.missed
 
-          cat tests/expected.matches | while read url
+          cat fail2ban/tests/expected.matches | while read url
           do
             echo "Checking: ${url}";
             if ! grep "${url}" /tmp/nginx.matched;
@@ -79,7 +79,7 @@ jobs:
             fi
           done
 
-          cat tests/expected.missed | while read url
+          cat fail2ban/tests/expected.missed | while read url
           do
             echo "Checking: ${url}";
             if ! grep "${url}" /tmp/nginx.missed;
