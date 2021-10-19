@@ -2199,7 +2199,7 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST /ctrlt/DeviceUpgrade_1 HTTP/1.1" 301 162 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /dns-query?dns=KhUBAAABAAAAAAAAA3d3dwZnb29nbGUDY29tAAABAAE HTTP/1.1" 404 524 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST /dns-query HTTP/2.0" 404 524 "-" "UserAgent" "-"
-Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /dns-query?dns=KhUBAAABAAAAAAAAA3d3dwZnb29nbGUDY29tAAABAAE HTTP/1.1" 404 524 "-" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /resolve?dns=DUIBAAABAAAAAAAABWJhaWR1A2NvbQAAAQAB HTTP/1.1" 404 524 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST /resolve HTTP/2.0" 404 524 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /?dns=DUIBAAABAAAAAAAABWJhaWR1A2NvbQAAAQAB HTTP/2.0" 200 3391 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /pps/polycom/0004f2000000.cfg HTTP/1.1" 404 52 "-" "UserAgent" "-"
