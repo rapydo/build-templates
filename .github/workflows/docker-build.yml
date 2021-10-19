@@ -83,7 +83,7 @@ jobs:
           A=$(expr $EXPECTED_RULES + 1)
           B=$(expr $EXPECTED_RULES + 100)
           for i in $(seq ${A} ${B}); do
-            if ! grep -F "  ${i}) [" /tmp/nginx.missed;
+            if grep -F "  ${i}) [" /tmp/nginx.missed;
             then
               echo "No matches expected to be found for rule ${i}";
               exit 1
