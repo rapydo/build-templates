@@ -392,7 +392,6 @@ GET /mod/jitsi/sessionpriv.php?avatar=https%3A%2F%2Fexample.com%2Fuser%2Fpix.php
 GET /mod/lti/auth.php?redirect_uri=javascript:alert('1za0bltSrcuwXKwzoG65740NEOK')
 GET /myadmin/index.php?lang=en
 GET /MyAdmin/index.php?lang=en
-GET /myadmin/scripts/setup.php
 GET /MyAdmin/scripts/setup.php
 GET /mysql-admin/index.php?lang=en
 GET /mysql/admin/index.php?lang=en
