@@ -365,8 +365,6 @@ GET /main-es2015.00000000000000000000.js
 GET /manager/html
 GET /manager/html/
 GET /manager/text/list
-GET /manage/webshell/u?s=5&w=218&h=15&k=%0a&l=62&_=5621298674064
-GET /manage/webshell/u?s=5&w=218&h=15&k=%73%65%72%76%69%63%65%0a%73%73%68%0a%64%69%73%61%62%6c%65%0a&l=62&_=5621298674064
 GET /marker-icon.2b3e1faf89f94a483539.png
 GET /MaterialIcons-Regular.12a47ed5fd5585f0f422.woff2
 GET /max-templates/classic/styles/app.css

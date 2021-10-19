@@ -1119,4 +1119,6 @@ POST http://ip.bablosoft.com/?Z70153395332Q1
 GET http://icanhazip.com/
 POST http://api.ipify.org/?Z70153395332Q1
 GET http://cccc.uochb.cas.cz/50/1/0001/
+GET /manage/webshell/u?s=5&w=218&h=15&k=%0a&l=62&_=5621298674064
+GET /manage/webshell/u?s=5&w=218&h=15&k=%73%65%72%76%69%63%65%0a%73%73%68%0a%64%69%73%61%62%6c%65%0a&l=62&_=5621298674064
 
