@@ -71,8 +71,8 @@ jobs:
 
           cat fail2ban/tests/expected.matches | while read url
           do
-            echo "Checking: ${url}";
-            if ! grep "${url}" /tmp/nginx.matched;
+            echo "grep -F \"${url}\" /tmp/nginx.matched";
+            if ! grep -F "${url}" /tmp/nginx.matched;
             then
               echo "Invalid result, this URL was expected to match: ${url}";
               exit 1
@@ -81,8 +81,8 @@ jobs:
 
           cat fail2ban/tests/expected.missed | while read url
           do
-            echo "Checking: ${url}";
-            if ! grep "${url}" /tmp/nginx.missed;
+            echo "grep -F \"${url}\" /tmp/nginx.missed";
+            if ! grep -F "${url}" /tmp/nginx.missed;
             then
               echo "Invalid result, this URL was expected to be missed: ${url}";
               exit 1
