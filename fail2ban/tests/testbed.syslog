@@ -2240,3 +2240,8 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET 
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /etc.json?FNZ.css HTTP/1.1" 404 524 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /etc.json?FNZ.html HTTP/1.1" 404 524 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET /etc.json?FNZ.ico HTTP/1.1" 404 524 "-" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST http://fingerprints.bablosoft.com/ip?Z70153395332Q1 HTTP/1.1" 301 162 "https://google.com/" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST http://ip.bablosoft.com/?Z70153395332Q1 HTTP/1.1" 301 162 "https://google.com/" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET http://icanhazip.com/ HTTP/1.1" 301 162 "-" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "POST http://api.ipify.org/?Z70153395332Q1 HTTP/1.1" 301 162 "-" "UserAgent" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +00000] "GET http://cccc.uochb.cas.cz/50/1/0001/ HTTP/1.1" 301 162 "-" "UserAgent" "-"

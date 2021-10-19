@@ -1115,3 +1115,9 @@ GET /etc.json/FNZ.ico
 GET /etc.json?FNZ.css
 GET /etc.json?FNZ.html
 GET /etc.json?FNZ.ico
+POST http://fingerprints.bablosoft.com/ip?Z70153395332Q1
+POST http://ip.bablosoft.com/?Z70153395332Q1
+GET http://icanhazip.com/
+POST http://api.ipify.org/?Z70153395332Q1
+GET http://cccc.uochb.cas.cz/50/1/0001/
+
