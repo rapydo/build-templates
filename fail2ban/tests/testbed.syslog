@@ -1745,7 +1745,6 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /vkd/GetWelcomeScreen.event HTTP/1.1" 301 162 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /VqFO HTTP/1.1" 400 150 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /_vti_bin/Authentication.asmx?op=Mode HTTP/1.1" 301 162 "-" "UserAgent" "-"
-Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /w00tw00t.at.blackhats.romanian.anti-sec:) HTTP/1.1" 301 162 "-" "ZmEu" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /was5/web/index.jsp HTTP/1.1" 301 162 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /was/help.jsp HTTP/1.1" 301 162 "-" "UserAgent" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /was/main.html HTTP/1.1" 301 162 "-" "UserAgent" "-"
