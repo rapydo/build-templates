@@ -69,6 +69,27 @@ jobs:
           docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-matched > /tmp/nginx.matched
           docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-missed > /tmp/nginx.missed
 
+          # Verify that all rules have matches on the testbed
+          EXPECTED_RULES=106
+
+          for i in $(seq 1 ${EXPECTED_RULES}); do
+            if ! grep -F "  ${i}) [" /tmp/nginx.matched;
+            then
+              echo "No matches found for rule ${i}";
+              exit 1
+            fi
+          done
+
+          A=$(expr $EXPECTED_RULES + 1)
+          B=$(expr $EXPECTED_RULES + 100)
+          for i in $(seq ${A} ${B}); do
+            if ! grep -F "  ${i}) [" /tmp/nginx.missed;
+            then
+              echo "No matches expected to be found for rule ${i}";
+              exit 1
+            fi
+          done
+
           cat fail2ban/tests/expected.matches | while read url
           do
             echo "grep -F \"${url}\" /tmp/nginx.matched";
