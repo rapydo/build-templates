@@ -111,7 +111,7 @@ else
     export CSPGA="";
 fi
 
-# limit_req_zone.preconf is loaded from main nginx.conf before all *confs
+# all .preconf, including limit_req_zone, are loaded from nginx.conf before all *confs
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
