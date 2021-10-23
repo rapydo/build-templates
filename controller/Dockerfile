@@ -5,14 +5,12 @@ RUN test -n "$RAPYDO_VERSION"
 
 RUN apk add python3 python3-dev py3-wheel py-pip git curl make gcc musl-dev libffi-dev openssl-dev cargo syslog-ng
 
-# got with pip show rapydo | grep "Location:"
-ENV CONTROLLER_PATH "/usr/lib/python3.9/site-packages/controller"
-
-RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/do.git@$RAPYDO_VERSION#egg=rapydo[dev] && pip3 install --upgrade --editable ${CONTROLLER_PATH}
+RUN pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/do.git@$RAPYDO_VERSION#egg=rapydo[dev]
 
 # Needed to make git commit (used by tests) to work and prevent error: 'Author identity unknown'
 RUN git config --global user.email "tests@rapy.do" && git config --global user.name "RAPyDo"
 
 RUN rapydo install buildx && rapydo install compose
 
-WORKDIR ${CONTROLLER_PATH}
+# got with pip show rapydo | grep "Location:"
+WORKDIR /usr/lib/python3.9/site-packages/controller
