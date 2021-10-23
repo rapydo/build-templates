@@ -14,6 +14,3 @@ RUN rapydo install buildx && rapydo install compose
 
 # got with pip show rapydo | grep "Location:"
 WORKDIR /usr/lib/python3.9/site-packages/controller
-
-# Inject the start command for the syslog daemon into the entrypoint
-RUN sed -i '3isyslogd' /usr/local/bin/docker-entrypoint.sh
