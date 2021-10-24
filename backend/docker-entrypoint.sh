@@ -115,8 +115,13 @@ else
         fi
 
     else
-        # HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
         echo "Development mode"
+
+        if [[ "${API_AUTOSTART}" == "1" ]]; then
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
+        fi
+
     fi
 
     sleep infinity
