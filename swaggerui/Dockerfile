@@ -12,5 +12,6 @@ COPY ./production.conf /etc/nginx/swaggerui-production.conf
 # Note the . to run the instructions in pre-run in the original shell and make the env variables to survive
 RUN sed -i '3i. /usr/share/nginx/swagger-nginx-prerun.sh' /docker-entrypoint.sh
 
+COPY --chmod=740 reload-swaggerui.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc

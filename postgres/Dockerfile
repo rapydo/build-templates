@@ -20,6 +20,6 @@ RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
 
 WORKDIR /var/lib/postgresql/
 
+COPY --chmod=740 reload-postgres.sh /usr/local/bin/reload
 COPY --chmod=444 banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
-

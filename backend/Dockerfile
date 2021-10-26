@@ -77,6 +77,6 @@ ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 STOPSIGNAL SIGINT
 CMD ["docker-entrypoint", "rest"]
 
-COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-
+COPY banner.sh print_versions.sh /etc/
+COPY --chmod=740 reload-backend.sh /usr/local/bin/reload

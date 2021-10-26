@@ -47,7 +47,7 @@ fi
 
 # Create a self signed certificate to be used:
 # 1) as client certificate for health checks
-# 2) as default certificate to prevent the server to crash if not valid certificates is found
+# 2) as default certificate to prevent the server to crash if no valids certificates are found
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ${CERTDIR}/local_client.key -out ${CERTDIR}/local_client.crt -subj '/CN=localhost'
 
 if [ "${SSL_VERIFY_CLIENT}" == "0" ]; then

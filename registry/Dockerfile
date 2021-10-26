@@ -7,3 +7,5 @@ COPY --chmod=5 ./set_security.sh /set_security.sh
 
 # Adding my own script as 4th line of the original entrypoint
 RUN sed -i '4iash /set_security.sh' /entrypoint.sh
+
+COPY --chmod=740 reload-registry.sh /usr/local/bin/reload
