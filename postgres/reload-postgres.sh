@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/ash
 
 echo "Not implemented yet"
