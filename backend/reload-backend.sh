@@ -1,12 +1,27 @@
 #!/bin/bash
 
-if [ "$APP_MODE" == "production" ]; then
-    # Can't use pidof because it is execute via python
-    PID=$(pgrep gunicorn | head -1)
-    echo "Reloading gunicorn (PID #${PID})..."
-    kill -s SIGHUP ${PID}
-else
+if [ "$BACKEND_HOSTNAME" == "backend-server" ]; then
 
-    echo "Reloading Flask..."
-    touch ${PYTHON_PATH}/restapi/__main__.py
+    if [ "$APP_MODE" == "production" ]; then
+        # Can't use pidof because it is execute via python
+        PID=$(pgrep gunicorn | head -1)
+        echo "Reloading gunicorn (PID #${PID})..."
+        kill -s SIGHUP ${PID}
+    else
+
+        echo "Reloading Flask..."
+        touch ${PYTHON_PATH}/restapi/__main__.py
+    fi
+elif [ "$BACKEND_HOSTNAME" == "flower" ]; then
+    echo "Not implemented yet"
+elif [ "$BACKEND_HOSTNAME" == "celery-beat" ]; then
+    echo "Not implemented yet"
+elif [ "$BACKEND_HOSTNAME" == "telegram-bot" ]; then
+    echo "Not implemented yet"
+else
+    # PID=$(pgrep celery | head -1)
+    # echo "Reloading celery (PID #${PID})..."
+    # kill -s SIGHUP ${PID}
+    # amqp.exceptions.AccessRefused after the reload ... WHY !?
+    echo "Not implemented yet"
 fi
