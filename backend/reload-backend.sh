@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$BACKEND_HOSTNAME" == "backend-server" ]; then
+if [ "$HOSTNAME" == "backend-server" ]; then
 
     if [ "$APP_MODE" == "production" ]; then
         # Can't use pidof because it is execute via python
@@ -12,11 +12,11 @@ if [ "$BACKEND_HOSTNAME" == "backend-server" ]; then
         echo "Reloading Flask..."
         touch ${PYTHON_PATH}/restapi/__main__.py
     fi
-elif [ "$BACKEND_HOSTNAME" == "flower" ]; then
+elif [ "$HOSTNAME" == "flower" ]; then
     echo "Not implemented yet"
-elif [ "$BACKEND_HOSTNAME" == "celery-beat" ]; then
+elif [ "$HOSTNAME" == "celery-beat" ]; then
     echo "Not implemented yet"
-elif [ "$BACKEND_HOSTNAME" == "telegram-bot" ]; then
+elif [ "$HOSTNAME" == "telegram-bot" ]; then
     echo "Not implemented yet"
 else
     # PID=$(pgrep celery | head -1)
