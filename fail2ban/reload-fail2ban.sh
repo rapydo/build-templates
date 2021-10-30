@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo "Not implemented yet"
+echo "Reloading fail2ban..."
+
+fail2ban-client reload

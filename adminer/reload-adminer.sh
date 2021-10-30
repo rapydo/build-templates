@@ -1,3 +1,4 @@
 #!/bin/ash
 
-echo "Not implemented yet"
+echo "Reloading nginx..."
+nginx -s reload

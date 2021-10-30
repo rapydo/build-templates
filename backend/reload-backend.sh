@@ -19,9 +19,8 @@ elif [ "$HOSTNAME" == "celery-beat" ]; then
 elif [ "$HOSTNAME" == "telegram-bot" ]; then
     echo "Not implemented yet"
 else
-    # PID=$(pgrep celery | head -1)
-    # echo "Reloading celery (PID #${PID})..."
-    # kill -s SIGHUP ${PID}
+    PID=$(pgrep celery | head -1)
+    echo "Reloading celery (PID #${PID})..."
+    kill -s SIGHUP ${PID}
     # amqp.exceptions.AccessRefused after the reload ... WHY !?
-    echo "Not implemented yet"
 fi
