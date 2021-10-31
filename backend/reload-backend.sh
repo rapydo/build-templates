@@ -22,5 +22,4 @@ else
     PID=$(pgrep celery | head -1)
     echo "Reloading celery (PID #${PID})..."
     kill -s SIGHUP ${PID}
-    # amqp.exceptions.AccessRefused after the reload ... WHY !?
 fi
