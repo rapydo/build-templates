@@ -22,4 +22,6 @@ WORKDIR /var/lib/postgresql/
 
 COPY --chmod=740 reload-postgres.sh /usr/local/bin/reload
 COPY --chmod=444 banner.sh print_versions.sh /etc/
-RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
+# /var/lib/postgresql is the home of the postgres as defined in
+# https://github.com/docker-library/postgres/blob/master/13/alpine/Dockerfile
+RUN echo '/bin/ash /etc/banner.sh' >> /var/lib/postgresql/.bashrc
