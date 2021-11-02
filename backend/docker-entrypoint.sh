@@ -38,7 +38,7 @@ if [[ ! -f "${init_file}" ]]; then
 fi
 
 # fix permissions on the main development folder
-chown ${APIUSER} ${CODE_DIR}
+# chown ${APIUSER} ${CODE_DIR}
 
 if [[ -d "${CERTDIR}" ]]; then
     chown -R ${APIUSER} ${CERTDIR}
