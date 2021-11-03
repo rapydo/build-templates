@@ -20,7 +20,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
-    && apt-get update \
+    && apt-get update -qq \
     && apt-get install --yes --no-install-recommends \
     tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev \
     python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
