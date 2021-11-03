@@ -4,7 +4,7 @@ if [ "$HOSTNAME" == "backend-server" ]; then
 
     if [ "$APP_MODE" == "production" ]; then
         # Can't use pidof because it is execute via python
-        PID=$(pgrep gunicorn | head -1)
+        PID=$(pgrep -f /usr/local/bin/gunicorn | head -1)
         echo "Reloading gunicorn (PID #${PID})..."
         kill -s SIGHUP ${PID}
     else
@@ -19,7 +19,7 @@ elif [ "$HOSTNAME" == "celery-beat" ]; then
 elif [ "$HOSTNAME" == "telegram-bot" ]; then
     echo "Not implemented yet"
 else
-    PID=$(pgrep celery | head -1)
+    PID=$(pgrep -f /usr/local/bin/celery | head -1)
     echo "Reloading celery (PID #${PID})..."
     kill -s SIGHUP ${PID}
 fi
