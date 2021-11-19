@@ -88,6 +88,7 @@ export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
 export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
 export CSP_CONNECT_SRC=${CSP_CONNECT_SRC//\'/}
+export CSP_FRAME_SRC=${CSP_FRAME_SRC//\'/}
 # add single quotes if non empty
 # this command also works if the string is already single quoted
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
