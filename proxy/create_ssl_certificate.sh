@@ -3,7 +3,7 @@ set -e
 
 hostname=$1
 
-if [[ "$hostname" == "localhost" ]] || [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+if [[ "$hostname" == "localhost" ]] || [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ "${SSL_FORCE_SELF_SIGNED}" == "1" ]]; then
 
     echo "Creating a self signed SSL certificate"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
