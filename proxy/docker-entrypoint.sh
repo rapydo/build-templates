@@ -173,8 +173,17 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        # /bin/bash updatecertificates $DOMAIN
-        /bin/bash updatecertificates localhost
+
+        # 1. create a self signed certificate for the DOMAIN
+        # This way if the certificate creation will fail on Let' Encrypt
+        # the container will not loop forever
+        SSL_FORCE_SELF_SIGNED=1 /bin/bash updatecertificates $DOMAIN
+
+        # 2. try to create the certificate with Let' Encrypt
+        # only if ssl force self signed if not globally set
+        if [[ "${SSL_FORCE_SELF_SIGNED}" == "0" ]]; then
+            /bin/bash updatecertificates $DOMAIN
+        fi
     fi
 fi
 
