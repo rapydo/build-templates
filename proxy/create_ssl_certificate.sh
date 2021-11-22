@@ -8,7 +8,7 @@ if [[ "$hostname" == "localhost" ]] || [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+
     echo "Creating a self signed SSL certificate"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
 
-    openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout $CERTKEY -out $CERTCHAIN -subj "/CN=${$hostname}"
+    openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout $CERTKEY -out $CERTCHAIN -subj "/CN=${hostname}"
 
     if [ "$?" == "0" ]; then
         echo "Self signed SSL certificate successfully created"
