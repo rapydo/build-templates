@@ -5,18 +5,18 @@ hostname=$1
 
 if [[ "$hostname" == "localhost" ]] || [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ "${SSL_FORCE_SELF_SIGNED}" == "1" ]]; then
 
-    echo "Creating a self signed SSL certificate"
+    echo "Creating a self signed SSL certificate for ${hostname}"
     mkdir -p ${CERTDIR}/${CERTSUBDIR}
 
     openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout $CERTKEY -out $CERTCHAIN -subj "/CN=${hostname}"
 
     if [ "$?" == "0" ]; then
-        echo "Self signed SSL certificate successfully created"
+        echo "Self signed SSL certificate successfully created for ${hostname}"
 
         # This is required to let other services to read the certificates
         chmod +r ${CERTCHAIN} ${CERTKEY}
     else
-        echo "Self signed SSL certificate generation failed!"
+        echo "Self signed SSL certificate generation failed for ${hostname}!"
     fi
 
 else
