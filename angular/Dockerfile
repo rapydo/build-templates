@@ -1,4 +1,4 @@
-FROM node:16.3.0-buster
+FROM node:16.10.0-buster
 # https://nodejs.org/en/blog/release
 
 ARG CURRENT_UID
@@ -10,15 +10,15 @@ WORKDIR /opt/
 
 ENV NODE_PATH /opt/node_modules
 # used by print_versions
-ENV ANGULAR_VERSION 12.1.0
+ENV ANGULAR_VERSION 12.2.8
 
 # yarn installation
 RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
     yarn config set network-timeout 600000 -g
 
-RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.93.0 sitemap-generator-cli@7.5.0
+RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0
 
-RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@15.12.5
+RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@16.10.2
 
 WORKDIR /app/
 
@@ -34,6 +34,6 @@ RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 CMD ["docker-entrypoint"]
 
+COPY --chmod=740 reload-angular.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-

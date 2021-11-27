@@ -1,4 +1,4 @@
-FROM nginx:1.21.0-alpine
+FROM nginx:1.21.3-alpine
 # http://nginx.org/en/CHANGES
 
 ###################
@@ -72,5 +72,6 @@ RUN groupmod -og $CURRENT_GID nginx && usermod -u $CURRENT_UID nginx
 ENTRYPOINT ["/sbin/tini", "/usr/local/bin/docker-entrypoint"]
 CMD ["proxy"]
 
+COPY --chmod=740 reload-proxy.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc

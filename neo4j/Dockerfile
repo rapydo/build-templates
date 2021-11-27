@@ -1,4 +1,4 @@
-FROM neo4j:4.3.2
+FROM neo4j:4.3.3
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
@@ -14,6 +14,6 @@ COPY --chmod=740 ./check_ssl.sh /check_ssl.sh
 RUN sed -i '2i/fix_user.sh' /docker-entrypoint.sh
 RUN sed -i '2i/check_ssl.sh' /docker-entrypoint.sh
 
+COPY --chmod=740 reload-neo4j.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-

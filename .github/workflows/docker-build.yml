@@ -2,8 +2,6 @@ name: Build
 
 on:
   push:
-  # schedule:
-  #   - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -12,13 +10,14 @@ jobs:
     timeout-minutes: 8
 
     env:
-      RAPYDO_VERSION: "2.0"
+      RAPYDO_VERSION: "2.1"
 
     strategy:
       matrix:
         service:
           [
             backend,
+            backend2110,
             angular,
             angular-test,
             proxy,
@@ -30,6 +29,8 @@ jobs:
             adminer,
             swaggerui,
             registry,
+            controller,
+            fail2ban,
           ]
 
     steps:
@@ -41,8 +42,6 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build the Docker image
         run: |
-          pip3 install git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}
-          rapydo install buildx
           docker buildx version
           docker buildx build \
             --tag rapydo/${{ matrix.service }}:${RAPYDO_VERSION} \
@@ -51,3 +50,62 @@ jobs:
             --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} \
             --push \
             ${{ matrix.service }}
+
+      - name: Test Fail2ban
+        if: ${{ matrix.service == 'fail2ban' }}
+        run: |
+          docker run --rm -d --name fail2ban --network host --cap-add NET_ADMIN --cap-add NET_RAW rapydo/${{ matrix.service }}:${RAPYDO_VERSION}
+
+          ipt=$(docker exec fail2ban iptables -L)
+          echo $ipt
+          echo $ipt | grep --color "DOCKER-USER"
+
+          git clone -b ${RAPYDO_VERSION} https://github.com/rapydo/do.git
+
+          docker cp fail2ban/tests/testbed.syslog fail2ban:/tmp/
+          docker cp do/controller/confs/fail2ban fail2ban:/tmp/
+
+          docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-matched > /tmp/nginx.matched
+          docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-missed > /tmp/nginx.missed
+
+          # Verify that all rules have matches on the testbed
+          EXPECTED_RULES=$(grep -E "^\s+\^%\(prefix\)s<HOST>" do/controller/confs/fail2ban/filters/nginx.conf  | wc -l)
+          echo "Expected ${EXPECTED_RULES} rules in nginx.conf"
+
+          for i in $(seq 1 ${EXPECTED_RULES}); do
+            if ! grep -F "  ${i}) [" /tmp/nginx.matched;
+            then
+              echo "No matches found for rule ${i}";
+              exit 1
+            fi
+          done
+
+          A=$(expr $EXPECTED_RULES + 1)
+          B=$(expr $EXPECTED_RULES + 100)
+          for i in $(seq ${A} ${B}); do
+            if grep -F "  ${i}) [" /tmp/nginx.missed;
+            then
+              echo "No matches expected to be found for rule ${i}";
+              exit 1
+            fi
+          done
+
+          cat fail2ban/tests/testbed.blacklist | while read url
+          do
+            echo "grep -F \"${url}\" /tmp/nginx.matched";
+            if ! grep -F "${url}" /tmp/nginx.matched;
+            then
+              echo "Invalid result, this URL was expected to match: ${url}";
+              exit 1
+            fi
+          done
+
+          cat fail2ban/tests/testbed.whitelist | while read url
+          do
+            echo "grep -F \"${url}\" /tmp/nginx.missed";
+            if ! grep -F "${url}" /tmp/nginx.missed;
+            then
+              echo "Invalid result, this URL was expected to be missed: ${url}";
+              exit 1
+            fi
+          done

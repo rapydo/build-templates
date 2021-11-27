@@ -1,4 +1,4 @@
-FROM postgres:13.3-alpine
+FROM postgres:13.4-alpine
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
@@ -20,6 +20,8 @@ RUN DATADIR=$(dirname "${PGDATA}") && mkdir -p "${DATADIR}"/"${PG_MAJOR}"
 
 WORKDIR /var/lib/postgresql/
 
+COPY --chmod=740 reload-postgres.sh /usr/local/bin/reload
 COPY --chmod=444 banner.sh print_versions.sh /etc/
-RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
-
+# /var/lib/postgresql is the home of the postgres as defined in
+# https://github.com/docker-library/postgres/blob/master/13/alpine/Dockerfile
+RUN echo '/bin/ash /etc/banner.sh' >> /var/lib/postgresql/.bashrc

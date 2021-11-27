@@ -20,7 +20,7 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
-    && apt-get update \
+    && apt-get update -qq \
     && apt-get install --yes --no-install-recommends \
     tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev \
     python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
@@ -31,7 +31,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 watchdog[watchmedo]==2.1.3 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
@@ -77,6 +77,6 @@ ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 STOPSIGNAL SIGINT
 CMD ["docker-entrypoint", "rest"]
 
-COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-
+COPY banner.sh print_versions.sh /etc/
+COPY --chmod=740 reload-backend.sh /usr/local/bin/reload

@@ -47,7 +47,7 @@ fi
 
 # Create a self signed certificate to be used:
 # 1) as client certificate for health checks
-# 2) as default certificate to prevent the server to crash if not valid certificates is found
+# 2) as default certificate to prevent the server to crash if no valids certificates are found
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout ${CERTDIR}/local_client.key -out ${CERTDIR}/local_client.crt -subj '/CN=localhost'
 
 if [ "${SSL_VERIFY_CLIENT}" == "0" ]; then
@@ -88,6 +88,7 @@ export CSP_SCRIPT_SRC=${CSP_SCRIPT_SRC//\'/}
 export CSP_IMG_SRC=${CSP_IMG_SRC//\'/}
 export CSP_FONT_SRC=${CSP_FONT_SRC//\'/}
 export CSP_CONNECT_SRC=${CSP_CONNECT_SRC//\'/}
+export CSP_FRAME_SRC=${CSP_FRAME_SRC//\'/}
 # add single quotes if non empty
 # this command also works if the string is already single quoted
 if [[ ! -z "$UNSAFE_EVAL" ]]; then
@@ -111,7 +112,7 @@ else
     export CSPGA="";
 fi
 
-# limit_req_zone.preconf is loaded from main nginx.conf before all *confs
+# all .preconf, including limit_req_zone, are loaded from nginx.conf before all *confs
 # *.conf are loaded from main nginx.conf
 # *.service are loaded from ${APP_MODE}.conf
 # confs with no extension are loaded from service conf
@@ -172,8 +173,17 @@ if [ "$DOMAIN" != "" ]; then
 
     if [ ! -f "$CERTCHAIN" ]; then
         echo "First time access"
-        # /bin/bash updatecertificates $DOMAIN
-        /bin/bash updatecertificates localhost
+
+        # 1. create a self signed certificate for the DOMAIN
+        # This way if the certificate creation will fail on Let' Encrypt
+        # the container will not loop forever
+        SSL_FORCE_SELF_SIGNED=1 /bin/bash updatecertificates $DOMAIN
+
+        # 2. try to create the certificate with Let' Encrypt
+        # only if ssl force self signed if not globally set
+        if [[ "${SSL_FORCE_SELF_SIGNED}" == "0" ]]; then
+            /bin/bash updatecertificates $DOMAIN
+        fi
     fi
 fi
 
@@ -194,5 +204,5 @@ chmod +x ${CERTDIR}
 
 #####################
 # Completed
-echo "Executing nginx server, ready to accept connections"
+echo "Starting nginx, ready to accept connections"
 exec nginx -g 'daemon off;'

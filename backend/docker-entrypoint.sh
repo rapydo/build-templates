@@ -38,7 +38,7 @@ if [[ ! -f "${init_file}" ]]; then
 fi
 
 # fix permissions on the main development folder
-chown ${APIUSER} ${CODE_DIR}
+# chown ${APIUSER} ${CODE_DIR}
 
 if [[ -d "${CERTDIR}" ]]; then
     chown -R ${APIUSER} ${CERTDIR}
@@ -88,7 +88,9 @@ else
 
             # Short version: flask_migrate upgrade
             # Please note that errors in the upgrade will not make fail the server startup due to the || true statement
-            flask db upgrade --directory "${PROJECT_NAME}/migrations" || true;
+
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'flask db stamp --directory "${PROJECT_NAME}/migrations" || true';
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'flask db upgrade --directory "${PROJECT_NAME}/migrations" || true';
 
             echo "Migration completed";
         fi
@@ -113,8 +115,13 @@ else
         fi
 
     else
-        # HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
         echo "Development mode"
+
+        if [[ "${API_AUTOSTART}" == "1" ]]; then
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
+            HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
+        fi
+
     fi
 
     sleep infinity

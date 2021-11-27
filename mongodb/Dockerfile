@@ -1,4 +1,4 @@
-FROM mongo:5.0.0
+FROM mongo:5.0.2
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
@@ -18,6 +18,6 @@ RUN mkdir -p /home/mongodb \
     && chown -R mongodb:mongodb /home/mongodb \
     && sed -i '3iif [[ $(whoami) == "root" ]]; then /fix_user.sh; fi' /usr/local/bin/docker-entrypoint.sh
 
+COPY --chmod=740 reload-mongodb.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
-

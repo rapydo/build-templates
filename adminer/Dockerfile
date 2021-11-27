@@ -18,5 +18,6 @@ RUN mkdir -p /run/nginx \
 
 EXPOSE 80
 
+COPY --chmod=740 reload-adminer.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/ash /etc/banner.sh' >> ~/.bashrc
