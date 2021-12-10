@@ -80,7 +80,7 @@ else
 
         if [[ ! -d "${PROJECT_NAME}/migrations" ]]; then
             echo "Skipping migrations check, ${PROJECT_NAME}/migrations does not exist";
-        elif [[ $(flask db current --directory "${PROJECT_NAME}/migrations" 2>&1 | tail -1 | grep "head") ]]; then
+        elif [[ $(HOME=$CODE_DIR su -p ${APIUSER} -c 'flask db current --directory "${PROJECT_NAME}/migrations" 2>&1 | tail -1 | grep "head"') ]]; then
             echo "All database migrations are already installed";
         else
 
