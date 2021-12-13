@@ -17,3 +17,7 @@ RUN sed -i '2i/check_ssl.sh' /docker-entrypoint.sh
 COPY --chmod=740 reload-neo4j.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+
+# CVE-2021-44228 Mitigation, waiting for a neo4j version later then 4.3.3
+# https://community.neo4j.com/t/log4j-cve-mitigation-for-neo4j/48856
+ENV JAVA_OPTS="${JAVA_OPTS} -Dlog4j2.formatMsgNoLookups=true"
