@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Not implemented yet"
+echo "Reload of neo4j not implemented yet"

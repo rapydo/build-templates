@@ -18,7 +18,6 @@ function verify_ssl_files {
 
 }
 
-
 if [[ "${NEO4J_dbms_ssl_policy_bolt_enabled}" == "True" ]];
 then
     root="${NEO4J_dbms_ssl_policy_bolt_base__directory}"
@@ -32,8 +31,3 @@ then
     verify_ssl_files "${root}/${NEO4J_dbms_ssl_policy_https_public__certificate}"
     verify_ssl_files "${root}/${NEO4J_dbms_ssl_policy_https_private__key}"
 fi
-
-
-# CVE-2021-44228 Mitigation, waiting for an updated version of neo4j (now 4.3.3)
-# https://community.neo4j.com/t/log4j-cve-mitigation-for-neo4j/48856
-echo "dbms.jvm.additional=-Dlog4j2.formatMsgNoLookups=true" >> conf/neo4j.conf
