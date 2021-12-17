@@ -80,3 +80,4 @@ CMD ["docker-entrypoint", "rest"]
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
 COPY banner.sh print_versions.sh /etc/
 COPY --chmod=740 reload-backend.sh /usr/local/bin/reload
+COPY --chmod=740 celery-healthcheck.sh /usr/local/bin/celery-healthcheck
