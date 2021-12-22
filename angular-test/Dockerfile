@@ -43,9 +43,9 @@ EXPOSE 8080
 EXPOSE 9876
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY --chown=node --chmod=740 ./reload-types.sh /usr/local/bin/reload-types
+COPY ./reload-types.sh /usr/local/bin/reload-types
 COPY --chmod=740 reload-angular.sh /usr/local/bin/reload
-COPY --chown=node --chmod=740 banner.sh print_versions.sh /etc/
+COPY banner.sh print_versions.sh /etc/
 
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
 
