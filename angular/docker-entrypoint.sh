@@ -74,7 +74,15 @@ if [ "$APP_MODE" == "production" ]; then
 elif [ "$APP_MODE" == "development" ]; then
 
     # Do not install dev dependencies (only needed for tests)
-    run_as_node "yarn install --production"
+    # run_as_node "yarn install --production"
+    run_as_node "yarn set version berry"
+    run_as_node "yarn plugin import workspace-tools"
+    # + force nodeLinker: "node-modules" in .yarnrc.yml
+
+    # https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
+    # + yarn plugin import typescript
+
+    run_as_node "yarn workspaces focus --production"
     run_as_node "reload-types"
     run_as_node "yarn start"
 
