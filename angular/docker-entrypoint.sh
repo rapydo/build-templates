@@ -81,7 +81,7 @@ elif [ "$APP_MODE" == "development" ]; then
     if grep -q "^nodeLinker:" .yarnrc.yml; then
         sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
     else
-        cat "nodeLinker: \"node-modules\"" >> .yarnrc.yml
+        echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
     fi
     # + force nodeLinker: "node-modules" in .yarnrc.yml
 
