@@ -6,31 +6,24 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-WORKDIR /opt/
+RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 ENV NODE_PATH /opt/node_modules
 # used by print_versions
 ENV ANGULAR_VERSION 13.1.2
 
-# yarn installation
-RUN curl --compressed -o- -L https://yarnpkg.com/install.sh | bash && \
-    yarn config set network-timeout 600000 -g
+RUN npm install -g yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0 --force
 
-RUN yarn global add @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0
+WORKDIR /opt/
 
-RUN yarn add dotenv@10.0.0 deepmerge@4.2.2 @types/node@16.10.2
+RUN yarn add dotenv@10.0.0 deepmerge@4.2.2
 
 WORKDIR /app/
 
 EXPOSE 8080
 
-EXPOSE 9876
-
-# RUN mkdir /docker-entrypoint.d/
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY ./reload-types.sh /usr/local/bin/reload-types
-
-RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
+COPY --chown=node --chmod=740 ./reload-types.sh /usr/local/bin/reload-types
 
 CMD ["docker-entrypoint"]
 
