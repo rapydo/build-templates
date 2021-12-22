@@ -18,7 +18,7 @@ elif [ "$APP_MODE" == "development" ]; then
     if ! cmp -s /app/package.json /tmp/package.json.bak;
     then
         echo "Package.json changed:"
-        diff --color <(cat package.json | sed "s/,/\n/g") <(cat /tmp/package.json.bak | sed "s/,/\n/g")
+        diff --color <(cat /tmp/package.json.bak | sed "s/,/\n/g") <(cat package.json | sed "s/,/\n/g")
         # Do not install dev dependencies (only needed for tests)
         run_as_node "yarn install --production"
     fi
