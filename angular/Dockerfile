@@ -14,9 +14,7 @@ ENV ANGULAR_VERSION 13.1.2
 
 RUN npm install -g yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0 --force
 
-WORKDIR /opt/
-
-RUN yarn add dotenv@10.0.0 deepmerge@4.2.2
+RUN npm install --prefix /opt dotenv@10.0.0 deepmerge@4.2.2
 
 WORKDIR /app/
 
@@ -28,5 +26,5 @@ COPY --chown=node --chmod=740 ./reload-types.sh /usr/local/bin/reload-types
 CMD ["docker-entrypoint"]
 
 COPY --chmod=740 reload-angular.sh /usr/local/bin/reload
-COPY banner.sh print_versions.sh /etc/
+COPY --chown=node --chmod=740 banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
