@@ -83,10 +83,9 @@ elif [ "$APP_MODE" == "development" ]; then
     else
         echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
     fi
-    # + force nodeLinker: "node-modules" in .yarnrc.yml
 
     # https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
-    # + yarn plugin import typescript
+    run_as_node "yarn plugin import typescript"
 
     run_as_node "yarn workspaces focus --production"
     run_as_node "reload-types"
