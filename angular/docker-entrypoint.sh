@@ -62,8 +62,7 @@ if [ "$APP_MODE" == "production" ]; then
 
     run_as_node "yarn install"
     run_as_node "yarn workspaces focus --production"
-    # temporary disabled 813
-    # run_as_node "npx browserslist@latest --update-db"
+    run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
@@ -90,8 +89,7 @@ elif [ "$APP_MODE" == "development" ]; then
     run_as_node "yarn install"
     # Do not install dev dependencies (only needed for tests)
     run_as_node "yarn workspaces focus --production"
-    # temporary disabled 813
-    # run_as_node "npx browserslist@latest --update-db"
+    run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     run_as_node "yarn start"
 
