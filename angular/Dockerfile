@@ -12,7 +12,7 @@ ENV NODE_PATH /opt/node_modules
 # used by print_versions
 ENV ANGULAR_VERSION 13.1.2
 
-RUN npm install -g yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0 --force
+RUN npm install -g npm yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.95.0 sitemap-generator-cli@7.5.0 --force
 
 RUN npm install --prefix /opt dotenv@10.0.0 deepmerge@4.2.2
 
