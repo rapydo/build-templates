@@ -94,6 +94,7 @@ elif [ "$APP_MODE" == 'development' ]; then
 
 elif [ "$APP_MODE" == 'test' ]; then
 
+    export YARN_ENABLE_IMMUTABLE_INSTALLS=false
     sleep infinity
 
 else
