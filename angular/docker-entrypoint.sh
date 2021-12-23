@@ -60,7 +60,7 @@ run_as_node "yarn plugin import typescript"
 
 if [ "$APP_MODE" == "production" ]; then
 
-    # run_as_node "yarn install --production"
+    run_as_node "yarn install"
     run_as_node "yarn workspaces focus --production"
     # temporary disabled 813
     # run_as_node "npx browserslist@latest --update-db"
@@ -87,8 +87,8 @@ if [ "$APP_MODE" == "production" ]; then
 
 elif [ "$APP_MODE" == "development" ]; then
 
+    run_as_node "yarn install"
     # Do not install dev dependencies (only needed for tests)
-    # run_as_node "yarn install --production"
     run_as_node "yarn workspaces focus --production"
     # temporary disabled 813
     # run_as_node "npx browserslist@latest --update-db"
