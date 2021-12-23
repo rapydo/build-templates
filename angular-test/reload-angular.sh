@@ -12,16 +12,8 @@ if [ "$APP_MODE" == "production" ]; then
 
 elif [ "$APP_MODE" == "development" ]; then
 
-    run_as_node "cp /app/package.json /tmp/package.json.bak"
     run_as_node "node /rapydo/merge.js"
-
-    if ! cmp -s /app/package.json /tmp/package.json.bak;
-    then
-        echo "Package.json changed:"
-        diff --color <(cat /tmp/package.json.bak | sed "s/,/\n/g") <(cat package.json | sed "s/,/\n/g")
-        # run_as_node "yarn install"
-        run_as_node "yarn workspaces focus --all"
-    fi
+    run_as_node "yarn workspaces focus --all"
     run_as_node "reload-types"
     echo "Reloading Angular..."
     # run_as_node "yarn start" 
