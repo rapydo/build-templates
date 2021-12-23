@@ -13,7 +13,8 @@ if [ "$APP_MODE" == "production" ]; then
 elif [ "$APP_MODE" == "development" ]; then
 
     run_as_node "node /rapydo/merge.js"
-    run_as_node "yarn workspaces focus --production"
+    # it doesn't work if some packages are updated... ng serve will fail on reload :\
+    # run_as_node "yarn workspaces focus --production"
     run_as_node "reload-types"
     echo "Reloading Angular..."
     # run_as_node "yarn start" 
