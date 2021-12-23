@@ -46,9 +46,22 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
+run_as_node "yarn set version berry"
+run_as_node "yarn plugin import workspace-tools"
+
+if grep -q "^nodeLinker:" .yarnrc.yml; then
+    sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
+else
+    echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
+fi
+
+# https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
+run_as_node "yarn plugin import typescript"
+
 if [ "$APP_MODE" == "production" ]; then
 
-    run_as_node "yarn install --production"
+    # run_as_node "yarn install --production"
+    run_as_node "yarn workspaces focus --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
@@ -75,18 +88,6 @@ elif [ "$APP_MODE" == "development" ]; then
 
     # Do not install dev dependencies (only needed for tests)
     # run_as_node "yarn install --production"
-    run_as_node "yarn set version berry"
-    run_as_node "yarn plugin import workspace-tools"
-
-    if grep -q "^nodeLinker:" .yarnrc.yml; then
-        sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
-    else
-        echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
-    fi
-
-    # https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
-    run_as_node "yarn plugin import typescript"
-
     run_as_node "yarn workspaces focus --production"
     run_as_node "reload-types"
     run_as_node "yarn start"

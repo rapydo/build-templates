@@ -19,8 +19,8 @@ elif [ "$APP_MODE" == "development" ]; then
     then
         echo "Package.json changed:"
         diff --color <(cat /tmp/package.json.bak | sed "s/,/\n/g") <(cat package.json | sed "s/,/\n/g")
-        # Do not install dev dependencies (only needed for tests)
-        run_as_node "yarn install --production"
+        # run_as_node "yarn install"
+        run_as_node "yarn workspaces focus --all"
     fi
     run_as_node "reload-types"
     echo "Reloading Angular..."
