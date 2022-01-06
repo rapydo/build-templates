@@ -46,6 +46,7 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
+# berry == stable
 run_as_node "yarn set version berry"
 run_as_node "yarn plugin import workspace-tools"
 
