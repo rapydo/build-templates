@@ -1,4 +1,4 @@
-FROM rabbitmq:3.9.5-management
+FROM rabbitmq:3.9.11-management
 
 COPY --chown=rabbitmq --chmod=740 ./dump_conf_file.sh /usr/local/bin/dump_conf_file.sh
 COPY --chown=rabbitmq --chmod=740 ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
