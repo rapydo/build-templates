@@ -17,7 +17,6 @@ jobs:
         service:
           [
             backend,
-            backend2110,
             angular,
             angular-test,
             proxy,
