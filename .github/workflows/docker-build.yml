@@ -138,7 +138,7 @@ jobs:
           sleep 1
           if rapydo logs backend | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "Backend was not expected to have started yet";
             exit 1
           fi
 
@@ -160,7 +160,7 @@ jobs:
           sleep 10
           if rapydo logs frontend | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "Angular was not expected to have started yet";
             exit 1
           fi
 
@@ -182,7 +182,7 @@ jobs:
           sleep 10
           if rapydo logs frontend | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "Angular was not expected to have started yet";
             exit 1
           fi
 
@@ -204,7 +204,7 @@ jobs:
           sleep 1
           if rapydo logs proxy | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "nginx was not expected to have started yet";
             exit 1
           fi
 
@@ -226,7 +226,7 @@ jobs:
           sleep 5
           if rapydo logs neo4j | grep "Remote interface available at http";
           then
-            echo "Was not expected to have started yet";
+            echo "Neo4j was not expected to have started yet";
             exit 1
           fi
 
@@ -248,7 +248,7 @@ jobs:
           sleep 5
           if rapydo logs rabbit | grep "Server startup complete;";
           then
-            echo "Was not expected to have started yet";
+            echo "RabbitMQ was not expected to have started yet";
             exit 1
           fi
 
@@ -274,7 +274,7 @@ jobs:
           sleep 1
           if rapydo logs postgres | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "Postgres was not expected to have started yet";
             exit 1
           fi
 
@@ -296,7 +296,7 @@ jobs:
           sleep 1
           if rapydo logs mongodb | grep "xxxxxx";
           then
-            echo "Was not expected to have started yet";
+            echo "Mongodb was not expected to have started yet";
             exit 1
           fi
 
@@ -333,7 +333,7 @@ jobs:
           sleep 1
           if docker logs adminer 2>&1 | grep "Development Server .* started";
           then
-            echo "Was not expected to have started yet";
+            echo "Adminer was not expected to have started yet";
             exit 1
           fi
 
@@ -368,9 +368,15 @@ jobs:
           rapydo init
           rapydo run registry
 
-          # Expected startup time: < 1 second
+          # Expected startup time: 2 seconds
 
-          sleep 1
+          if docker logs registry 2>&1 | grep "debug server listening localhost;
+          then
+            echo "Docker Registry was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 2
           docker logs registry
           echo -e "\nDocker Registry is expected to have completed the startup\n";
           docker logs registry 2>&1 | grep "debug server listening localhost"
