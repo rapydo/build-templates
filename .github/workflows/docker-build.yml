@@ -243,16 +243,16 @@ jobs:
           rapydo init
           rapydo start rabbit
 
-          # Expected startup time: ~ 6 seconds
+          # Expected startup time: ~ 4 seconds
 
-          sleep 3
+          sleep 2
           if rapydo logs rabbit | grep "Server startup complete;";
           then
             echo "RabbitMQ was not expected to have started yet";
             exit 1
           fi
 
-          sleep 3
+          sleep 2
           rapydo logs rabbit
           echo -e "\nRabbitMQ is expected to have completed the startup\n";
           rapydo logs rabbit | grep "Server startup complete;"
@@ -267,7 +267,7 @@ jobs:
           # Expected startup time: ~ 2 seconds
 
           sleep 1
-          if rapydo logs postgres | grep "xxxxxx";
+          if rapydo logs postgres | grep "database system is ready to accept connections";
           then
             echo "Postgres was not expected to have started yet";
             exit 1
@@ -276,7 +276,7 @@ jobs:
           sleep 1
           rapydo logs postgres
           echo -e "\nPostgres is expected to have completed the startup\n";
-          rapydo logs postgres | grep "xxxxx"
+          rapydo logs postgres | grep "database system is ready to accept connections"
 
       - name: Test mongodb
         if: ${{ matrix.service == 'mongodb'}}
