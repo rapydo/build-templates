@@ -187,7 +187,7 @@ jobs:
           cd test-${{ matrix.service }}
           rapydo create prj --auth mongo --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
-          rapydo start mongo
+          rapydo start mongodb
 
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
