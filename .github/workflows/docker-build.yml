@@ -207,12 +207,19 @@ jobs:
           rapydo start proxy
           rapydo ssl
 
-          # Expected startup time: 1 ~ 10 seconds mostly due to the DHParam generation
-          # Due to random entropy needed for DHParam the generation time is very variable
-          # so do not add a preliminary check
+          # The first startup is going to be very slow due to the DHParam generation
+          # Can't estimate the generation time because it greatly depends on the random entropy
+          sleep 1
+          rapydo logs proxy | grep "Generating DH parameters" 
 
-          sleep 10
+          # 15 seconds should be enough for DHParams to complete
+          sleep 15
           rapydo logs proxy
+
+          # Let's remove the first container and start again to verify the normal startup time
+          rapydo remove
+          rapydo start proxy
+          sleep 1
           echo -e "\nnginx is expected to have completed the startup\n";
           rapydo logs proxy | grep "Starting nginx, ready to accept connections"
 
