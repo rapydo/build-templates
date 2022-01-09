@@ -148,30 +148,23 @@ jobs:
           rapydo init
           rapydo start frontend
 
-          # Expected startup time: ~ 120 seconds
+          # Expected startup time: ~ 180 seconds
 
-          sleep 30
+          sleep 60
           if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
           fi
 
-          sleep 30
+          sleep 60
           if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
           fi
 
-          sleep 30
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 30
+          sleep 60
           rapydo logs frontend
           echo -e "\nAngular is expected to have completed the startup\n";
           rapydo logs frontend | grep "Compiled successfully."
@@ -184,30 +177,23 @@ jobs:
           rapydo -e FRONTEND_BUILD_MODE=angular-test init
           rapydo start frontend
 
-          # Expected startup time: ~ 120 seconds
+          # Expected startup time: ~ 180 seconds
 
-          sleep 30
+          sleep 60
           if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
           fi
 
-          sleep 30
+          sleep 60
           if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
           fi
 
-          sleep 30
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 30
+          sleep 60
           rapydo logs frontend
           echo -e "\nAngular is expected to have completed the startup\n";
           rapydo logs frontend | grep "Compiled successfully."
