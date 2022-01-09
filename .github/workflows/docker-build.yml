@@ -264,9 +264,9 @@ jobs:
           rapydo init
           rapydo start postgres
 
-          # Expected startup time: ~ 2 seconds
+          # Expected startup time: ~ 1 second
 
-          sleep 1
+          # sleep 1
           if rapydo logs postgres | grep "database system is ready to accept connections";
           then
             echo "Postgres was not expected to have started yet";
