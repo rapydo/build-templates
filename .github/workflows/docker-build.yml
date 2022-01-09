@@ -216,6 +216,7 @@ jobs:
       - name: Test registry
         if: ${{ matrix.service == 'registry'}}
         run: |
+          export SWARM_MODE=1
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
