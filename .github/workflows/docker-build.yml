@@ -165,17 +165,18 @@ jobs:
           rapydo init
           rapydo start neo4j
 
-          # Expected startup time: ~ 4 seconds
+          # Expected startup time: ~ 10 seconds
 
-          sleep 2
+          sleep 5
           if rapydo logs neo4j | grep "Remote interface available at http";
           then
             echo "Was not expected already started";
             exit 1
           fi
 
-          sleep 2
+          sleep 5
           rapydo logs neo4j
+          echo "Neo4j is expected to have completed the startup";
           rapydo logs neo4j | grep "Remote interface available at http"
 
       - name: Test rabbitmq
@@ -216,7 +217,7 @@ jobs:
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
-          rapydo run adminer
+          rapydo run adminer --detach
 
       - name: Test swaggerui
         if: ${{ matrix.service == 'swaggerui'}}
@@ -224,7 +225,7 @@ jobs:
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
-          rapydo run swaggerui
+          rapydo run swaggerui --detach
 
       - name: Test registry
         if: ${{ matrix.service == 'registry'}}
