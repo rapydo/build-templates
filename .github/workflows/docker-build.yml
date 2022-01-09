@@ -202,7 +202,7 @@ jobs:
           # Expected startup time: ~ 4 seconds (but only due to the DHParam generation)
 
           sleep 2
-          if rapydo logs proxy | grep "xxxxxx";
+          if rapydo logs proxy | grep "Starting nginx, ready to accept connections";
           then
             echo "nginx was not expected to have started yet";
             exit 1
@@ -211,7 +211,7 @@ jobs:
           sleep 2
           rapydo logs proxy
           echo -e "\nnginx is expected to have completed the startup\n";
-          rapydo logs proxy | grep "xxxxx"
+          rapydo logs proxy | grep "Starting nginx, ready to accept connections"
 
       - name: Test neo4j
         if: ${{ matrix.service == 'neo4j'}}
