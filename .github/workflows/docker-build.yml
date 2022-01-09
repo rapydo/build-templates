@@ -135,14 +135,7 @@ jobs:
 
           # Expected startup time: ~ 2 seconds
 
-          sleep 1
-          if rapydo logs backend | grep "REST API backend server is ready to be launched";
-          then
-            echo "Backend was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 1
+          sleep 2
           rapydo logs backend
           echo -e "\nBackend is expected to have completed the startup\n";
           rapydo logs backend | grep "REST API backend server is ready to be launched"
@@ -274,16 +267,9 @@ jobs:
           rapydo init
           rapydo start redis
 
-          # Expected startup time: ~ 1 seconds
+          # Expected startup time: ~ 1 second
 
-          # sleep 1
-          if rapydo logs redis | grep "Ready to accept connections";
-          then
-            echo "Redis was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 2
+          sleep 1
           rapydo logs redis
           echo -e "\nRedis is expected to have completed the startup\n";
           rapydo logs redis | grep "Ready to accept connections"
@@ -297,13 +283,6 @@ jobs:
           rapydo start postgres
 
           # Expected startup time: ~ 1 second
-
-          # sleep 1
-          if rapydo logs postgres | grep "database system is ready to accept connections";
-          then
-            echo "Postgres was not expected to have started yet";
-            exit 1
-          fi
 
           sleep 1
           rapydo logs postgres
@@ -348,16 +327,9 @@ jobs:
           rapydo init
           rapydo run adminer --detach
 
-          # Expected startup time: ~ 2 seconds
+          # Expected startup time: 1-2 seconds
 
-          sleep 1
-          if docker logs adminer 2>&1 | grep "Development Server .* started";
-          then
-            echo "Adminer was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 1
+          sleep 2
           docker logs adminer
           echo -e "\nAdminer is expected to have completed the startup\n";
           docker logs adminer 2>&1 | grep "Development Server .* started"
