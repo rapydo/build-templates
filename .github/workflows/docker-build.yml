@@ -129,84 +129,84 @@ jobs:
       - name: Test backend
         if: ${{ matrix.service == 'backend'}}
         run: |
-          rapydo create prj --auth no --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start backend
 
       - name: Test angular
         if: ${{ matrix.service == 'angular'}}
         run: |
-          rapydo create prj --auth no --frontend angular --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start frontend
 
       - name: Test angular-test
         if: ${{ matrix.service == 'angular-test'}}
         run: |
-          rapydo create prj --auth no --frontend angular --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
           rapydo -e FRONTEND_BUILD_MODE=angular-test init
           rapydo start frontend
 
       - name: Test proxy
         if: ${{ matrix.service == 'proxy'}}
         run: |
-          rapydo create prj --auth no --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo --prod init
           rapydo start proxy
 
       - name: Test neo4j
         if: ${{ matrix.service == 'neo4j'}}
         run: |
-          rapydo create prj --auth neo4j --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth neo4j --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start neo4j
 
       - name: Test rabbitmq
         if: ${{ matrix.service == 'rabbitmq'}}
         run: |
-          rapydo create prj --auth no --frontend no -s rabbit --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no -s rabbit --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start rabbit
 
       - name: Test postgres
         if: ${{ matrix.service == 'postgres'}}
         run: |
-          rapydo create prj --auth postgres --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth postgres --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start postgres
 
       - name: Test mongodb
         if: ${{ matrix.service == 'mongodb'}}
         run: |
-          rapydo create prj --auth mongo --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth mongo --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start mongo
 
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
         run: |
-          rapydo create prj --auth no --frontend no -s ftp --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no -s ftp --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start ftp
 
       - name: Test adminer
         if: ${{ matrix.service == 'adminer'}}
         run: |
-          rapydo create prj --auth no --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo run adminer
 
       - name: Test swaggerui
         if: ${{ matrix.service == 'swaggerui'}}
         run: |
-          rapydo create prj --auth no --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo run swaggerui
 
       - name: Test registry
         if: ${{ matrix.service == 'registry'}}
         run: |
-          rapydo create prj --auth no --frontend no --origin-url https://your_remote_git/your_project.git
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo run registry
 
