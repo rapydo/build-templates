@@ -213,7 +213,7 @@ jobs:
           rapydo --prod init
           rapydo start proxy
 
-          # Expected startup time: ~ 4 seconds mostly due to the DHParam generation
+          # Expected startup time: ~ 5 seconds mostly due to the DHParam generation
           # But sometimes it is much faster due to random entropy needed for DHParam
           # so do not add a sleep before the first check
           # sleep 1
@@ -223,7 +223,7 @@ jobs:
             exit 1
           fi
 
-          sleep 4
+          sleep 5
           rapydo logs proxy
           echo -e "\nnginx is expected to have completed the startup\n";
           rapydo logs proxy | grep "Starting nginx, ready to accept connections"
