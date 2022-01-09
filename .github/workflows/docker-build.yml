@@ -370,7 +370,7 @@ jobs:
 
           # Expected startup time: 2 seconds
 
-          if docker logs registry 2>&1 | grep "debug server listening localhost;
+          if docker logs registry 2>&1 | grep "debug server listening localhost";
           then
             echo "Docker Registry was not expected to have started yet";
             exit 1
