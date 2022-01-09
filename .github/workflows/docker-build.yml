@@ -363,16 +363,16 @@ jobs:
           rapydo init
           rapydo run registry
 
-          # Expected startup time: 3 seconds
+          # Expected startup time: 3 seconds, but sometimes it is much faster...
+          # so do not add a sleep before the first check
 
-          sleep 1
           if docker logs registry 2>&1 | grep "debug server listening localhost";
           then
             echo "Docker Registry was not expected to have started yet";
             exit 1
           fi
 
-          sleep 2
+          sleep 3
           docker logs registry
           echo -e "\nDocker Registry is expected to have completed the startup\n";
           docker logs registry 2>&1 | grep "debug server listening localhost"
