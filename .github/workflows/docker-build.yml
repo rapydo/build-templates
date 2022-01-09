@@ -349,19 +349,16 @@ jobs:
           rapydo init
           rapydo run swaggerui --detach
 
-          # Expected startup time: ~ 2 seconds
+          # Expected startup time: < 1 second
 
           sleep 1
-          if docker logs swaggerui 2>&1 | grep "Development Server .* started";
-          then
-            echo "Was not expected to have started yet";
-            exit 1
-          fi
 
-          sleep 1
+          curl http://localhost:7777
+          curl http://localhost:7777 | grep "Swagger UI"
+
           docker logs swaggerui
           echo -e "\nSwaggerUI is expected to have completed the startup\n";
-          docker logs swaggerui 2>&1 | grep "Development Server .* started"
+          docker logs swaggerui 2>&1 | grep "GET / HTTP/.*\" 200"
       - name: Test registry
         if: ${{ matrix.service == 'registry'}}
         run: |
@@ -374,7 +371,7 @@ jobs:
           # Expected startup time: < 1 second
 
           sleep 1
-          rapydo logs registry
+          docker logs registry
           echo -e "\nDocker Registry is expected to have completed the startup\n";
           docker logs registry 2>&1 | grep "debug server listening localhost"
       # - name: Test controller
