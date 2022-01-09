@@ -313,19 +313,12 @@ jobs:
           rapydo init
           rapydo start ftp
 
-          # Expected startup time: ~ 2 seconds
-
-          sleep 1
-          if rapydo logs ftp | grep "xxxxxx";
-          then
-            echo "Was not expected already started";
-            exit 1
-          fi
+          # Expected startup time: ~ 1 second, no message is shown at startup completion...
 
           sleep 1
           rapydo logs ftp
           echo -e "\nPure-FTP is expected to have completed the startup\n";
-          rapydo logs ftp | grep "xxxxx"
+          rapydo logs ftp | grep "Starting Pure-FTPd"
 
       - name: Test adminer
         if: ${{ matrix.service == 'adminer'}}
