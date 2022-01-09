@@ -205,12 +205,13 @@ jobs:
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo --prod init
           rapydo start proxy
+          rapydo ssl
 
-          # Expected startup time: 1 ~ 12 seconds mostly due to the DHParam generation
+          # Expected startup time: 1 ~ 10 seconds mostly due to the DHParam generation
           # Due to random entropy needed for DHParam the generation time is very variable
           # so do not add a preliminary check
 
-          sleep 12
+          sleep 10
           rapydo logs proxy
           echo -e "\nnginx is expected to have completed the startup\n";
           rapydo logs proxy | grep "Starting nginx, ready to accept connections"
