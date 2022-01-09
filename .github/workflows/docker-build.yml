@@ -309,14 +309,7 @@ jobs:
           rapydo init
           rapydo start mongodb
 
-          # Expected startup time: ~ 1 seconds
-
-          # sleep 1
-          if rapydo logs mongodb | grep "Waiting for connections";
-          then
-            echo "Mongodb was not expected to have started yet";
-            exit 1
-          fi
+          # Expected startup time: < 1 second
 
           sleep 1
           rapydo logs mongodb
