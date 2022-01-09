@@ -133,6 +133,20 @@ jobs:
           rapydo init
           rapydo start backend
 
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if rapydo logs backend | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs backend
+          echo -e "\nBackend is expected to have completed the startup\n";
+          rapydo logs backend | grep "xxxxx"
+
       - name: Test angular
         if: ${{ matrix.service == 'angular'}}
         run: |
@@ -140,6 +154,20 @@ jobs:
           rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start frontend
+
+          # Expected startup time: ~ 20 seconds
+
+          sleep 10
+          if rapydo logs frontend | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 10
+          rapydo logs frontend
+          echo -e "\nAngular is expected to have completed the startup\n";
+          rapydo logs frontend | grep "xxxxx"
 
       - name: Test angular-test
         if: ${{ matrix.service == 'angular-test'}}
@@ -149,6 +177,20 @@ jobs:
           rapydo -e FRONTEND_BUILD_MODE=angular-test init
           rapydo start frontend
 
+          # Expected startup time: ~ 20 seconds
+
+          sleep 10
+          if rapydo logs frontend | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 10
+          rapydo logs frontend
+          echo -e "\nAngular is expected to have completed the startup\n";
+          rapydo logs frontend | grep "xxxxx"
+
       - name: Test proxy
         if: ${{ matrix.service == 'proxy'}}
         run: |
@@ -156,6 +198,20 @@ jobs:
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo --prod init
           rapydo start proxy
+
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if rapydo logs proxy | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs proxy
+          echo -e "\nnginx is expected to have completed the startup\n";
+          rapydo logs proxy | grep "xxxxx"
 
       - name: Test neo4j
         if: ${{ matrix.service == 'neo4j'}}
@@ -176,7 +232,7 @@ jobs:
 
           sleep 5
           rapydo logs neo4j
-          echo "Neo4j is expected to have completed the startup";
+          echo -e "\nNeo4j is expected to have completed the startup\n";
           rapydo logs neo4j | grep "Remote interface available at http"
 
       - name: Test rabbitmq
@@ -187,6 +243,19 @@ jobs:
           rapydo init
           rapydo start rabbit
 
+          # Expected startup time: ~ 10 seconds
+
+          sleep 5
+          if rapydo logs rabbit | grep "Server startup complete;";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 5
+          rapydo logs rabbit
+          echo -e "\nRabbitMQ is expected to have completed the startup\n";
+          rapydo logs rabbit | grep "Server startup complete;"
       - name: Test postgres
         if: ${{ matrix.service == 'postgres'}}
         run: |
@@ -194,6 +263,25 @@ jobs:
           rapydo create prj --auth postgres --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start postgres
+
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no -s rabbit --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start rabbit
+
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if rapydo logs postgres | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs postgres
+          echo -e "\nPostgres is expected to have completed the startup\n";
+          rapydo logs postgres | grep "xxxxx"
 
       - name: Test mongodb
         if: ${{ matrix.service == 'mongodb'}}
@@ -203,6 +291,20 @@ jobs:
           rapydo init
           rapydo start mongodb
 
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if rapydo logs mongodb | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs mongodb
+          echo -e "\nMongodb is expected to have completed the startup\n";
+          rapydo logs mongodb | grep "xxxxx"
+
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
         run: |
@@ -210,6 +312,20 @@ jobs:
           rapydo create prj --auth no --frontend no -s ftp --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start ftp
+
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if rapydo logs ftp | grep "xxxxxx";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs ftp
+          echo -e "\nPure-FTP is expected to have completed the startup\n";
+          rapydo logs ftp | grep "xxxxx"
 
       - name: Test adminer
         if: ${{ matrix.service == 'adminer'}}
@@ -219,6 +335,19 @@ jobs:
           rapydo init
           rapydo run adminer --detach
 
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if docker logs adminer 2>&1 | grep "Development Server .* started";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs adminer
+          echo -e "\nAdminer is expected to have completed the startup\n";
+          docker logs adminer 2>&1 | grep "Development Server .* started"
       - name: Test swaggerui
         if: ${{ matrix.service == 'swaggerui'}}
         run: |
@@ -227,6 +356,19 @@ jobs:
           rapydo init
           rapydo run swaggerui --detach
 
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if docker logs swaggerui 2>&1 | grep "Development Server .* started";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs swaggerui
+          echo -e "\nSwaggerUI is expected to have completed the startup\n";
+          docker logs swaggerui 2>&1 | grep "Development Server .* started"
       - name: Test registry
         if: ${{ matrix.service == 'registry'}}
         run: |
@@ -236,6 +378,19 @@ jobs:
           rapydo init
           rapydo run registry
 
+          # Expected startup time: ~ 2 seconds
+
+          sleep 1
+          if docker logs registry 2>&1 | grep "debug server listening localhost";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 1
+          rapydo logs registry
+          echo -e "\nDocker Registry is expected to have completed the startup\n";
+          docker logs registry 2>&1 | grep "debug server listening localhost"
       # - name: Test controller
       #   if: ${{ matrix.service == 'controller'}}
       #   run: |
