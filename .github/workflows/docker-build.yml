@@ -136,7 +136,7 @@ jobs:
           # Expected startup time: ~ 2 seconds
 
           sleep 1
-          if rapydo logs backend | grep "xxxxxx";
+          if rapydo logs backend | grep "REST API backend server is ready to be launched";
           then
             echo "Backend was not expected to have started yet";
             exit 1
@@ -145,7 +145,7 @@ jobs:
           sleep 1
           rapydo logs backend
           echo -e "\nBackend is expected to have completed the startup\n";
-          rapydo logs backend | grep "xxxxx"
+          rapydo logs backend | grep "REST API backend server is ready to be launched"
 
       - name: Test angular
         if: ${{ matrix.service == 'angular'}}
@@ -158,7 +158,7 @@ jobs:
           # Expected startup time: ~ 20 seconds
 
           sleep 10
-          if rapydo logs frontend | grep "xxxxxx";
+          if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
@@ -167,7 +167,7 @@ jobs:
           sleep 10
           rapydo logs frontend
           echo -e "\nAngular is expected to have completed the startup\n";
-          rapydo logs frontend | grep "xxxxx"
+          rapydo logs frontend | grep "Compiled successfully."
 
       - name: Test angular-test
         if: ${{ matrix.service == 'angular-test'}}
@@ -180,7 +180,7 @@ jobs:
           # Expected startup time: ~ 20 seconds
 
           sleep 10
-          if rapydo logs frontend | grep "xxxxxx";
+          if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
             exit 1
@@ -189,7 +189,7 @@ jobs:
           sleep 10
           rapydo logs frontend
           echo -e "\nAngular is expected to have completed the startup\n";
-          rapydo logs frontend | grep "xxxxx"
+          rapydo logs frontend | grep "Compiled successfully."
 
       - name: Test proxy
         if: ${{ matrix.service == 'proxy'}}
@@ -199,16 +199,16 @@ jobs:
           rapydo --prod init
           rapydo start proxy
 
-          # Expected startup time: ~ 2 seconds
+          # Expected startup time: ~ 4 seconds (but only due to the DHParam generation)
 
-          sleep 1
+          sleep 2
           if rapydo logs proxy | grep "xxxxxx";
           then
             echo "nginx was not expected to have started yet";
             exit 1
           fi
 
-          sleep 1
+          sleep 2
           rapydo logs proxy
           echo -e "\nnginx is expected to have completed the startup\n";
           rapydo logs proxy | grep "xxxxx"
@@ -289,7 +289,7 @@ jobs:
           # Expected startup time: ~ 2 seconds
 
           sleep 1
-          if rapydo logs mongodb | grep "xxxxxx";
+          if rapydo logs mongodb | grep "Waiting for connections";
           then
             echo "Mongodb was not expected to have started yet";
             exit 1
@@ -298,7 +298,7 @@ jobs:
           sleep 1
           rapydo logs mongodb
           echo -e "\nMongodb is expected to have completed the startup\n";
-          rapydo logs mongodb | grep "xxxxx"
+          rapydo logs mongodb | grep "Waiting for connections"
 
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
