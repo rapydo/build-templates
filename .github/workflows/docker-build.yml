@@ -264,7 +264,6 @@ jobs:
           rapydo init
           rapydo start postgres
 
-          cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no -s rabbit --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start rabbit
