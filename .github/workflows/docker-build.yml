@@ -165,6 +165,19 @@ jobs:
           rapydo init
           rapydo start neo4j
 
+          # Expected startup time: ~ 4 seconds
+
+          sleep 2
+          if rapydo logs neo4j | grep "Remote interface available at http";
+          then
+            echo "Was not expected already started";
+            exit 1
+          fi
+
+          sleep 2
+          rapydo logs neo4j
+          rapydo logs neo4j | grep "Remote interface available at http"
+
       - name: Test rabbitmq
         if: ${{ matrix.service == 'rabbitmq'}}
         run: |
