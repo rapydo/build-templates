@@ -256,6 +256,29 @@ jobs:
           rapydo logs rabbit
           echo -e "\nRabbitMQ is expected to have completed the startup\n";
           rapydo logs rabbit | grep "Server startup complete;"
+
+      - name: Test redis
+        if: ${{ matrix.service == 'redis'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no -s redis --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start redis
+
+          # Expected startup time: ~ 1 seconds
+
+          # sleep 1
+          if rapydo logs redis | grep "Ready to accept connections";
+          then
+            echo "Redis was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 2
+          rapydo logs redis
+          echo -e "\nRedis is expected to have completed the startup\n";
+          rapydo logs redis | grep "Ready to accept connections"
+
       - name: Test postgres
         if: ${{ matrix.service == 'postgres'}}
         run: |
@@ -286,9 +309,9 @@ jobs:
           rapydo init
           rapydo start mongodb
 
-          # Expected startup time: ~ 2 seconds
+          # Expected startup time: ~ 1 seconds
 
-          sleep 1
+          # sleep 1
           if rapydo logs mongodb | grep "Waiting for connections";
           then
             echo "Mongodb was not expected to have started yet";
