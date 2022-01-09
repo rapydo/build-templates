@@ -243,16 +243,16 @@ jobs:
           rapydo init
           rapydo start rabbit
 
-          # Expected startup time: ~ 10 seconds
+          # Expected startup time: ~ 6 seconds
 
-          sleep 5
+          sleep 3
           if rapydo logs rabbit | grep "Server startup complete;";
           then
             echo "RabbitMQ was not expected to have started yet";
             exit 1
           fi
 
-          sleep 5
+          sleep 3
           rapydo logs rabbit
           echo -e "\nRabbitMQ is expected to have completed the startup\n";
           rapydo logs rabbit | grep "Server startup complete;"
@@ -263,10 +263,6 @@ jobs:
           rapydo create prj --auth postgres --frontend no --current --origin-url https://your_remote_git/your_project.git
           rapydo init
           rapydo start postgres
-
-          rapydo create prj --auth no --frontend no -s rabbit --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start rabbit
 
           # Expected startup time: ~ 2 seconds
 
