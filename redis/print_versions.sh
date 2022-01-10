@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$(redis-server --version | awk '{ print $3}')"
+echo "Redis $(redis-server --version | awk '{ print $3}')"
