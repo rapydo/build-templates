@@ -123,10 +123,10 @@ echo ""
 echo "##################################################################"
 # Initialize the new database folder
 echo -e "\e[32mInitializing the new folder ${NEW_VERSION}\e[0m"
-echo su -c \"initdb -D ${DATAFOLDER}\" postgres
+echo su - -c \"initdb -D ${DATAFOLDER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "initdb -D ${DATAFOLDER}" postgres
+su - -c "initdb -D ${DATAFOLDER}" postgres
 echo ""
 
 echo "##################################################################"
@@ -144,10 +144,10 @@ echo ""
 echo "##################################################################"
 # Run postgres
 echo -e "\e[32mPostgres server will be executed\e[0m"
-echo su -c \"postgres -D ${DATAFOLDER}\" postgres
+echo su - -c \"postgres -D ${DATAFOLDER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "postgres -D ${DATAFOLDER}" postgres &
+su - -c "postgres -D ${DATAFOLDER}" postgres &
 echo ""
 
 echo ""
@@ -158,10 +158,10 @@ echo ""
 echo "##################################################################"
 # Restore the default user
 echo -e "\e[32mRecreating the ${POSTGRES_USER} user\e[0m"
-echo su -c \"createuser -s ${POSTGRES_USER}\" postgres
+echo su - -c \"createuser -s ${POSTGRES_USER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "createuser -s ${POSTGRES_USER}" postgres
+su - -c "createuser -s ${POSTGRES_USER}" postgres
 echo ""
 
 echo "##################################################################"
@@ -178,10 +178,10 @@ echo ""
 echo "##################################################################"
 # Restore the backup
 echo -e "\e[32mRestoring the database from /tmp/${BACKUP_UNCOMPRESSED_NAME}\e[0m"
-echo su -c \"psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}\" postgres
+echo su - -c \"psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
-su -c "psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}" postgres
+su - -c "psql -U ${POSTGRES_USER} -d postgres -f /tmp/${BACKUP_UNCOMPRESSED_NAME}" postgres
 echo ""
 
 echo ""
