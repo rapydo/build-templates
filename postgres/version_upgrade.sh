@@ -113,7 +113,7 @@ fi
 SLEEP_TIME=5
 echo "##################################################################"
 # Update the current link to the TO folder
-echo -e "\e[32mUpdating the current link to the new ${NEW_VERSION} folder\e[0m"
+echo -e "\e[32mUpdating the current link to the version ${NEW_VERSION} folder\e[0m"
 echo ln -sfT ${PGFOLDER}/${NEW_VERSION} ${DATAFOLDER}
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
@@ -122,7 +122,7 @@ echo ""
 
 echo "##################################################################"
 # Initialize the new database folder
-echo -e "\e[32mInitializing the new folder ${NEW_VERSION}\e[0m"
+echo -e "\e[32mInitializing the folder for version ${NEW_VERSION}\e[0m"
 echo su - -c \"initdb -D ${DATAFOLDER}\" postgres
 echo "Sleeping ${SLEEP_TIME} seconds..."
 sleep $SLEEP_TIME
