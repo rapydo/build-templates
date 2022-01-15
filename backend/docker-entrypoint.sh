@@ -109,6 +109,13 @@ else
 
         echo "Testing mode"
 
+        export PYTHONMALLOC=debug
+        export PYTHONASYNCIODEBUG=1
+        # export PYTHONWARNINGS=default
+        # Convert warnings to exceptions
+        export PYTHONWARNINGS=error
+        export PYTHONFAULTHANDLER=1
+
         if [[ "${API_AUTOSTART}" == "1" ]]; then
             HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
             HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi launch'
