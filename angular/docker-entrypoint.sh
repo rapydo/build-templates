@@ -68,7 +68,7 @@ if [ "$APP_MODE" == "production" ]; then
 elif [ "$APP_MODE" == "development" ]; then
 
     # Do not install dev dependencies (only needed for tests)
-    run_as_node "yarn install --production"
+    run_as_node "yarn install --production --no-bin-links"
     run_as_node "reload-types"
     run_as_node "yarn start"
 

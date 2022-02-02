@@ -67,7 +67,7 @@ if [ "$APP_MODE" == 'production' ]; then
 
 elif [ "$APP_MODE" == 'development' ]; then
 
-    run_as_node "yarn install"
+    run_as_node "yarn install --no-bin-links"
     run_as_node "reload-types"
     run_as_node "yarn start"
 
