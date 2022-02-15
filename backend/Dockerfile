@@ -31,7 +31,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir --force-reinstall dumb-init==1.2.5 setuptools==60.8.2 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
