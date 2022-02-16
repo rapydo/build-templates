@@ -73,7 +73,6 @@ if [ "$APP_MODE" == "production" ]; then
     run_as_node "yarn workspaces focus --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
-    run_as_node "mkdir -p /app/dist_online"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
         run_as_node "yarn run gzip"

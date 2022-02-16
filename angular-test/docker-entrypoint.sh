@@ -73,15 +73,16 @@ if [ "$APP_MODE" == 'production' ]; then
     run_as_node "yarn workspaces focus --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
-    run_as_node "echo '' > /app/dist/robots.txt"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
         run_as_node "yarn run gzip"
         run_as_node "yarn run move-build-online"
+        run_as_node "echo -n '' > /app/dist_online/robots.txt"
     else
         run_as_node "yarn run build:ssr"
         run_as_node "yarn run gzip"
         run_as_node "yarn run move-build-online"
+        run_as_node "echo -n '' > /app/dist_online/robots.txt"
         run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist_online/sitemap.xml ${FRONTEND_URL}"
         run_as_node "echo \"Sitemap: ${FRONTEND_URL}sitemap.xml\" >> /app/dist_online/robots.txt"
     fi
