@@ -61,30 +61,34 @@ run_as_node "yarn plugin import typescript"
 
 if [ "$APP_MODE" == "production" ]; then
 
+    if [[ -z $FRONTEND_URL ]];
+    then
+        FRONTEND_URL="https://${BASE_HREF}${FRONTEND_PREFIX}"
+    elif [[ $FRONTEND_URL != */ ]];
+    then
+        FRONTEND_URL="${FRONTEND_URL}/"
+    fi
+
     run_as_node "yarn install"
     run_as_node "yarn workspaces focus --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
+    run_as_node "echo '' > /app/dist/robots.txt"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
-        run_as_node "echo \"\" > /app/dist/robots.txt"
+        run_as_node "yarn run gzip"
+        run_as_node "yarn run move-build-online"
     else
-        if [[ -z $FRONTEND_URL ]];
-        then
-            FRONTEND_URL="https://${BASE_HREF}${FRONTEND_PREFIX}"
-        elif [[ $FRONTEND_URL != */ ]];
-        then
-            FRONTEND_URL="${FRONTEND_URL}/"
-        fi
         run_as_node "yarn run build:ssr"
-        run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist/sitemap.xml ${FRONTEND_URL}"
-        run_as_node "echo Sitemap: ${FRONTEND_URL}sitemap.xml > /app/dist/robots.txt"
+        run_as_node "yarn run gzip"
+        run_as_node "yarn run move-build-online"
+        run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist_online/sitemap.xml ${FRONTEND_URL}"
+        run_as_node "echo Sitemap: ${FRONTEND_URL}sitemap.xml >> /app/dist_online/robots.txt"
     fi
-    run_as_node "echo User-agent: * >> /app/dist/robots.txt"
-    run_as_node "echo Allow: / >> /app/dist/robots.txt"
-    run_as_node "echo Disallow: >> /app/dist/robots.txt"
-    run_as_node "yarn run gzip"
-    run_as_node "yarn run move-build-online"
+
+    run_as_node "echo User-agent: * >> /app/dist_online/robots.txt"
+    run_as_node "echo Allow: / >> /app/dist_online/robots.txt"
+    run_as_node "echo Disallow: >> /app/dist_online/robots.txt"
 
 elif [ "$APP_MODE" == "development" ]; then
 
