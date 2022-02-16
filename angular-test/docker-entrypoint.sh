@@ -78,12 +78,12 @@ if [ "$APP_MODE" == 'production' ]; then
         fi
         run_as_node "yarn run build:ssr"
         run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist/sitemap.xml ${FRONTEND_URL}"
-        run_as_node "echo \"Sitemap: ${FRONTEND_URL}sitemap.xml\" > /app/dist/robots.txt"
+        run_as_node "echo Sitemap: ${FRONTEND_URL}sitemap.xml > /app/dist/robots.txt"
 
     fi
-    run_as_node "echo \"User-agent:*\" >> /app/dist/robots.txt"
-    run_as_node "echo \"Allow: /\" >> /app/dist/robots.txt"
-    run_as_node "echo \"Disallow:\" >> /app/dist/robots.txt"
+    run_as_node "echo User-agent: * >> /app/dist/robots.txt"
+    run_as_node "echo Allow: / >> /app/dist/robots.txt"
+    run_as_node "echo Disallow: >> /app/dist/robots.txt"
     run_as_node "yarn run gzip"
     run_as_node "yarn run move-build-online"
 
