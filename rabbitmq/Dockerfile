@@ -16,3 +16,6 @@ RUN sed -i '3i/usr/local/bin/dump_conf_file.sh' /usr/local/bin/docker-entrypoint
 COPY --chmod=740 reload-rabbitmq.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+
+
+RUN 'consumer_timeout = 31622400000' >> /etc/rabbitmq/rabbitmq.conf
