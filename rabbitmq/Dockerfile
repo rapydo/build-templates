@@ -17,4 +17,6 @@ COPY --chmod=740 reload-rabbitmq.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo "/bin/bash /etc/banner.sh" >> /etc/bash.bashrc
 
+# TODO: should be moved in dump_conf_file.sh, probably env-based
+
 RUN echo "consumer_timeout = 31622400000" >> /etc/rabbitmq/rabbitmq.conf
