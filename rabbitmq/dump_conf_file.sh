@@ -6,6 +6,7 @@ CONF="/etc/rabbitmq/rabbitmq.conf"
 echo "loopback_users.guest = false" >> ${CONF}
 echo "default_user = ${DEFAULT_USER}" >> ${CONF}
 echo "default_pass = ${DEFAULT_PASS}" >> ${CONF}
+echo "consumer_timeout = 31622400000" >> ${CONF}
 
 if [[ ! -z $SSL_KEYFILE ]];
 then
