@@ -2279,3 +2279,4 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST 
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /forums/ajax/render/widget_tabbedcontainer_tab_panel HTTP/1.1" 301 162 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /api/geojson?url=file:///etc/hosts HTTP/1.1" 301 162 "-" "l9explore/1.2.2" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "HEAD /icons/.%%32%65/%%32%65%%32%65/apache2/icons/sphere1.png HTTP/1.1" 400 161 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "t3 12.2.1" 400 150 "-" "-" "-"
