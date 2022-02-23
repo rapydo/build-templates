@@ -36,11 +36,11 @@ fi
 
 run_as_node() {
     stars=${#1}
-    stars=$(( stars > 20 ? 20 : stars ))
+    stars=$(( stars > 30 ? 30 : stars ))
     for i in $(seq -3 $stars); do echo -n "#"; done
     echo ""
     echo -n "# "
-    echo -n ${1:0:20}
+    echo -n ${1:0:30}
     echo " #"
     for i in $(seq -3 $stars); do echo -n "#"; done
     echo ""
