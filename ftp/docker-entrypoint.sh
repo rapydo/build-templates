@@ -9,7 +9,7 @@ CERT_FILE="/etc/letsencrypt/real/fullchain1.pem"
 KEY_FILE="/etc/letsencrypt/real/privkey1.pem"
 
 if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
-    print("Enabling SSL")
+    echo "Enabling SSL"
     cat ${CERT_FILE} ${KEY_FILE} > /etc/ssl/private/pure-ftpd-cert.pem
 fi
 
