@@ -6,4 +6,4 @@ if [[ ! -t 0 ]]; then
 fi
 
 # if prod mode and file exists create pure-ftpd.pem
-sleep infinity
+/run.sh -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30019
