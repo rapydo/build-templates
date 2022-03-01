@@ -12,3 +12,6 @@ EXPOSE 21 30000-30019
 COPY --chmod=740 reload-ftp.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+
+COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
