@@ -10,7 +10,7 @@ KEY_FILE="/etc/letsencrypt/real/privkey1.pem"
 
 if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
     echo "Enabling SSL"
-    cat ${CERT_FILE} ${KEY_FILE} > /etc/ssl/private/pure-ftpd-cert.pem
+    cat ${CERT_FILE} ${KEY_FILE} > /etc/ssl/private/pure-ftpd.pem
     # -Y / --tls behavior
     # -Y 0 (default) disables SSL/TLS security mechanisms.
     # -Y 1 Accept both normal sessions and SSL/TLS ones.
@@ -18,7 +18,7 @@ if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
     #      including anonymous ones.
     # -Y 3 refuses connections that aren't using SSL/TLS security mechanisms,
     #      and refuse cleartext data channels as well.
-    export ADDED_FLAGS="${ADDED_FLAGS} --tls=2"
+    export ADDED_FLAGS="${ADDED_FLAGS} --tls=3"
 fi
 
 # if prod mode and file exists create pure-ftpd.pem
