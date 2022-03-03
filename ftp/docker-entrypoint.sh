@@ -18,7 +18,7 @@ if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
     #      including anonymous ones.
     # -Y 3 refuses connections that aren't using SSL/TLS security mechanisms,
     #      and refuse cleartext data channels as well.
-    export ADDED_FLAGS="--tls=3"
+    export ADDED_FLAGS="--tls=2"
 fi
 
 # if prod mode and file exists create pure-ftpd.pem
