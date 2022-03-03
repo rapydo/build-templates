@@ -7,10 +7,15 @@ fi
 
 CERT_FILE="/etc/letsencrypt/real/fullchain1.pem"
 KEY_FILE="/etc/letsencrypt/real/privkey1.pem"
+DHPARAMS_FILE="/etc/letsencrypt/dhparam.pem"
 
 if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
     echo "Enabling SSL"
     cat ${CERT_FILE} ${KEY_FILE} > /etc/ssl/private/pure-ftpd.pem
+
+    if [[ -f ${DHPARAMS_FILE} ]]; then
+        cp ${DHPARAMS_FILE} /etc/ssl/private/pure-ftpd-dhparams.pem
+    fi
     # -Y / --tls behavior
     # -Y 0 (default) disables SSL/TLS security mechanisms.
     # -Y 1 Accept both normal sessions and SSL/TLS ones.
