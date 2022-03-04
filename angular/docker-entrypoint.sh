@@ -46,29 +46,57 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
+# berry == stable
+run_as_node "yarn set version berry"
+run_as_node "yarn plugin import workspace-tools"
+
+if grep -q "^nodeLinker:" .yarnrc.yml; then
+    sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
+else
+    echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
+fi
+
+# https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
+run_as_node "yarn plugin import typescript"
+
 if [ "$APP_MODE" == "production" ]; then
 
-    run_as_node "yarn install --production"
+    if [[ -z $FRONTEND_URL ]];
+    then
+        FRONTEND_URL="https://${BASE_HREF}${FRONTEND_PREFIX}"
+    elif [[ $FRONTEND_URL != */ ]];
+    then
+        FRONTEND_URL="${FRONTEND_URL}/"
+    fi
+
+    run_as_node "yarn install"
+    run_as_node "yarn workspaces focus --production"
     run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
-    # run_as_node "yarn run courtesy"
     if [ "$ENABLE_ANGULAR_SSR" == "0" ]; then
         run_as_node "yarn run build"
+        run_as_node "yarn run gzip"
+        run_as_node "yarn run move-build-online"
+        run_as_node "echo -n '' > /app/dist_online/robots.txt"
     else
         run_as_node "yarn run build:ssr"
-        run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist/sitemap.xml https://${BASE_HREF}${FRONTEND_PREFIX}"
-        run_as_node "echo \"Sitemap: https://${BASE_HREF}${FRONTEND_PREFIX}sitemap.xml\" > /app/dist/robots.txt"
-        run_as_node "echo \"User-agent:*\" >> /app/dist/robots.txt"
-        run_as_node "echo \"Allow: /\" >> /app/dist/robots.txt"
-        run_as_node "echo \"Disallow:\" >> /app/dist/robots.txt"
+        run_as_node "yarn run gzip"
+        run_as_node "yarn run move-build-online"
+        run_as_node "echo -n '' > /app/dist_online/robots.txt"
+        run_as_node "sitemap-generator --last-mod --change-freq monthly --priority-map '1.0,0.8,0.6,0.4,0.2' --max-depth 12 --verbose --filepath /app/dist_online/sitemap.xml ${FRONTEND_URL}"
+        run_as_node "echo \"Sitemap: ${FRONTEND_URL}sitemap.xml\" >> /app/dist_online/robots.txt"
     fi
-    run_as_node "yarn run gzip"
-    run_as_node "yarn run move-build-online"
+
+    run_as_node "echo \"User-agent: *\" >> /app/dist_online/robots.txt"
+    run_as_node "echo \"Allow: /\" >> /app/dist_online/robots.txt"
+    run_as_node "echo \"Disallow:\" >> /app/dist_online/robots.txt"
 
 elif [ "$APP_MODE" == "development" ]; then
 
+    run_as_node "yarn install"
     # Do not install dev dependencies (only needed for tests)
-    run_as_node "yarn install --production"
+    run_as_node "yarn workspaces focus --production"
+    run_as_node "npx browserslist@latest --update-db"
     run_as_node "reload-types"
     run_as_node "yarn start"
 

@@ -18,7 +18,6 @@ function verify_ssl_files {
 
 }
 
-
 if [[ "${NEO4J_dbms_ssl_policy_bolt_enabled}" == "True" ]];
 then
     root="${NEO4J_dbms_ssl_policy_bolt_base__directory}"
@@ -32,4 +31,3 @@ then
     verify_ssl_files "${root}/${NEO4J_dbms_ssl_policy_https_public__certificate}"
     verify_ssl_files "${root}/${NEO4J_dbms_ssl_policy_https_private__key}"
 fi
-

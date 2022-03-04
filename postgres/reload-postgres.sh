@@ -1,3 +1,3 @@
 #!/bin/ash
 
-echo "Not implemented yet"
+echo "Reload of postgres not implemented yet"

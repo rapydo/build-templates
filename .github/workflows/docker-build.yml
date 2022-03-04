@@ -7,22 +7,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    timeout-minutes: 8
+    timeout-minutes: 10
 
     env:
-      RAPYDO_VERSION: "2.1"
+      RAPYDO_VERSION: "2.2"
 
     strategy:
       matrix:
         service:
           [
             backend,
-            backend2110,
             angular,
             angular-test,
             proxy,
             neo4j,
             rabbitmq,
+            redis,
             postgres,
             mongodb,
             ftp,
@@ -48,10 +48,9 @@ jobs:
             --build-arg CURRENT_UID=1000 \
             --build-arg CURRENT_GID=1000 \
             --build-arg RAPYDO_VERSION=${RAPYDO_VERSION} \
-            --push \
             ${{ matrix.service }}
 
-      - name: Test Fail2ban
+      - name: Test fail2ban
         if: ${{ matrix.service == 'fail2ban' }}
         run: |
           docker run --rm -d --name fail2ban --network host --cap-add NET_ADMIN --cap-add NET_RAW rapydo/${{ matrix.service }}:${RAPYDO_VERSION}
@@ -69,7 +68,7 @@ jobs:
           docker exec fail2ban fail2ban-regex /tmp/testbed.syslog /tmp/fail2ban/filters/nginx.conf --print-all-missed > /tmp/nginx.missed
 
           # Verify that all rules have matches on the testbed
-          EXPECTED_RULES=$(grep -E "^\s+\^%\(prefix\)s<HOST>" do/controller/confs/fail2ban/filters/nginx.conf  | wc -l)
+          EXPECTED_RULES=$(grep -E "^\s+\^%\(prefix\)s<ADDR>" do/controller/confs/fail2ban/filters/nginx.conf | wc -l)
           echo "Expected ${EXPECTED_RULES} rules in nginx.conf"
 
           for i in $(seq 1 ${EXPECTED_RULES}); do
@@ -109,3 +108,276 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Set up Python
+        if: ${{ matrix.service != 'fail2ban' }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install RAPyDo
+        if: ${{ matrix.service != 'fail2ban' }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade --no-cache-dir git+https://github.com/rapydo/do.git@${RAPYDO_VERSION}
+          rapydo --version
+
+          mkdir test-${{ matrix.service }}
+          rapydo install compose
+
+      - name: Test backend
+        if: ${{ matrix.service == 'backend'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start backend
+
+          # Expected startup time: ~ 2 seconds
+
+          sleep 2
+          rapydo logs backend
+          echo -e "\nBackend is expected to have completed the startup\n";
+          rapydo logs backend | grep "REST API backend server is ready to be launched"
+
+      - name: Test angular
+        if: ${{ matrix.service == 'angular'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start frontend
+
+          # Expected startup time: ~ 180-200 seconds
+
+          sleep 60
+          if rapydo logs frontend | grep "Compiled successfully.";
+          then
+            echo "Angular was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 60
+          if rapydo logs frontend | grep "Compiled successfully.";
+          then
+            echo "Angular was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 90
+          rapydo logs frontend
+          echo -e "\nAngular is expected to have completed the startup\n";
+          rapydo logs frontend | grep "Compiled successfully."
+
+      - name: Test angular-test
+        if: ${{ matrix.service == 'angular-test'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
+          rapydo -e FRONTEND_BUILD_MODE=angular-test init
+          rapydo start frontend
+
+          # Expected startup time: ~ 180-200 seconds
+
+          sleep 60
+          if rapydo logs frontend | grep "Compiled successfully.";
+          then
+            echo "Angular was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 60
+          if rapydo logs frontend | grep "Compiled successfully.";
+          then
+            echo "Angular was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 90
+          rapydo logs frontend
+          echo -e "\nAngular is expected to have completed the startup\n";
+          rapydo logs frontend | grep "Compiled successfully."
+
+      - name: Test proxy
+        if: ${{ matrix.service == 'proxy'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo --prod init
+          rapydo start proxy
+          rapydo ssl
+
+          # The first startup is going to be very slow due to the DHParam generation
+          # Can't estimate the generation time because it greatly depends on the random entropy
+          sleep 1
+          rapydo logs proxy | grep "Generating DH parameters" 
+
+          # 15 seconds should be enough for DHParams to complete
+          sleep 15
+          rapydo logs proxy
+
+          # Let's remove the first container and start again to verify the normal startup time
+          rapydo remove
+          rapydo start proxy
+          sleep 1
+          echo -e "\nnginx is expected to have completed the startup\n";
+          rapydo logs proxy | grep "Starting nginx, ready to accept connections"
+
+      - name: Test neo4j
+        if: ${{ matrix.service == 'neo4j'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth neo4j --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start neo4j
+
+          # Expected startup time: ~ 12 seconds
+
+          sleep 6
+          if rapydo logs neo4j | grep "Remote interface available at http";
+          then
+            echo "Neo4j was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 6
+          rapydo logs neo4j
+          echo -e "\nNeo4j is expected to have completed the startup\n";
+          rapydo logs neo4j | grep "Remote interface available at http"
+
+      - name: Test rabbitmq
+        if: ${{ matrix.service == 'rabbitmq'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no -s rabbit --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start rabbit
+
+          # Expected startup time: ~ 4 seconds
+
+          sleep 2
+          if rapydo logs rabbit | grep "Server startup complete;";
+          then
+            echo "RabbitMQ was not expected to have started yet";
+            exit 1
+          fi
+
+          sleep 2
+          rapydo logs rabbit
+          echo -e "\nRabbitMQ is expected to have completed the startup\n";
+          rapydo logs rabbit | grep "Server startup complete;"
+
+      - name: Test redis
+        if: ${{ matrix.service == 'redis'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no -s redis --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start redis
+
+          # Expected startup time: ~ 1 second
+
+          sleep 1
+          rapydo logs redis
+          echo -e "\nRedis is expected to have completed the startup\n";
+          rapydo logs redis | grep "Ready to accept connections"
+
+      - name: Test postgres
+        if: ${{ matrix.service == 'postgres'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth postgres --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start postgres
+
+          # Expected startup time: ~ 1 second
+
+          sleep 1
+          rapydo logs postgres
+          echo -e "\nPostgres is expected to have completed the startup\n";
+          rapydo logs postgres | grep "database system is ready to accept connections"
+
+      - name: Test mongodb
+        if: ${{ matrix.service == 'mongodb'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth mongo --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start mongodb
+
+          # Expected startup time: < 1 second
+
+          sleep 1
+          rapydo logs mongodb
+          echo -e "\nMongodb is expected to have completed the startup\n";
+          rapydo logs mongodb | grep "Waiting for connections"
+
+      - name: Test ftp
+        if: ${{ matrix.service == 'ftp'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no -s ftp --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo start ftp
+
+          # Expected startup time: ~ 1 second, no message is shown at startup completion...
+
+          sleep 1
+          rapydo logs ftp
+          echo -e "\nPure-FTP is expected to have completed the startup\n";
+          rapydo logs ftp | grep "Starting Pure-FTPd"
+
+      - name: Test adminer
+        if: ${{ matrix.service == 'adminer'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo run adminer --detach
+
+          # Expected startup time: 1-2 seconds
+
+          sleep 2
+          docker logs adminer
+          echo -e "\nAdminer is expected to have completed the startup\n";
+          docker logs adminer 2>&1 | grep "Development Server .* started"
+      - name: Test swaggerui
+        if: ${{ matrix.service == 'swaggerui'}}
+        run: |
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo run swaggerui --detach
+
+          # Expected startup time: < 1 second
+
+          sleep 1
+
+          curl http://localhost:7777
+          curl http://localhost:7777 | grep "Swagger UI"
+
+          docker logs swaggerui
+          echo -e "\nSwaggerUI is expected to have completed the startup\n";
+          docker logs swaggerui 2>&1 | grep "GET / HTTP/.*\" 200"
+      - name: Test registry
+        if: ${{ matrix.service == 'registry'}}
+        run: |
+          export SWARM_MODE=1
+          cd test-${{ matrix.service }}
+          rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
+          rapydo init
+          rapydo run registry
+
+          # Expected startup time: 3 seconds, but sometimes it is much faster...
+          # so do not add a sleep before the first check
+          sleep 3
+          docker logs registry
+          echo -e "\nDocker Registry is expected to have completed the startup\n";
+          docker logs registry 2>&1 | grep "debug server listening localhost"
+      # - name: Test controller
+      #   if: ${{ matrix.service == 'controller'}}
+      #   run: |
+      #     ...
+
+      - name: Docker Push
+        run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}

@@ -1,4 +1,4 @@
-FROM rabbitmq:3.9.5-management
+FROM rabbitmq:3.9.12-management
 
 COPY --chown=rabbitmq --chmod=740 ./dump_conf_file.sh /usr/local/bin/dump_conf_file.sh
 COPY --chown=rabbitmq --chmod=740 ./enable-plugins.sh /usr/local/bin/enable-plugins.sh
@@ -15,4 +15,4 @@ RUN sed -i '3i/usr/local/bin/dump_conf_file.sh' /usr/local/bin/docker-entrypoint
 
 COPY --chmod=740 reload-rabbitmq.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
-RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
+RUN echo "/bin/bash /etc/banner.sh" >> /etc/bash.bashrc

@@ -1,7 +1,5 @@
-FROM nginx:1.21.3-alpine
-# http://nginx.org/en/CHANGES
+FROM nginx:1.21.5-alpine
 
-###################
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION" && \
     mkdir -p /etc/rapydo && echo $RAPYDO_VERSION > /etc/rapydo/release
@@ -12,46 +10,24 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-###################
 RUN apk --no-cache update && \
     apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini certbot
 
-# WORKDIR /tmp
-# ENV ACMEDIR /acme
-# You can also upgrade live with /acme/acme.sh --upgrade --home /acme
-# Then register the client /acme/acme.sh --register-account
-# ENV ACMEV "2.8.8"
-# RUN wget https://github.com/Neilpang/acme.sh/archive/${ACMEV}.zip \
-#     && unzip ${ACMEV}.zip && cd acme.sh-${ACMEV} \
-#     && ./acme.sh --install --home $ACMEDIR \
-#     && ./acme.sh --register-account \
-#     && cd .. && rm -rf ./*$ACMEV
-
-#######################
-# RUN mkdir -p /usr/share/nginx/html/.well-known/acme-challenge
 RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html
 
-# Set the directory for launching the renewal script
-# WORKDIR $ACMEDIR
 ENV WWWDIR /usr/share/nginx/html
 
-# Save production certificates across multiple run
 ENV CERTDIR /etc/letsencrypt
 ENV CERTSUBDIR real
 ENV CERTKEYFILE $CERTSUBDIR/privkey1.pem
 ENV CERTCHAINFILE $CERTSUBDIR/fullchain1.pem
-
 ENV CERTKEY ${CERTDIR}/${CERTKEYFILE}
 ENV CERTCHAIN ${CERTDIR}/${CERTCHAINFILE}
-
-RUN mkdir -p $CERTDIR/$CERTSUBDIR
-# VOLUME /etc/letsencrypt
-
 ENV DHPARAM /etc/letsencrypt/dhparam.pem
 
-# Configure nginx on basic aspects
-# + read configurations in "sites-enabled" dir
+RUN mkdir -p $CERTDIR/$CERTSUBDIR
+
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY confs /etc/nginx/sites-enabled-templates
 

@@ -13,11 +13,11 @@ if [ "$HOSTNAME" == "backend-server" ]; then
         touch ${PYTHON_PATH}/restapi/__main__.py
     fi
 elif [ "$HOSTNAME" == "flower" ]; then
-    echo "Not implemented yet"
+    echo "Reload of flower not implemented yet"
 elif [ "$HOSTNAME" == "celery-beat" ]; then
-    echo "Not implemented yet"
+    echo "Reload of celery-beat not implemented yet"
 elif [ "$HOSTNAME" == "telegram-bot" ]; then
-    echo "Not implemented yet"
+    echo "Reload of telegram bot not implemented yet"
 else
     PID=$(pgrep -f /usr/local/bin/celery | head -1)
     echo "Reloading celery (PID #${PID})..."

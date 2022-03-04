@@ -24,14 +24,15 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && apt-get install --yes --no-install-recommends \
     tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev \
     python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
-    python3-gdbm python3-setuptools python3-distutils \
+    python3-gdbm python3-setuptools \
     && ln -sf /usr/bin/python3.9 /usr/bin/python3 \
     && curl --silent https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
     && python3 get-pip.py \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir setuptools==59.6.0 \
+    && pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
@@ -80,3 +81,4 @@ CMD ["docker-entrypoint", "rest"]
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
 COPY banner.sh print_versions.sh /etc/
 COPY --chmod=740 reload-backend.sh /usr/local/bin/reload
+COPY --chmod=740 celery-healthcheck.sh /usr/local/bin/celery-healthcheck
