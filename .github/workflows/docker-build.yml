@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      RAPYDO_VERSION: "2.2"
+      RAPYDO_VERSION: "2.3"
 
     strategy:
       matrix:
