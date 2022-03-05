@@ -50,12 +50,6 @@ run_as_node "node /rapydo/merge.js"
 run_as_node "yarn set version berry"
 run_as_node "yarn plugin import workspace-tools"
 
-if grep -q "^nodeLinker:" .yarnrc.yml; then
-    sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
-else
-    echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
-fi
-
 # https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
 run_as_node "yarn plugin import typescript"
 
