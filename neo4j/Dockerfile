@@ -14,6 +14,8 @@ COPY --chmod=740 ./check_ssl.sh /check_ssl.sh
 RUN sed -i '2i/fix_user.sh' /startup/docker-entrypoint.sh
 RUN sed -i '2i/check_ssl.sh' /startup/docker-entrypoint.sh
 
+RUN mv ${NEO4J_HOME}/labs/apoc-*-core.jar ${NEO4J_HOME}/plugins
+
 COPY --chmod=740 reload-neo4j.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 RUN echo '/bin/bash /etc/banner.sh' >> /etc/bash.bashrc
