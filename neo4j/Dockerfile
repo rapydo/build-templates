@@ -5,6 +5,10 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+ENV GDS_VERSION 1.8.4
+ENV GDS_HOST "https://s3-eu-west-1.amazonaws.com"
+ENV GDS_URLPATH "com.neo4j.graphalgorithms.dist/graph-data-science"
+
 RUN groupmod -og $CURRENT_GID neo4j && usermod -u $CURRENT_UID neo4j
 
 COPY --chmod=740 ./fix_user.sh /fix_user.sh
@@ -15,6 +19,10 @@ RUN sed -i '2i/fix_user.sh' /startup/docker-entrypoint.sh
 RUN sed -i '2i/check_ssl.sh' /startup/docker-entrypoint.sh
 
 RUN mv ${NEO4J_HOME}/labs/apoc-*-core.jar ${NEO4J_HOME}/plugins
+
+RUN wget ${GDS_HOST}/${GDS_URLPATH)/neo4j-graph-data-science-${GDS_VERSION}-standalone.zip -O /tmp/gds.zip \
+    && unzip -d ${NEO4J_HOME}/plugins/ /tmp/gds.zip \
+    && rm /tmp/gds.zip
 
 COPY --chmod=740 reload-neo4j.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
