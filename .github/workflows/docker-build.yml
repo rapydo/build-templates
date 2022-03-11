@@ -231,16 +231,16 @@ jobs:
           rapydo init
           rapydo start neo4j
 
-          # Expected startup time: ~ 12 seconds
+          # Expected startup time: ~ 16 seconds
 
-          sleep 6
+          sleep 8
           if rapydo logs neo4j | grep "Remote interface available at http";
           then
             echo "Neo4j was not expected to have started yet";
             exit 1
           fi
 
-          sleep 6
+          sleep 8
           rapydo logs neo4j
           echo -e "\nNeo4j is expected to have completed the startup\n";
           rapydo logs neo4j | grep "Remote interface available at http"
