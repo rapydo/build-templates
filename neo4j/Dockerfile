@@ -20,7 +20,8 @@ RUN sed -i '2i/check_ssl.sh' /startup/docker-entrypoint.sh
 
 RUN mv ${NEO4J_HOME}/labs/apoc-*-core.jar ${NEO4J_HOME}/plugins
 
-RUN wget ${GDS_HOST}/${GDS_URLPATH}/neo4j-graph-data-science-${GDS_VERSION}-standalone.zip -O /tmp/gds.zip \
+RUN apt-get update && apt-get install unzip \
+    && wget -q -O /tmp/gds.zip ${GDS_HOST}/${GDS_URLPATH}/neo4j-graph-data-science-${GDS_VERSION}-standalone.zip \
     && unzip -d ${NEO4J_HOME}/plugins/ /tmp/gds.zip \
     && rm /tmp/gds.zip
 
