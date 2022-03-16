@@ -24,7 +24,6 @@ jobs:
             rabbitmq,
             redis,
             postgres,
-            mongodb,
             ftp,
             adminer,
             swaggerui,
@@ -296,21 +295,6 @@ jobs:
           rapydo logs postgres
           echo -e "\nPostgres is expected to have completed the startup\n";
           rapydo logs postgres | grep "database system is ready to accept connections"
-
-      - name: Test mongodb
-        if: ${{ matrix.service == 'mongodb'}}
-        run: |
-          cd test-${{ matrix.service }}
-          rapydo create prj --auth mongo --frontend no --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start mongodb
-
-          # Expected startup time: < 1 second
-
-          sleep 1
-          rapydo logs mongodb
-          echo -e "\nMongodb is expected to have completed the startup\n";
-          rapydo logs mongodb | grep "Waiting for connections"
 
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
