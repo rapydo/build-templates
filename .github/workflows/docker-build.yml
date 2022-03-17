@@ -306,7 +306,7 @@ jobs:
 
           # Expected startup time: ~ 1 second, no message is shown at startup completion...
 
-          sleep 1
+          sleep 2
           rapydo logs ftp
           echo -e "\nPure-FTP is expected to have completed the startup\n";
           rapydo logs ftp | grep "Starting Pure-FTPd"

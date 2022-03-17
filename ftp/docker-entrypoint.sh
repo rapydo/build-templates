@@ -32,6 +32,7 @@ then
 
     yes ${FTP_PASSWORD} | pure-pw useradd ${FTP_USER} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -d /home/ftpusers/${FTP_USER}
 
+    echo "User ${FTP_USER} successfully created"
 fi
 
 # if prod mode and file exists create pure-ftpd.pem
