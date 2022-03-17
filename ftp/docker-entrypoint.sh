@@ -30,7 +30,7 @@ if ! grep "^${FTP_USER}:" /etc/pure-ftpd/passwd/pureftpd.passwd > /dev/null;
 then
     echo "User ${FTP_USER} not found, creating it"
 
-    yes ${FTP_PASSWORD} | pure-pw useradd ${FTP_USER} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -d /home/ftpusers/${FTP_USER}
+    yes ${FTP_PASSWORD} | pure-pw useradd ${FTP_USER} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/${FTP_USER}
 
     echo "User ${FTP_USER} successfully created"
 fi
