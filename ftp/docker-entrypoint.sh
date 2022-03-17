@@ -26,5 +26,13 @@ if [[ -f ${CERT_FILE} ]] && [[ -f ${KEY_FILE} ]]; then
     export ADDED_FLAGS="${ADDED_FLAGS} --tls=3"
 fi
 
+if ! grep "^${FTP_USER}:" /etc/pure-ftpd/passwd/pureftpd.passwd > /dev/null;
+then
+    echo "User ${FTP_USER} not found, creating it"
+
+    yes ${FTP_PASSWORD} | pure-pw useradd ${FTP_USER} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -d /home/ftpusers/${FTP_USER}
+
+fi
+
 # if prod mode and file exists create pure-ftpd.pem
 /run.sh -c 50 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30019
