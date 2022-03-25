@@ -9,7 +9,7 @@ RUN test -n "$CURRENT_GID"
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 # used by print_versions
-ENV ANGULAR_VERSION 13.2.1
+ENV ANGULAR_VERSION 13.3.0
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 9.5.2
