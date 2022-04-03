@@ -17,6 +17,7 @@ jobs:
         service:
           [
             backend,
+            backend-legacy,
             angular,
             angular-test,
             proxy,
@@ -125,11 +126,11 @@ jobs:
           rapydo install compose
 
       - name: Test backend
-        if: ${{ matrix.service == 'backend'}}
+        if: ${{ matrix.service == 'backend' || matrix.service == 'backend-legacy' }}
         run: |
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
+          rapydo -e BACKEND_BUILD_MODE=${{ matrix.service }} init
           rapydo start backend
 
           # Expected startup time: ~ 2 seconds
@@ -140,40 +141,11 @@ jobs:
           rapydo logs backend | grep "REST API backend server is ready to be launched"
 
       - name: Test angular
-        if: ${{ matrix.service == 'angular'}}
+        if: ${{ matrix.service == 'angular' || matrix.service == 'angular-test' }}
         run: |
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start frontend
-
-          # Expected startup time: ~ 180-200 seconds
-
-          sleep 60
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 60
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 90
-          rapydo logs frontend
-          echo -e "\nAngular is expected to have completed the startup\n";
-          rapydo logs frontend | grep "Compiled successfully."
-
-      - name: Test angular-test
-        if: ${{ matrix.service == 'angular-test'}}
-        run: |
-          cd test-${{ matrix.service }}
-          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
-          rapydo -e FRONTEND_BUILD_MODE=angular-test init
+          rapydo -e FRONTEND_BUILD_MODE=${{ matrix.service }} init
           rapydo start frontend
 
           # Expected startup time: ~ 180-200 seconds
