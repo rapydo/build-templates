@@ -25,14 +25,12 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev \
     python${PYTHON_VERSION} python${PYTHON_VERSION}-dev \
     python3-gdbm python3-setuptools \
-    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 \
     && curl --silent https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
     && python3 get-pip.py \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir setuptools==59.6.0 \
-    && pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
 
 ENV APIUSER developer
 
