@@ -1160,3 +1160,4 @@ t3 12.2.1
 POST /tmUnblock.cgi
 GET /CFIDE/administrator/
 POST /spywall/timeConfig.php
+POST /functionRouter
