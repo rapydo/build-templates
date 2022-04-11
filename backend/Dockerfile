@@ -43,6 +43,9 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && ln -sf /opt/python/3.9/bin/pip3.9 /usr/bin/pip3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+ENV PATH="/opt/python/3.9/bin:${PATH}"
+
+# end of temporary fix
 
 # Restore this to install python 3.10
 # RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
