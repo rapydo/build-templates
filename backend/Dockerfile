@@ -51,7 +51,7 @@ RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.co
     && ln -sf /opt/python/3.9/bin/dumb-init /usr/local/bin/dumb-init \
     && ln -sf /opt/python/3.9/bin/flask /usr/local/bin/flask \
     && ln -sf /opt/python/3.9/bin/gunicorn /usr/local/bin/gunicorn \
-    && ln -sf /opt/python/3.9/bin/pytest /usr/local/bin/pytest \
+    && ln -sf /opt/python/3.9/bin/pytest /usr/local/bin/py.test \
     && ln -sf /opt/python/3.9/bin/restapi /usr/local/bin/restapi
 # ############################################################# #
 #                      End of temporary fix                     #
