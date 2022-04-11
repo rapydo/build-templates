@@ -19,9 +19,9 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 ## preesed tzdata, update package index, upgrade packages and install needed software
 
-
-# Temporary fix: python3.9 no longer available for Ubuntu 22.04
-
+# ############################################################# #
+# Temporary fix: python3.9 no longer available for Ubuntu 22.04 #
+# ############################################################# #
 RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
@@ -45,8 +45,15 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 ENV PATH="/opt/python/3.9/bin:${PATH}"
 
-# end of temporary fix
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION && ln -sf /opt/python/3.9/bin/dumb-init /usr/local/bin/dumb-init
+# ############################################################# #
+#                      End of temporary fix                     #
+# ############################################################# #
 
+
+# ############################################################# #
+#                       Original Version                        #
+# ############################################################# #
 # Restore this to install python 3.10
 # RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 #     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
@@ -62,7 +69,10 @@ ENV PATH="/opt/python/3.9/bin:${PATH}"
 #     && rm get-pip.py \
 #     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+# RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+# ############################################################# #
+#                     End of orginal version                    #
+# ############################################################# #
 
 ENV APIUSER developer
 
