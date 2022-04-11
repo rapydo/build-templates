@@ -43,9 +43,16 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && ln -sf /opt/python/3.9/bin/pip3.9 /usr/bin/pip3 \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
-ENV PATH="/opt/python/3.9/bin:${PATH}"
 
-RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION && ln -sf /opt/python/3.9/bin/dumb-init /usr/local/bin/dumb-init
+RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION  \
+    && ln -sf /opt/python/3.9/bin/alembic /usr/local/bin/alembic \
+    && ln -sf /opt/python/3.9/bin/celery /usr/local/bin/celery \
+    && ln -sf /opt/python/3.9/bin/coverage /usr/local/bin/coverage \
+    && ln -sf /opt/python/3.9/bin/dumb-init /usr/local/bin/dumb-init \
+    && ln -sf /opt/python/3.9/bin/flask /usr/local/bin/flask \
+    && ln -sf /opt/python/3.9/bin/gunicorn /usr/local/bin/gunicorn \
+    && ln -sf /opt/python/3.9/bin/pytest /usr/local/bin/pytest \
+    && ln -sf /opt/python/3.9/bin/restapi /usr/local/bin/restapi
 # ############################################################# #
 #                      End of temporary fix                     #
 # ############################################################# #
