@@ -42,6 +42,10 @@ if [ "$APP_MODE" == "test" ]; then
     export BACKEND_HOST=${CYPRESS_BACKEND_HOST}
 fi
 
+if [[ -d "/app/cypress" ]]; then
+    chown -R node:node /app/cypress
+fi
+
 run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
@@ -50,11 +54,18 @@ run_as_node "node /rapydo/merge.js"
 run_as_node "yarn set version berry"
 run_as_node "yarn plugin import workspace-tools"
 
-if grep -q "^nodeLinker:" .yarnrc.yml; then
-    sed -i "s|nodeLinker:.*|nodeLinker: \"node-modules\"|g" .yarnrc.yml
+if [ "$ENABLE_YARN_PNP" == "0" ]; then
+    NODE_LINKER="node-modules"
 else
-    echo "nodeLinker: \"node-modules\"" >> .yarnrc.yml
+    NODE_LINKER="pnp"
 fi
+
+if grep -q "^nodeLinker:" .yarnrc.yml; then
+    sed -i "s|nodeLinker:.*|nodeLinker: \"${NODE_LINKER}\"|g" .yarnrc.yml
+else
+    echo "nodeLinker: \"${NODE_LINKER}\"" >> .yarnrc.yml
+fi
+
 
 # https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
 run_as_node "yarn plugin import typescript"
