@@ -27,7 +27,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     debconf-set-selections /tmp/preseed.txt \
     && apt-get update -qq \
     && apt-get install --yes --no-install-recommends \
-    tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev libbz2-dev \
+    tzdata bash file less vim curl wget telnet iputils-ping sysstat git zip unzip build-essential gosu cron ca-certificates libgeos-dev libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev libbz2-dev liblzma-dev \
     && curl --silent -O https://www.python.org/ftp/python/3.9.12/Python-3.9.12.tgz \
     && tar -xvzf Python-3.9.12.tgz \
     && rm Python-3.9.12.tgz \
@@ -63,6 +63,7 @@ RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.co
 # ############################################################# #
 # Restore this to install python 3.10
 # is libbz2-dev also needed here? Added to the modified version for hld and nig
+# is liblzma-dev also needed here? Added to the modified version for nig
 # RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 #     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
 #     debconf-set-selections /tmp/preseed.txt \
