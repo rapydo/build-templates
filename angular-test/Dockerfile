@@ -34,7 +34,7 @@ RUN npm install -g npm yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-gener
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
 RUN mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
-RUN npm install --prefix /opt dotenv@16.0.0 deepmerge@4.2.2
+RUN npm install --prefix /opt dotenv@16.0.0 deepmerge@4.2.2 ajv@8.11.0 ajv-formats@2.1.1
 
 WORKDIR /app/
 
@@ -43,7 +43,7 @@ EXPOSE 8080
 EXPOSE 9876
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY ./reload-types.sh /usr/local/bin/reload-types
+COPY --chmod=777 ./reload-types.sh /usr/local/bin/reload-types
 COPY --chmod=740 reload-angular.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
 

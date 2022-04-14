@@ -62,7 +62,7 @@ RUN pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.co
 #                       Original Version                        #
 # ############################################################# #
 # Restore this to install python 3.10
-# is libbz2-dev also needed here? Added to the modified version for hld
+# is libbz2-dev also needed here? Added to the modified version for hld and nig
 # RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
 #     echo "tzdata tzdata/Zones/Europe select UTC" >> /tmp/preseed.txt; \
 #     debconf-set-selections /tmp/preseed.txt \
