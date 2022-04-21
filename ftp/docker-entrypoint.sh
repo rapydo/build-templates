@@ -31,6 +31,7 @@ then
     echo "User ${FTP_USER} not found, creating it"
 
     mkdir -p /home/ftpusers/${FTP_USER}
+    chown ftpuser:ftpgroup /home/ftpusers/${FTP_USER}
     yes ${FTP_PASSWORD} | pure-pw useradd ${FTP_USER} -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/${FTP_USER}
 
     echo "User ${FTP_USER} successfully created"
