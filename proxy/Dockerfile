@@ -10,8 +10,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-RUN apk --no-cache update && \
-    apk --no-cache add vim wget git bash openssl curl netcat-openbsd shadow tini certbot
+RUN apk update --no-cache && \
+    apk add --no-cache vim wget git bash openssl curl netcat-openbsd shadow tini certbot
 
 RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html
