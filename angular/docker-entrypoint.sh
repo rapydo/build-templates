@@ -47,8 +47,8 @@ run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
 # berry == stable
-run_as_node "yarn config set network-timeout 600000 -g"
 run_as_node "yarn set version berry"
+run_as_node "yarn config set httpTimeout 600000"
 run_as_node "yarn plugin import workspace-tools"
 
 if grep -q "^nodeLinker:" .yarnrc.yml; then
