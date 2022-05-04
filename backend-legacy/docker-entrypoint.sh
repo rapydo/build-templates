@@ -102,7 +102,7 @@ else
         echo "Waiting for services"
         HOME=$CODE_DIR su -p ${APIUSER} -c 'restapi wait'
 
-        echo "Ready to launch production gunicorn+meinheld"
+        echo "Ready to launch production gunicorn+tornado"
         mygunicorn
 
     elif [[ "$APP_MODE" == 'test' ]]; then
