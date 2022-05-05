@@ -14,10 +14,12 @@ jobs:
 
     strategy:
       matrix:
-        service:
-          [
+        service: [
             backend,
-            backend-legacy,
+            # used by mistral
+            backend-legacy38,
+            # used by nig
+            backend-legacy39,
             angular,
             angular-test,
             proxy,
@@ -126,7 +128,7 @@ jobs:
           rapydo install compose
 
       - name: Test backend
-        if: ${{ matrix.service == 'backend' || matrix.service == 'backend-legacy' }}
+        if: ${{ matrix.service == 'backend' || matrix.service == 'backend-legacy38' || matrix.service == 'backend-legacy39' }}
         run: |
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
