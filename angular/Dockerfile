@@ -6,6 +6,10 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+RUN apt-get update -qq \
+    && apt-get dist-upgrade --yes -qq \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 ENV NODE_PATH /opt/node_modules

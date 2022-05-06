@@ -6,7 +6,7 @@ ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
 # install usermod utility to change the user uid
-RUN apk add --no-cache shadow
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache shadow
 
 COPY --chmod=555 ./pgs_init.sh /docker-entrypoint-initdb.d/setup-my-schema.sh
 # permissions to others are required because postgres does not run with CURRENT_UID

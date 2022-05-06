@@ -5,6 +5,12 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+RUN apt-get update -qq \
+    && apt-get dist-upgrade --yes -qq \
+    && apt-get autoremove --yes \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN groupmod -og $CURRENT_GID neo4j && usermod -u $CURRENT_UID neo4j
 
 COPY --chmod=740 ./fix_user.sh /fix_user.sh

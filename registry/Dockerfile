@@ -1,7 +1,7 @@
 FROM registry:2.7.1
 
 # apache2-utils adds htpasswd
-RUN apk --no-cache update && apk --no-cache add openssl apache2-utils
+RUN apk --no-cache update && apk --no-cache upgrade && apk --no-cache add openssl apache2-utils
 
 COPY --chmod=5 ./set_security.sh /set_security.sh
 
