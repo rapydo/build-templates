@@ -23,6 +23,7 @@ RUN \
   wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update -qq && \
+  apt-get dist-upgrade --yes -qq && \
   apt-get install --yes --no-install-recommends vim libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dbus-x11 google-chrome-stable && \
   apt-get autoremove --yes && \
   apt-get clean && \

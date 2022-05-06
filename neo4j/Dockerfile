@@ -21,6 +21,7 @@ RUN sed -i '2i/check_ssl.sh' /startup/docker-entrypoint.sh
 RUN mv ${NEO4J_HOME}/labs/apoc-*-core.jar ${NEO4J_HOME}/plugins
 
 RUN apt-get update -qq \
+    && apt-get dist-upgrade --yes -qq \
     && apt-get install --yes --no-install-recommends unzip \
     && apt-get autoremove --yes \
     && apt-get clean \

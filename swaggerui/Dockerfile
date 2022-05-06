@@ -1,5 +1,7 @@
 FROM swaggerapi/swagger-ui:v4.9.1
 
+RUN apk --no-cache update && apk upgrade
+
 COPY --chmod=740 ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 
 # Use the original nginx.conf as development configuration

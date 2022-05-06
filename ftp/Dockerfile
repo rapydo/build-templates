@@ -1,5 +1,9 @@
 FROM stilliard/pure-ftpd:stretch-latest
 
+RUN apt-get update -qq \
+    && apt-get dist-upgrade --yes -qq \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY --chmod=740 ./ftp_utilities.sh /usr/local/bin/myftp
 
 RUN echo "echo 'Use myftp command to create/modify users'" >> /root/.bashrc
