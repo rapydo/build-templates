@@ -11,7 +11,7 @@ ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
 RUN apk update --no-cache && \
-    apk --no-cache upgrade && \
+    apk upgrade --no-cache && \
     apk add --no-cache vim wget git bash openssl curl netcat-openbsd shadow tini certbot
 
 RUN mkdir -p /usr/share/nginx/html/.well-known
