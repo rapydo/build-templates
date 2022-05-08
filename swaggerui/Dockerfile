@@ -1,6 +1,6 @@
 FROM swaggerapi/swagger-ui:v4.9.1
 
-RUN apk --no-cache update && apk upgrade
+RUN apk --no-cache update && apk --no-cache upgrade
 
 COPY --chmod=740 ./swagger-nginx-prerun.sh /usr/share/nginx/swagger-nginx-prerun.sh
 

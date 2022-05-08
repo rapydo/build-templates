@@ -1,6 +1,6 @@
 FROM crazymax/fail2ban:0.11.2
 
-RUN apk --no-cache update && apk upgrade
+RUN apk --no-cache update && apk --no-cache upgrade
 
 COPY --chmod=740 reload-fail2ban.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/
