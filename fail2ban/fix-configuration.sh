@@ -54,7 +54,7 @@ fi
 
 if [ "$FAIL2BAN_IPTABLES" == "nf_tables" ]; then
     echo "Enabling nftables-allport rules"
-    sed -i "s|banaction =.*|banaction = nftables-allports|g" /data/jail.d/jail.local
+    sed -i "s|banaction =.*|banaction = nftables[type=allports]|g" /data/jail.d/jail.local
     rm -f /data/action.d/iptables-allports.local
     cp /data/action.d.available/nftables-common.local /data/action.d/
 elif [ "$FAIL2BAN_IPTABLES" == "legacy" ]; then
