@@ -55,11 +55,14 @@ fi
 if [ "$FAIL2BAN_IPTABLES" == "nf_tables" ]; then
     echo "Enabling nftables-allport rules"
     sed -i "s|banaction =.*|banaction = nftables-allports|g" /data/jail.d/jail.local
+    sed -i "s|chain =.*|chain = f2b-chain-forward|g" /data/jail.d/jail.local
+    sed -i "s|# chain_hook = .*|chain_hook = forward|g" /data/jail.d/jail.local
     rm -f /data/action.d/iptables-allports.local
     cp /data/action.d.available/nftables-common.local /data/action.d/
 elif [ "$FAIL2BAN_IPTABLES" == "legacy" ]; then
     echo "Enabling iptables-allport rules"
     sed -i "s|banaction =.*|banaction = iptables-allports|g" /data/jail.d/jail.local
+    sed -i "s|chain =.*|chain = DOCKER-USER|g" /data/jail.d/jail.local
     rm -f /data/action.d/nftables-common.local
     cp /data/action.d.available/iptables-allports.local /data/action.d/
 fi
