@@ -2,6 +2,10 @@
 
 sed -i "s|#ignoreip =.*|ignoreip = 127.0.0.1/24 ${DOCKER_SUBNET}|g" /etc/fail2ban/jail.conf
 
+mkdr -p /data/action.d
+mkdr -p /data/filter.d
+mkdr -p /data/jail.d
+
 echo "Enabling custom jail configuration"
 cp /data/jail.d.available/jail.local /data/jail.d/jail.local
 
