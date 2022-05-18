@@ -613,8 +613,6 @@ POST /integration/saveGangster.action
 POST /invoker/readonly
 POST /j_spring_security_check
 POST /login/dologin
-POST /mgmt/shared/authn/login
-POST /mgmt/tm/util/bash
 POST /minio/webrpc
 POST /node/1?_format=hal_json
 POST /qvisdvr/index.faces;jsessionid=%7B%7Btoken%7D%7D
