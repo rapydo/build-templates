@@ -6,17 +6,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     env:
-      RAPYDO_VERSION: "2.2"
+      RAPYDO_VERSION: "2.3"
 
     strategy:
       matrix:
-        service:
-          [
+        service: [
             backend,
+            # used by mistral
+            backend-legacy38,
+            # used by nig
+            backend-legacy39,
             angular,
             angular-test,
             proxy,
@@ -24,7 +27,6 @@ jobs:
             rabbitmq,
             redis,
             postgres,
-            mongodb,
             ftp,
             adminer,
             swaggerui,
@@ -113,7 +115,7 @@ jobs:
         if: ${{ matrix.service != 'fail2ban' }}
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.10"
 
       - name: Install RAPyDo
         if: ${{ matrix.service != 'fail2ban' }}
@@ -126,11 +128,11 @@ jobs:
           rapydo install compose
 
       - name: Test backend
-        if: ${{ matrix.service == 'backend'}}
+        if: ${{ matrix.service == 'backend' || matrix.service == 'backend-legacy38' || matrix.service == 'backend-legacy39' }}
         run: |
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend no --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
+          rapydo -e BACKEND_BUILD_MODE=${{ matrix.service }} init
           rapydo start backend
 
           # Expected startup time: ~ 2 seconds
@@ -141,40 +143,11 @@ jobs:
           rapydo logs backend | grep "REST API backend server is ready to be launched"
 
       - name: Test angular
-        if: ${{ matrix.service == 'angular'}}
+        if: ${{ matrix.service == 'angular' || matrix.service == 'angular-test' }}
         run: |
           cd test-${{ matrix.service }}
           rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start frontend
-
-          # Expected startup time: ~ 180-200 seconds
-
-          sleep 60
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 60
-          if rapydo logs frontend | grep "Compiled successfully.";
-          then
-            echo "Angular was not expected to have started yet";
-            exit 1
-          fi
-
-          sleep 90
-          rapydo logs frontend
-          echo -e "\nAngular is expected to have completed the startup\n";
-          rapydo logs frontend | grep "Compiled successfully."
-
-      - name: Test angular-test
-        if: ${{ matrix.service == 'angular-test'}}
-        run: |
-          cd test-${{ matrix.service }}
-          rapydo create prj --auth no --frontend angular --current --origin-url https://your_remote_git/your_project.git
-          rapydo -e FRONTEND_BUILD_MODE=angular-test init
+          rapydo -e FRONTEND_BUILD_MODE=${{ matrix.service }} init
           rapydo start frontend
 
           # Expected startup time: ~ 180-200 seconds
@@ -231,16 +204,16 @@ jobs:
           rapydo init
           rapydo start neo4j
 
-          # Expected startup time: ~ 12 seconds
+          # Expected startup time: ~ 30 seconds
 
-          sleep 6
+          sleep 15
           if rapydo logs neo4j | grep "Remote interface available at http";
           then
             echo "Neo4j was not expected to have started yet";
             exit 1
           fi
 
-          sleep 6
+          sleep 15
           rapydo logs neo4j
           echo -e "\nNeo4j is expected to have completed the startup\n";
           rapydo logs neo4j | grep "Remote interface available at http"
@@ -297,21 +270,6 @@ jobs:
           echo -e "\nPostgres is expected to have completed the startup\n";
           rapydo logs postgres | grep "database system is ready to accept connections"
 
-      - name: Test mongodb
-        if: ${{ matrix.service == 'mongodb'}}
-        run: |
-          cd test-${{ matrix.service }}
-          rapydo create prj --auth mongo --frontend no --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start mongodb
-
-          # Expected startup time: < 1 second
-
-          sleep 1
-          rapydo logs mongodb
-          echo -e "\nMongodb is expected to have completed the startup\n";
-          rapydo logs mongodb | grep "Waiting for connections"
-
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
         run: |
@@ -322,7 +280,7 @@ jobs:
 
           # Expected startup time: ~ 1 second, no message is shown at startup completion...
 
-          sleep 1
+          sleep 2
           rapydo logs ftp
           echo -e "\nPure-FTP is expected to have completed the startup\n";
           rapydo logs ftp | grep "Starting Pure-FTPd"

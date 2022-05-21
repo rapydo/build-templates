@@ -6,22 +6,26 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+RUN apt-get update -qq \
+    && apt-get dist-upgrade --yes -qq \
+    && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 ENV NODE_PATH /opt/node_modules
 # used by print_versions
-ENV ANGULAR_VERSION 13.2.1
+ENV ANGULAR_VERSION 13.3.1
 
-RUN npm install -g npm yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@0.97.0 sitemap-generator-cli@7.5.0 --force
+RUN npm install -g npm yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-generator@1.0.0 sitemap-generator-cli@7.5.0 --force
 
-RUN npm install --prefix /opt dotenv@10.0.0 deepmerge@4.2.2
+RUN npm install --prefix /opt dotenv@16.0.0 deepmerge@4.2.2 ajv@8.11.0 ajv-formats@2.1.1
 
 WORKDIR /app/
 
 EXPOSE 8080
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY ./reload-types.sh /usr/local/bin/reload-types
+COPY --chmod=777 ./reload-types.sh /usr/local/bin/reload-types
 
 CMD ["docker-entrypoint"]
 

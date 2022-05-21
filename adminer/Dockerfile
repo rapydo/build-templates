@@ -2,10 +2,9 @@ FROM adminer:4.8.1
 
 USER root
 
-RUN apk --no-cache update && \
-    apk --no-cache add nginx autoconf gcc g++ make libffi-dev openssl-dev && \
-    pecl install mongodb && \
-    echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/docker-php-ext-mongodb.ini
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache nginx autoconf gcc g++ make libffi-dev openssl-dev
 
 COPY --chmod=740 ./docker-entrypoint.sh /usr/local/bin/nginx-docker-entrypoint
 
