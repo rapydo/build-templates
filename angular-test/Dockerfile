@@ -6,6 +6,8 @@ RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 # used by print_versions
