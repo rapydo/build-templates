@@ -8,96 +8,96 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/adminer/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/angular-test/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/angular/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/backend-legacy38/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/backend-legacy39/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/backend/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/controller/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/fail2ban/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/ftp/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/neo4j/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/postgres/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/proxy/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/rabbitmq/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/redis/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/registry/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "/swaggerui/"
-    open-pull-reqvuests-limit: 99
+    open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
