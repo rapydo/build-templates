@@ -16,8 +16,6 @@ elif [ "$HOSTNAME" == "flower" ]; then
     echo "Reload of flower not implemented yet"
 elif [ "$HOSTNAME" == "celery-beat" ]; then
     echo "Reload of celery-beat not implemented yet"
-elif [ "$HOSTNAME" == "telegram-bot" ]; then
-    echo "Reload of telegram bot not implemented yet"
 else
     PID=$(pgrep -f /usr/local/bin/celery | head -1)
     echo "Reloading celery (PID #${PID})..."
