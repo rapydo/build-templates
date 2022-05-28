@@ -38,6 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -338,4 +339,5 @@ jobs:
       #     ...
 
       - name: Docker Push
+        if: github.event_name != 'pull_request'
         run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
