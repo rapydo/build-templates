@@ -5,6 +5,12 @@
 
 version: 2
 updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 99
+    schedule:
+      interval: "daily"
 
   - package-ecosystem: "docker"
     directory: "/adminer/"
