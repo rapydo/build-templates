@@ -338,12 +338,12 @@ jobs:
       #     ...
 
       - name: Login to DockerHub
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Docker Push
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.actor != 'dependabot[bot]' }}
         run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
