@@ -14,8 +14,12 @@ jobs:
   semgrep:
     name: Scan
     runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    # Skip any PR created by dependabot to avoid permission issues
+    if: (github.actor != 'dependabot[bot]')
     steps:
-      # Checkout project source
+      # Fetch project source
       - uses: actions/checkout@v3
 
       # Scan code using project's configuration on https://semgrep.dev/manage
