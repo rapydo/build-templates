@@ -28,6 +28,7 @@ jobs:
             angular,
             angular-test,
             proxy,
+            mariadb,
             neo4j,
             rabbitmq,
             redis,
