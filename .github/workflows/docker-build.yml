@@ -2,6 +2,7 @@ name: Build
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
 
 # Cancel previous running jobs on the same branch in case of new pushs
@@ -347,12 +348,12 @@ jobs:
       #     ...
 
       - name: Login to DockerHub
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'}}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Docker Push
-        if: ${{ github.actor != 'dependabot[bot]' }}
+        if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request'}}
         run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
