@@ -13,4 +13,4 @@ fi
 
 # Start Gunicorn
 # exec gunicorn -k ... -c "$GUNICORN_CONF" "$APP_MODULE" -u $CURRENT_UID -g $CURRENT_GID
-exec gunicorn -c "$GUNICORN_CONF" "$APP_MODULE" -u $CURRENT_UID -g $CURRENT_GID
+exec gunicorn -k gevent -c "$GUNICORN_CONF" "$APP_MODULE" -u $CURRENT_UID -g $CURRENT_GID
