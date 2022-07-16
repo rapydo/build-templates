@@ -1,6 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
+  "extends": ["config:base"],
+  "regexManagers": [
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": ["ENV ANGULAR_VERSION (?<currentValue>.*?)\\n"],
+      "depNameTemplate": "@angular/cli",
+      "datasourceTemplate": "npm"
+    }
   ]
 }
