@@ -3,7 +3,7 @@
   "extends": ["config:base"],
   "regexManagers": [
     {
-      "fileMatch": ["^Dockerfile$"],
+      "fileMatch": [".*/Dockerfile$"],
       "matchStrings": ["ENV ANGULAR_VERSION (?<currentValue>.*?)\\n"],
       "depNameTemplate": "@angular/cli",
       "datasourceTemplate": "npm"
