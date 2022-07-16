@@ -107,3 +107,21 @@ updates:
     open-pull-requests-limit: 99
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "pip"
+    directory: "/backend-legacy38/"
+    open-pull-requests-limit: 99
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "pip"
+    directory: "/backend-legacy39/"
+    open-pull-requests-limit: 99
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "pip"
+    directory: "/backend/"
+    open-pull-requests-limit: 99
+    schedule:
+      interval: "daily"
