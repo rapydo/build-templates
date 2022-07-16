@@ -7,6 +7,64 @@
       "matchStrings": ["ENV ANGULAR_VERSION (?<currentValue>.*?)\\n"],
       "depNameTemplate": "@angular/cli",
       "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": ["ENV CYPRESS_VERSION (?<currentValue>.*?)\\n"],
+      "depNameTemplate": "cypress",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": [
+        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[$| ]"
+      ],
+      "depNameTemplate": "ts-json-schema-generator",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": [
+        "RUN npm install -.* sitemap-generator-cli@(?<currentValue>.*?)[$| ]"
+      ],
+      "depNameTemplate": "sitemap-generator-cli",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": [
+        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[$| ]"
+      ],
+      "depNameTemplate": "ts-json-schema-generator",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": ["RUN npm install -.* dotenv@(?<currentValue>.*?)[$| ]"],
+      "depNameTemplate": "dotenv",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": [
+        "RUN npm install -.* deepmerge@(?<currentValue>.*?)[$| ]"
+      ],
+      "depNameTemplate": "deepmerge",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": ["RUN npm install -.* ajv@(?<currentValue>.*?)[$| ]"],
+      "depNameTemplate": "ajv",
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": [
+        "RUN npm install -.* ajv-formats@(?<currentValue>.*?)[$| ]"
+      ],
+      "depNameTemplate": "ajv-formats",
+      "datasourceTemplate": "npm"
     }
   ]
 }
