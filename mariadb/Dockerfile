@@ -1,4 +1,4 @@
-FROM mariadb:10.8.2
+FROM mariadb:10.8.3
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
