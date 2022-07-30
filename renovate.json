@@ -71,6 +71,12 @@
       ],
       "depNameTemplate": "ajv-formats",
       "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [".*/Dockerfile$"],
+      "matchStrings": ["RUN pip3 install certbot==(?<currentValue>.*?)[$| ]"],
+      "depNameTemplate": "certbot",
+      "datasourceTemplate": "pip"
     }
   ]
 }
