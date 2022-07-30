@@ -11,7 +11,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN groupmod -og $CURRENT_GID node && usermod -u $CURRENT_UID node
 
 # used by print_versions
-ENV ANGULAR_VERSION 14.0.2
+ENV ANGULAR_VERSION 14.0.6
 ENV NODE_PATH /opt/node_modules
 ENV CYPRESS_PATH /usr/local/Cypress
 ENV CYPRESS_VERSION 10.3.0
@@ -37,7 +37,7 @@ RUN npm install -g npm yarn @angular/cli@${ANGULAR_VERSION} ts-json-schema-gener
 # 777 is required to let node user to write the folder, even when uid is fixed at runtime.
 RUN mv /root/.cache/Cypress /usr/local/Cypress && chown -R node:node /usr/local/Cypress && chmod -R 777 /usr/local/Cypress
 
-RUN npm install --prefix /opt dotenv@16.0.0 deepmerge@4.2.2 ajv@8.11.0 ajv-formats@2.1.1
+RUN npm install --prefix /opt dotenv@16.0.1 deepmerge@4.2.2 ajv@8.11.0 ajv-formats@2.1.1
 
 WORKDIR /app/
 
