@@ -24,7 +24,7 @@ jobs:
             backend,
             # used by mistral
             backend-legacy38,
-            # used by nig
+            # used by nig & sdc
             backend-legacy39,
             angular,
             angular-test,
@@ -199,16 +199,16 @@ jobs:
           rapydo init
           rapydo start neo4j
 
-          # Expected startup time: ~ 30 seconds
+          # Expected startup time: ~ 20 seconds
 
-          sleep 15
+          sleep 10
           if rapydo logs neo4j | grep "Remote interface available at http";
           then
             echo "Neo4j was not expected to have started yet";
             exit 1
           fi
 
-          sleep 15
+          sleep 10
           rapydo logs neo4j
           echo -e "\nNeo4j is expected to have completed the startup\n";
           rapydo logs neo4j | grep "Remote interface available at http"
