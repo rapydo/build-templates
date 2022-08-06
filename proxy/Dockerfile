@@ -1,4 +1,4 @@
-FROM nginx:1.23.1-alpine as build-cerbot
+FROM nginx:1.23.1-alpine as build-certbot
 
 RUN apk update --no-cache && \
     apk add --no-cache gcc musl-dev libffi-dev python3-dev py3-pip
@@ -28,7 +28,7 @@ RUN apk update --no-cache && \
     apk add --no-cache vim wget git bash openssl curl netcat-openbsd shadow tini python3
 
 ENV CERTBOT_PATH="/opt/certbot"
-COPY --from=build-cerbot ${CERTBOT_PATH} ${CERTBOT_PATH}
+COPY --from=build-certbot ${CERTBOT_PATH} ${CERTBOT_PATH}
 ENV PATH="${CERTBOT_PATH}/bin:$PATH"
 
 RUN mkdir -p /usr/share/nginx/html/.well-known

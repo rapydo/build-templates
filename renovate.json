@@ -75,10 +75,10 @@
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN pip3 install --no-cache-dir certbot==(?<currentValue>.*?)[$| ]"
+        "RUN pip3 install .* certbot==(?<currentValue>.*?)[$| ]"
       ],
       "depNameTemplate": "certbot",
-      "datasourceTemplate": "pip"
+      "datasourceTemplate": "pypi"
     }
   ]
 }
