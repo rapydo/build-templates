@@ -9,7 +9,7 @@ RUN python3 -m venv "${CERTBOT_PATH}"
 
 ENV PATH="${CERTBOT_PATH}/bin:$PATH"
 
-RUN pip3 install certbot==1.28.0
+RUN pip3 install --no-cache-dir certbot==1.28.0
 
 FROM nginx:1.23.1-alpine
 
