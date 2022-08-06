@@ -23,7 +23,7 @@
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[$| ]"
+        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "ts-json-schema-generator",
       "datasourceTemplate": "npm"
@@ -31,7 +31,7 @@
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN npm install -.* sitemap-generator-cli@(?<currentValue>.*?)[$| ]"
+        "RUN npm install -.* sitemap-generator-cli@(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "sitemap-generator-cli",
       "datasourceTemplate": "npm"
@@ -39,35 +39,37 @@
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[$| ]"
+        "RUN npm install -.* ts-json-schema-generator@(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "ts-json-schema-generator",
       "datasourceTemplate": "npm"
     },
     {
       "fileMatch": [".*/Dockerfile$"],
-      "matchStrings": ["RUN npm install -.* dotenv@(?<currentValue>.*?)[$| ]"],
+      "matchStrings": [
+        "RUN npm install -.* dotenv@(?<currentValue>.*?)[\\n| ]"
+      ],
       "depNameTemplate": "dotenv",
       "datasourceTemplate": "npm"
     },
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN npm install -.* deepmerge@(?<currentValue>.*?)[$| ]"
+        "RUN npm install -.* deepmerge@(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "deepmerge",
       "datasourceTemplate": "npm"
     },
     {
       "fileMatch": [".*/Dockerfile$"],
-      "matchStrings": ["RUN npm install -.* ajv@(?<currentValue>.*?)[$| ]"],
+      "matchStrings": ["RUN npm install -.* ajv@(?<currentValue>.*?)[\\n| ]"],
       "depNameTemplate": "ajv",
       "datasourceTemplate": "npm"
     },
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN npm install -.* ajv-formats@(?<currentValue>.*?)[$| ]"
+        "RUN npm install -.* ajv-formats@(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "ajv-formats",
       "datasourceTemplate": "npm"
@@ -75,7 +77,7 @@
     {
       "fileMatch": [".*/Dockerfile$"],
       "matchStrings": [
-        "RUN pip3 install .* certbot==(?<currentValue>.*?)[$| ]"
+        "RUN pip3 install .* certbot==(?<currentValue>.*?)[\\n| ]"
       ],
       "depNameTemplate": "certbot",
       "datasourceTemplate": "pypi"
