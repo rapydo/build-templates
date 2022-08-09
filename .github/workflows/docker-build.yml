@@ -40,6 +40,7 @@ jobs:
             registry,
             controller,
             fail2ban,
+            mypy,
           ]
 
     steps:
