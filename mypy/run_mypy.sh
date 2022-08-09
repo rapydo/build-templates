@@ -1,6 +1,8 @@
 #!/bin/ash
 
-if [[ ! -z "${ADD_LIBS}"]]; then
+set -e
+
+if [[ ! -z "${ADD_LIBS}" ]]; then
 	pip3 install "${ADD_LIBS}"
 fi
 
@@ -18,7 +20,7 @@ echo "warn_return_any = True" >> "${MYPY}"
 echo "warn_unreachable = True" >> "${MYPY}"
 echo "txt_report=/tmp/report" >> "${MYPY}"
 echo "html_report=/tmp/report" >> "${MYPY}"
-echo "exclude=backend/migrations" >> "${MYPY}"
+echo "exclude=migrations" >> "${MYPY}"
 
 if [[ "${DISALLOW_UNTYPED_DEFS}" == "1" ]]; then
 	echo "disallow_untyped_defs = True" >> "${MYPY}"
@@ -38,6 +40,8 @@ for lib in $(echo "${IGNORE_LIBS}"); do
 done
 
 cd "/code/${PROJECT_NAME}"
+
+echo "Running mypy..."
 
 mypy --config-file "${MYPY}" . 
 
