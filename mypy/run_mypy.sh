@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 
 set -e
 
@@ -20,7 +20,7 @@ echo "warn_return_any = True" >> "${MYPY}"
 echo "warn_unreachable = True" >> "${MYPY}"
 echo "txt_report=/tmp/report" >> "${MYPY}"
 echo "html_report=/tmp/report" >> "${MYPY}"
-echo "exclude=migrations" >> "${MYPY}"
+echo "exclude=(?x)(migrations|tests/base/)" >> "${MYPY}"
 
 if [[ "${DISALLOW_UNTYPED_DEFS}" == "1" ]]; then
 	echo "disallow_untyped_defs = True" >> "${MYPY}"
