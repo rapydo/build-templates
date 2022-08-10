@@ -1,4 +1,4 @@
-FROM swaggerapi/swagger-ui:v4.13.0
+FROM swaggerapi/swagger-ui:v4.13.2
 
 RUN apk update --no-cache && apk upgrade --no-cache
 
