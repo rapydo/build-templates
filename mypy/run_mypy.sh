@@ -3,7 +3,7 @@
 set -e
 
 if [[ ! -z "${ADD_LIBS}" ]]; then
-	pip3 install "${ADD_LIBS}"
+	pip3 install ${ADD_LIBS}
 fi
 
 MYPY="/tmp/mypy.ini"
