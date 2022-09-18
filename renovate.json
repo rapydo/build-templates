@@ -83,5 +83,12 @@
       "depNameTemplate": "certbot",
       "datasourceTemplate": "pypi"
     }
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeStrategy": "squash"
+    }
   ]
 }
