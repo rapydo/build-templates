@@ -43,7 +43,7 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
      && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip3 install --upgrade --no-cache-dir -r /tmp/requirements.txt && pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+RUN pip3 install --upgrade --no-cache-dir -r /tmp/requirements.txt && pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION#egg=rapydo[dev]
 
 RUN useradd \
     -r -M -d /home/$APIUSER -s /bin/bash -p ! \
