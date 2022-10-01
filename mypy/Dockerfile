@@ -7,7 +7,7 @@ RUN apt-get update -qq && \
     apt-get dist-upgrade --yes -qq && \
     apt-get install --yes --no-install-recommends libgeos-dev
 
-RUN pip3 install --no-cache-dir mypy lxml html5lib types-requests types-urllib3 types-python-dateutil types-pytz types-PyYAML pika-stubs celery-types sqlalchemy-stubs git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION#egg=rapydo[dev]
+RUN pip3 install --no-cache-dir mypy lxml html5lib types-requests types-urllib3 types-python-dateutil types-pytz types-PyYAML pika-stubs celery-types sqlalchemy-stubs git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION#egg=rapydo_http[dev]
 
 RUN mypy --version
 
