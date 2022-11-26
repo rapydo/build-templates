@@ -1,4 +1,4 @@
-FROM rabbitmq:3.11.2-management
+FROM rabbitmq:3.11.3-management
 
 RUN apt-get update -qq \
     && apt-get dist-upgrade --yes -qq \
