@@ -60,9 +60,9 @@ jobs:
         run: |
           docker run --rm -d --name fail2ban --network host --cap-add NET_ADMIN --cap-add NET_RAW rapydo/${{ matrix.service }}:${RAPYDO_VERSION}
 
-          ipt=$(docker exec fail2ban iptables -L)
-          echo $ipt
-          echo $ipt | grep --color "DOCKER-USER"
+          # ipt=$(docker exec fail2ban iptables -L)
+          # echo $ipt
+          # echo $ipt | grep --color "DOCKER-USER"
 
           git clone -b ${RAPYDO_VERSION} https://github.com/rapydo/do.git
 
