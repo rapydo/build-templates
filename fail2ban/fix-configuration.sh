@@ -13,12 +13,6 @@ echo "Enabling backend jail and filters"
 cp /data/filter.d.available/backend.conf /data/filter.d/backend.conf
 cp /data/jail.d.available/backend.local /data/jail.d/backend.local
 
-if [ "$MYSQL_ENABLED" == "1" ]; then
-    echo "Enabling mysql jail and filters"
-    cp /data/filter.d.available/mysql.conf /data/filter.d/mysql.conf
-    cp /data/jail.d.available/mysql.local /data/jail.d/mysql.local
-fi
-
 if [ "$NEO4J_ENABLED" == "1" ]; then
     echo "Enabling neo4j jail and filters"
     cp /data/filter.d.available/neo4j.conf /data/filter.d/neo4j.conf

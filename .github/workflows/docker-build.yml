@@ -24,12 +24,11 @@ jobs:
             backend,
             # used by mistral
             backend-legacy38,
-            # used by nig & sdc
+            # used by nig, sdc, highlander
             backend-legacy39,
             angular,
             angular-test,
             proxy,
-            mariadb,
             neo4j,
             rabbitmq,
             redis,
@@ -265,21 +264,6 @@ jobs:
           rapydo logs postgres
           echo -e "\nPostgres is expected to have completed the startup\n";
           rapydo logs postgres | grep "database system is ready to accept connections"
-
-      - name: Test MariaDB
-        if: ${{ matrix.service == 'mariadb'}}
-        run: |
-          cd test-${{ matrix.service }}
-          rapydo create prj --auth mysql --frontend no --current --origin-url https://your_remote_git/your_project.git
-          rapydo init
-          rapydo start mariadb
-
-          # Expected startup time: ~ 1 second
-
-          sleep 2
-          rapydo logs mariadb
-          echo -e "\nMariaDB is expected to have completed the startup\n";
-          rapydo logs mariadb | grep "mariadbd: ready for connections."
 
       - name: Test ftp
         if: ${{ matrix.service == 'ftp'}}
