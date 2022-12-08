@@ -2,9 +2,9 @@
 
 sed -i "s|#ignoreip =.*|ignoreip = 127.0.0.1/24 ${DOCKER_SUBNET}|g" /etc/fail2ban/jail.conf
 
-mkdr -p /data/action.d
-mkdr -p /data/filter.d
-mkdr -p /data/jail.d
+mkdir -p /data/action.d
+mkdir -p /data/filter.d
+mkdir -p /data/jail.d
 
 echo "Enabling custom jail configuration"
 cp /data/jail.d.available/jail.local /data/jail.d/jail.local
@@ -12,12 +12,6 @@ cp /data/jail.d.available/jail.local /data/jail.d/jail.local
 echo "Enabling backend jail and filters"
 cp /data/filter.d.available/backend.conf /data/filter.d/backend.conf
 cp /data/jail.d.available/backend.local /data/jail.d/backend.local
-
-if [ "$MYSQL_ENABLED" == "1" ]; then
-    echo "Enabling mysql jail and filters"
-    cp /data/filter.d.available/mysql.conf /data/filter.d/mysql.conf
-    cp /data/jail.d.available/mysql.local /data/jail.d/mysql.local
-fi
 
 if [ "$NEO4J_ENABLED" == "1" ]; then
     echo "Enabling neo4j jail and filters"

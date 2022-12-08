@@ -1,13 +1,13 @@
-FROM neo4j:4.4.5
+FROM neo4j:4.4.15
 
 ARG CURRENT_UID
 RUN test -n "$CURRENT_UID"
 ARG CURRENT_GID
 RUN test -n "$CURRENT_GID"
 
-ENV GDS_VERSION 1.8.4
-ENV GDS_HOST "https://s3-eu-west-1.amazonaws.com"
-ENV GDS_URLPATH "com.neo4j.graphalgorithms.dist/graph-data-science"
+# ENV GDS_VERSION 1.8.4
+# ENV GDS_HOST "https://s3-eu-west-1.amazonaws.com"
+# ENV GDS_URLPATH "com.neo4j.graphalgorithms.dist/graph-data-science"
 
 RUN groupmod -og $CURRENT_GID neo4j && usermod -u $CURRENT_UID neo4j
 
@@ -20,15 +20,15 @@ RUN sed -i '2i/check_ssl.sh' /startup/docker-entrypoint.sh
 
 RUN mv ${NEO4J_HOME}/labs/apoc-*-core.jar ${NEO4J_HOME}/plugins
 
-RUN apt-get update -qq \
-    && apt-get dist-upgrade --yes -qq \
-    && apt-get install --yes --no-install-recommends unzip \
-    && apt-get autoremove --yes \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && wget -q -O /tmp/gds.zip ${GDS_HOST}/${GDS_URLPATH}/neo4j-graph-data-science-${GDS_VERSION}-standalone.zip \
-    && unzip -d ${NEO4J_HOME}/plugins/ /tmp/gds.zip \
-    && rm /tmp/gds.zip
+# RUN apt-get update -qq \
+#     && apt-get dist-upgrade --yes -qq \
+#     && apt-get install --yes --no-install-recommends unzip \
+#     && apt-get autoremove --yes \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/* \
+#     && wget -q -O /tmp/gds.zip ${GDS_HOST}/${GDS_URLPATH}/neo4j-graph-data-science-${GDS_VERSION}-standalone.zip \
+#     && unzip -d ${NEO4J_HOME}/plugins/ /tmp/gds.zip \
+#     && rm /tmp/gds.zip
 
 COPY --chmod=740 reload-neo4j.sh /usr/local/bin/reload
 COPY banner.sh print_versions.sh /etc/

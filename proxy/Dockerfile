@@ -1,4 +1,17 @@
-FROM nginx:1.21.6-alpine
+FROM nginx:1.23.2-alpine as build-certbot
+
+RUN apk update --no-cache && \
+    apk add --no-cache gcc musl-dev libffi-dev python3-dev py3-pip
+
+ENV CERTBOT_PATH="/opt/certbot"
+
+RUN python3 -m venv "${CERTBOT_PATH}"
+
+ENV PATH="${CERTBOT_PATH}/bin:$PATH"
+
+RUN pip3 install --no-cache-dir certbot==2.1.0
+
+FROM nginx:1.23.2-alpine
 
 ARG RAPYDO_VERSION
 RUN test -n "$RAPYDO_VERSION" && \
@@ -12,7 +25,11 @@ RUN test -n "$CURRENT_GID"
 
 RUN apk update --no-cache && \
     apk upgrade --no-cache && \
-    apk add --no-cache vim wget git bash openssl curl netcat-openbsd shadow tini certbot
+    apk add --no-cache vim wget git bash openssl curl netcat-openbsd shadow tini python3
+
+ENV CERTBOT_PATH="/opt/certbot"
+COPY --from=build-certbot ${CERTBOT_PATH} ${CERTBOT_PATH}
+ENV PATH="${CERTBOT_PATH}/bin:$PATH"
 
 RUN mkdir -p /usr/share/nginx/html/.well-known
 RUN chown -R nginx /usr/share/nginx/html

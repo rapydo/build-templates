@@ -32,8 +32,9 @@ RUN echo "tzdata tzdata/Areas select Etc" > /tmp/preseed.txt; \
     && rm get-pip.py \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade --no-cache-dir setuptools==59.6.0 \
-    && pip3 install --upgrade --no-cache-dir dumb-init==1.2.5 git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install --upgrade --no-cache-dir -r /tmp/requirements.txt \
+  && pip3 install --upgrade --no-cache-dir git+https://github.com/rapydo/http-api.git@$RAPYDO_VERSION#egg=rapydo_http[dev]
 
 ENV APIUSER developer
 
@@ -72,7 +73,6 @@ RUN echo 'export PS1="\\[\\033[38;5;11m\\]\\u\\[$(tput sgr0)\\]\\[\\033[38;5;15m
 RUN mkdir $CODE_DIR
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY ./docker-entrypoint-celery.sh /usr/local/bin/docker-entrypoint-celery
-COPY ./docker-entrypoint-bot.sh /usr/local/bin/docker-entrypoint-bot
 
 WORKDIR $CODE_DIR
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
