@@ -26,7 +26,6 @@ jobs:
             postgres,
             mongodb,
             ftp,
-            adminer,
             swaggerui,
             registry,
             controller,
