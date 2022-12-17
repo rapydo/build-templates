@@ -28,7 +28,6 @@ jobs:
             redis,
             postgres,
             ftp,
-            adminer,
             swaggerui,
             registry,
             controller,
