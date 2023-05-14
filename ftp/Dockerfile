@@ -1,5 +1,8 @@
 FROM stilliard/pure-ftpd:stretch-latest
 
+# Since April 2023 the Stretch repositories were removed from the main mirrors
+RUN echo "deb http://archive.debian.org/debian stretch main contrib non-free" > /etc/apt/sources.list
+
 RUN apt-get update -qq \
     && apt-get dist-upgrade --yes -qq \
     && apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
