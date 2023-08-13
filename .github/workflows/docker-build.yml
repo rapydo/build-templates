@@ -30,7 +30,6 @@ jobs:
             ftp,
             swaggerui,
             registry,
-            controller,
             fail2ban,
             mypy,
           ]
@@ -321,10 +320,6 @@ jobs:
           docker logs registry
           echo -e "\nDocker Registry is expected to have completed the startup\n";
           docker logs registry 2>&1 | grep "debug server listening localhost"
-      # - name: Test controller
-      #   if: ${{ matrix.service == 'controller'}}
-      #   run: |
-      #     ...
 
       - name: Docker Push
         run: docker push rapydo/${{ matrix.service }}:${{ env.RAPYDO_VERSION }}
