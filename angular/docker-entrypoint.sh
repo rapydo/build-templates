@@ -50,8 +50,7 @@ run_as_node "env > /tmp/.env"
 run_as_node "node /rapydo/config-env.ts"
 run_as_node "node /rapydo/merge.js"
 
-# berry == stable
-run_as_node "yarn set version berry"
+run_as_node "yarn set version 3.x"
 run_as_node "yarn plugin import workspace-tools"
 
 if [ "$ENABLE_YARN_PNP" == "0" ]; then
@@ -66,8 +65,6 @@ else
     echo "nodeLinker: \"${NODE_LINKER}\"" >> .yarnrc.yml
 fi
 
-
-# https://github.com/yarnpkg/berry/tree/master/packages/plugin-typescript#yarnpkgplugin-typescript
 run_as_node "yarn plugin import typescript"
 
 if [ "$APP_MODE" == "production" ]; then
