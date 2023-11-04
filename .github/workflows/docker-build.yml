@@ -147,7 +147,7 @@ jobs:
 
           # Expected startup time: ~ 180-200 seconds
 
-          sleep 150
+          sleep 60
           if rapydo logs frontend | grep "Compiled successfully.";
           then
             echo "Angular was not expected to have started yet";
